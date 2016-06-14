@@ -1,0 +1,4 @@
+.flatpak-builder
+gnome-sdk.gpg
+app/
+repo/
