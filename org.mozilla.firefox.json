@@ -72,6 +72,11 @@
                   "type": "git",
                   "url": "https://github.com/mozilla/gecko-dev"
               },
+              /* Client-Side Decorations */
+              {
+                  "type": "patch",
+                  "path": "rb62474.patch"
+              },
               {
                   "type": "patch",
                   "path": "firefox-buildconfig.patch"
