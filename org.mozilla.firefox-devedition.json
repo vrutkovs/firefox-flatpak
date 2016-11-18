@@ -1,12 +1,11 @@
 {
-    "app-id": "org.mozilla.firefox",
+    "app-id": "org.mozilla.firefox-devedition",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.20",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
-    "tags": ["nightly"],
-    "rename-desktop-file": "firefox.desktop",
-    "desktop-file-name-prefix": "(Nightly) ",
+    /*"tags": [""],*/
+    "desktop-file-name-prefix": "(Developer Edition) ",
     "finish-args": [
         /* X11 + XShm access */
         "--share=ipc", "--socket=x11",
@@ -65,12 +64,16 @@
       },
       {
           "name": "firefox",
+          "config-opts": ["--without-system-nspr",
+                        "--without-system-nss",
+                        "--disable-documentation"],
           "no-autogen": true,
           "make-install-args": ["prefix=/app"],
           "sources": [
               {
                   "type": "git",
-                  "url": "https://github.com/mozilla/gecko-dev"
+                  "url": "https://github.com/mozilla/gecko-dev",
+                  "branch" : "aurora"
               },
               {
                   "type": "patch",
@@ -80,7 +83,7 @@
                   "type": "patch",
                   "path": "firefox-makeinstall.patch"
               },
-              {
+                            {
                   "type": "patch",
                   "path": "firefox-desktop.patch"
               }

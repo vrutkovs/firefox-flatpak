@@ -4,15 +4,15 @@ Date: Tue, 14 Jun 2016 17:53:51 +0200
 Subject: [PATCH] Add firefox.desktop
 
 ---
- firefox.desktop | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ org.mozilla.firefox-devedition.desktop | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 61 insertions(+)
- create mode 100644 firefox.desktop
+ create mode 100644 org.mozilla.firefox-devedition.desktop
 
-diff --git a/firefox.desktop b/firefox.desktop
+diff --git a/org.mozilla.firefox-devedition.desktop b/org.mozilla.firefox-devedition.desktop
 new file mode 100644
 index 0000000..a19d990
 --- /dev/null
-+++ b/firefox.desktop
++++ b/org.mozilla.firefox-devedition.desktop
 @@ -0,0 +1,61 @@
 +[Desktop Entry]
 +Version=1.0
