@@ -5,7 +5,7 @@ BugReportURL: https://bugzilla.mozilla.org/show_bug.cgi?id=1071061
 SentUpstream: 2014-09-22
 -->
 <application>
-  <id type="desktop">org.mozilla.firefox-devedition.desktop</id>
+  <id type="desktop">org.mozilla.FirefoxDevEdition.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>

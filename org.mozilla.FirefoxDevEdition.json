@@ -1,5 +1,5 @@
 {
-    "app-id": "org.mozilla.firefox-devedition",
+    "app-id": "org.mozilla.FirefoxDevEdition",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.20",
     "sdk": "org.gnome.Sdk",

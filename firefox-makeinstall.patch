@@ -18,7 +18,7 @@ index 38656c8..6f6c941 100644
 -.PHONY: all build clean
 +install:
 +	$(MAKE) -f client.mk install $@
-+	desktop-file-install --dir $(prefix)/share/applications org.mozilla.firefox-devedition.desktop
++	desktop-file-install --dir $(prefix)/share/applications org.mozilla.FirefoxDevEdition.desktop
 +
 +.PHONY: all build clean install
 -- 
