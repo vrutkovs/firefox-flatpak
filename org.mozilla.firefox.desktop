@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Firefox web browser
+GenericName=Web browser
+Comment=Firefox web browser
+Exec=vlc
+Icon=org.mozilla.Firefox
+Terminal=false
+Categories=Network;WebBrowser;

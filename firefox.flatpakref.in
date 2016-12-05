@@ -1,0 +1,11 @@
+[Flatpak Ref]
+Title=vlc
+Name=org.mozilla.firefox.App
+Branch=master
+Url=@URL@
+IsRuntime=False
+GPGKey=@GPG@
+
+Comment=firefox
+Description=Firefox web browser
+Icon=https://assets.mozilla.org/view/0002/p_218.jpg
