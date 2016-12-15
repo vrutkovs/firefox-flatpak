@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ux
+set -eux
 
 rm -rf app
 flatpak-builder --ccache --require-changes --repo=repo --subject="Nightly build of Firefox, `date`" app org.mozilla.firefox.json

@@ -1,0 +1,37 @@
+From 0e91b810e8a8ad9f9efa04105470f9e59d6297bf Mon Sep 17 00:00:00 2001
+From: Vadim Rutkovsky <vrutkovs@redhat.com>
+Date: Fri, 16 Dec 2016 02:02:46 +0100
+Subject: [PATCH] Fix
+
+---
+ security/sandbox/linux/SandboxInfo.cpp | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/security/sandbox/linux/SandboxInfo.cpp b/security/sandbox/linux/SandboxInfo.cpp
+index f813fb0..362c177 100644
+--- a/security/sandbox/linux/SandboxInfo.cpp
++++ b/security/sandbox/linux/SandboxInfo.cpp
+@@ -165,13 +165,13 @@ CanCreateUserNamespace()
+   // probably need sandboxing disabled entirely, but no need to break
+   // things worse than strictly necessary.)
+   if (syscall(__NR_unshare, 0) != 0) {
+-#ifdef MOZ_VALGRIND
+-    MOZ_ASSERT(errno == ENOSYS);
+-#else
+-    // If something else can cause that call to fail, we's like to know
+-    // about it; the right way to handle it might not be the same.
+-    MOZ_ASSERT(false);
+-#endif
++// #ifdef MOZ_VALGRIND
++//     MOZ_ASSERT(errno == ENOSYS);
++// #else
++//     // If something else can cause that call to fail, we's like to know
++//     // about it; the right way to handle it might not be the same.
++//     MOZ_ASSERT(false);
++// #endif
+     return false;
+   }
+ 
+-- 
+2.9.3
+

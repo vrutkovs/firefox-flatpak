@@ -1,0 +1,67 @@
+# HG changeset patch
+# User Martin Stransky <stransky@redhat.com>
+# Parent  26e22af660e543ebb69930f082188b69ec756185
+Bug 1299083 - enable build time option to enable Wayland, r=?mh+mozilla@glandium.org
+
+diff --git a/build/moz.configure/old.configure b/build/moz.configure/old.configure
+--- a/build/moz.configure/old.configure
++++ b/build/moz.configure/old.configure
+@@ -237,16 +237,17 @@ def old_configure_options(*options):
+     '--enable-tree-freetype',
+     '--enable-ui-locale',
+     '--enable-universalchardet',
+     '--enable-updater',
+     '--enable-url-classifier',
+     '--enable-valgrind',
+     '--enable-verify-mar',
+     '--enable-webrtc',
++    '--enable-wayland',
+     '--enable-xul',
+     '--enable-zipwriter',
+     '--includedir',
+     '--libdir',
+     '--no-create',
+     '--prefix',
+     '--with-android-cxx-stl',
+     '--with-android-distribution-directory',
+diff --git a/old-configure.in b/old-configure.in
+--- a/old-configure.in
++++ b/old-configure.in
+@@ -2837,16 +2837,37 @@ then
+     then
+         PKG_CHECK_MODULES(MOZ_DBUS, dbus-1 >= $DBUS_VERSION)
+         PKG_CHECK_MODULES(MOZ_DBUS_GLIB, dbus-glib-1 >= $DBUS_VERSION)
+         AC_DEFINE(MOZ_ENABLE_DBUS)
+     fi
+ fi
+ AC_SUBST(MOZ_ENABLE_DBUS)
+ 
++dnl ========================================================
++dnl = Wayland support
++dnl ========================================================
++
++if test "$MOZ_ENABLE_GTK"
++then
++    MOZ_ENABLE_WAYLAND=
++
++    MOZ_ARG_ENABLE_BOOL(wayland,
++    [  --enable-wayland         Enable Wayland support ],
++    MOZ_ENABLE_WAYLAND=1,
++    MOZ_ENABLE_WAYLAND=)
++
++    if test "$MOZ_ENABLE_WAYLAND"
++    then
++        PKG_CHECK_MODULES(MOZ_WAYLAND, wayland-client)
++        AC_DEFINE(MOZ_ENABLE_WAYLAND)
++    fi
++fi
++AC_SUBST(MOZ_ENABLE_WAYLAND)
++
+ dnl =========================================================
+ dnl = Whether to exclude hyphenations files in the build
+ dnl =========================================================
+ if test -n "$MOZ_EXCLUDE_HYPHENATION_DICTIONARIES"; then
+     AC_DEFINE(MOZ_EXCLUDE_HYPHENATION_DICTIONARIES)
+ fi
+ 
+ dnl ========================================================

@@ -4,12 +4,13 @@
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
+    "strip": false,
     "tags": ["nightly"],
     "rename-desktop-file": "firefox.desktop",
     "desktop-file-name-prefix": "(Nightly) ",
     "finish-args": [
         /* X11 + XShm access */
-        "--share=ipc", "--socket=x11",
+        "--share=ipc",
         /* Wayland access */
         "--socket=wayland",
         /* We want full fs access so we can read the files */
@@ -96,6 +97,18 @@
               {
                   "type": "patch",
                   "path": "firefox-desktop.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "bug1299083.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "bug1281425.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "fix-security-crash.patch"
               }
           ]
       }
