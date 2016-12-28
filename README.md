@@ -1,5 +1,5 @@
 # firefox-flatpak
-This is a set of patches, scripts and a manifest to build latest Firefox using Flatpak. It is using GNOME 3.20 as base runtime.
+This is a set of patches, scripts and a manifest to build latest Firefox using Flatpak. It is using GNOME 3.22 as base runtime.
 
 # Usage
 
