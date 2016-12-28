@@ -4,7 +4,7 @@
   "runtime-version": "3.22",
   "sdk": "org.gnome.Sdk",
   "branch": "50.1.0",
-  "command": "firefox",
+  "command": "firefox-wrapper",
   "separate-locales": false,
   "finish-args": [
     "--share=ipc",
@@ -12,7 +12,8 @@
     "--socket=x11",
     "--socket=pulseaudio",
     "--share=network",
-    "--filesystem=home"
+    "--filesystem=home",
+    "--extra-data=flash-player.tar.gz:c721b59102d12597a8592f0e8d2fb3d65ccda33d8e499435fe02871b46874663:9698084::https://fpdownload.adobe.com/pub/flashplayer/pdc/24.0.0.186/flash_player_npapi_linux.x86_64.tar.gz"
   ],
   "modules": [
     {
@@ -37,6 +38,10 @@
       "sources": [
         {
           "type": "archive",
+          "config-opts": [
+            "--enable-nls",
+            "--with-ssl=openssl"
+          ],
           "url": "https://download.gnome.org/sources/GConf/3.2/GConf-3.2.6.tar.xz",
           "sha256": "1912b91803ab09a5eed34d364bf09fe3a2a9c96751fde03a4e0cfa51a04d784c"
         }
@@ -122,6 +127,43 @@
         {
           "type": "patch",
           "path": "firefox-makeinstall.patch"
+        },
+        {
+          "type": "patch",
+          "path": "firefox-extension-dir.patch"
+        }
+      ]
+    },
+    {
+      "name": "wget",
+      "config-opts": [
+        "--enable-nls",
+        "--with-ssl=openssl"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://ftp.gnu.org/gnu/wget/wget-1.18.tar.xz",
+          "sha256": "b5b55b75726c04c06fe253daec9329a6f1a3c0c1878e3ea76ebfebc139ea9cc1"
+        }
+      ]
+    },
+    {
+      "name": "plugins",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "path": "apply_extra"
+        },
+        {
+          "type": "file",
+          "path": "firefox.sh"
+        },
+        {
+          "type": "file",
+          "path": "plugins-Makefile",
+          "dest-filename": "Makefile"
         }
       ]
     }

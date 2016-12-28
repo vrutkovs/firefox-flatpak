@@ -13,3 +13,4 @@ ac_add_options --with-system-icu
 ac_add_options --disable-tests
 ac_add_options --disable-gstreamer
 ac_add_options --disable-elf-hack
+ac_add_options --enable-system-extemsion-dirs

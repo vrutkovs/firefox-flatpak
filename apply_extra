@@ -1,0 +1,9 @@
+#!/bin/sh
+
+mkdir flash-player
+tar zxf flash-player.tar.gz -C flash-player
+
+mkdir -p lib/mozilla/plugins
+cp flash-player/libflashplayer.so lib/mozilla/plugins
+
+rm -rf flash-player flash-player.tar.gz
