@@ -11,7 +11,7 @@ diff --git a/GNUmakefile b/GNUmakefile
 index 38656c8..6f6c941 100644
 --- a/GNUmakefile
 +++ b/GNUmakefile
-@@ -11,4 +11,8 @@ build:
+@@ -11,4 +11,11 @@ build:
  clean:
  	./mach clobber
  
@@ -19,7 +19,10 @@ index 38656c8..6f6c941 100644
 +install:
 +	$(MAKE) -f client.mk install $@
 +	desktop-file-install --dir $(prefix)/share/applications org.mozilla.FirefoxDevEdition.desktop
-+
++	mkdir -p $(prefix)/share/icons/hicolor/128x128/apps/ $(prefix)/share/appdata
++	#cp -p browser/branding/aurora/default16.png $(prefix)/share/icons/hicolor/16x16/apps/firefox.png
++	cp -p org.mozilla.FirefoxDevEdition.appdata.xml $(prefix)/share/appdata
++	cp -p browser/branding/aurora/mozicon128.png $(prefix)/share/icons/hicolor/128x128/apps/firefox.png
 +.PHONY: all build clean install
 -- 
 2.5.5

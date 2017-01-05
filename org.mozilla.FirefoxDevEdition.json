@@ -5,7 +5,8 @@
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
-    "desktop-file-name-prefix": "(Developer Edition) ",
+    "desktop-file-name-suffix": " - Developer Edition",
+    "rename-icon": "firefox",
     "finish-args": [
         /* X11 + XShm access */
         "--share=ipc", "--socket=x11",
@@ -77,15 +78,23 @@
               },
               {
                   "type": "patch",
-                  "path": "firefox-buildconfig.patch"
-              },
-              {
-                  "type": "patch",
                   "path": "firefox-makeinstall.patch"
               },
-                            {
-                  "type": "patch",
-                  "path": "firefox-desktop.patch"
+              {
+                  "type": "file",
+                  "path": "org.mozilla.FirefoxDevEdition.appdata.xml",
+                  "dest": ""
+              },
+              {
+                  "type": "file",
+                  "path": "firefox-mozconfig",
+                  "dest": "",
+                  "dest-filename": ".mozconfig"
+              },
+              {
+                  "type": "file",
+                  "path": "org.mozilla.FirefoxDevEdition.desktop",
+                  "dest": ""
               }
           ]
       }
