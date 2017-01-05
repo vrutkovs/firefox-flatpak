@@ -1,5 +1,4 @@
 #!/bin/sh
-
 set -ux
 
 curl -O https://sdk.gnome.org/keys/gnome-sdk.gpg
