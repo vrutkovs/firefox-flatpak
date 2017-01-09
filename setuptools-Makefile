@@ -1,0 +1,10 @@
+.PHONY: all test
+
+all:
+	true
+
+test: all
+
+install:
+	python3 bootstrap.py
+	python3 setup.py install --prefix=/app

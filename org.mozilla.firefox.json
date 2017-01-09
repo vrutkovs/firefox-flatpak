@@ -135,20 +135,6 @@
       ]
     },
     {
-      "name": "wget",
-      "config-opts": [
-        "--enable-nls",
-        "--with-ssl=openssl"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://ftp.gnu.org/gnu/wget/wget-1.18.tar.xz",
-          "sha256": "b5b55b75726c04c06fe253daec9329a6f1a3c0c1878e3ea76ebfebc139ea9cc1"
-        }
-      ]
-    },
-    {
       "name": "plugins",
       "no-autogen": true,
       "sources": [
@@ -164,6 +150,111 @@
           "type": "file",
           "path": "plugins-Makefile",
           "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "setuptools",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/pypa/setuptools",
+          "branch": "v33.0.0"
+        },
+        {
+          "type": "file",
+          "path": "setuptools-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "setuptools-scm",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/pypa/setuptools_scm",
+          "branch": "1.15.0"
+        },
+        {
+          "type": "file",
+          "path": "setuptools-scm-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "pytest-runner",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/pytest-dev/pytest-runner",
+          "branch": "2.10.1"
+        },
+        {
+          "type": "file",
+          "path": "python-modules-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/benjaminp/six"
+        },
+        {
+          "type": "file",
+          "path": "python-modules-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "python-utils",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/WoLpH/python-utils/archive/v2.0.1.tar.gz",
+          "sha256": "615bf41699b84bf231ad644e00101610f94182aed9170926cebbbff7ebdfec2e"
+        },
+        {
+          "type": "file",
+          "path": "python-modules-Makefile",
+          "dest-filename": "Makefile"
+
+        }
+      ]
+    },
+    {
+      "name": "python-progressbar",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/WoLpH/python-progressbar/archive/v3.12.0.tar.gz",
+          "sha256": "13561586ee64d68816779f2d938768d46350237d10058d18a32db1ad260bf465"
+        },
+        {
+          "type": "file",
+          "path": "python-modules-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "installer",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/kinvolk/firefox-flatpak-oracle-jre-installer"
         }
       ]
     }
