@@ -15,7 +15,9 @@
         /* We want full fs access so we can read the files */
         "--filesystem=home:rw",
         /* Needs to talk to the network: */
-        "--share=network"
+        "--share=network",
+        /* Use dark decorations for window */
+        "--env=GTK_THEME_VARIANT=dark"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
