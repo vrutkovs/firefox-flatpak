@@ -84,7 +84,7 @@
           "sources": [
               {
                   "type": "git",
-                  "url": "https://github.com/mozilla/gecko-dev"
+                  "url": "https://github.com/stransky/gecko-dev"
               },
               {
                   "type": "patch",
@@ -97,18 +97,6 @@
               {
                   "type": "patch",
                   "path": "firefox-desktop.patch"
-              },
-              {
-                  "type": "patch",
-                  "path": "bug1299083.patch"
-              },
-              {
-                  "type": "patch",
-                  "path": "bug1281425.patch"
-              },
-              {
-                  "type": "patch",
-                  "path": "fix-security-crash.patch"
               }
           ]
       }
