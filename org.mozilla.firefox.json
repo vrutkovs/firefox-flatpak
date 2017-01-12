@@ -97,6 +97,14 @@
               {
                   "type": "patch",
                   "path": "firefox-desktop.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "fix-security-crash.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "ae6bb745b299.patch"
               }
           ]
       }
