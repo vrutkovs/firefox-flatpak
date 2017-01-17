@@ -1,5 +1,5 @@
 #!/bin/sh
-set -uex
+set -ex
 #rm -rf app repo
 rm -rf app
 APP_NAME=org.mozilla.FirefoxDevEdition
