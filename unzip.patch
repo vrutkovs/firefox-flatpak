@@ -1,0 +1,11 @@
+--- a/unix/Makefile
++++ b/unix/Makefile
+@@ -121,7 +121,7 @@
+ INSTALL_D = mkdir -p
+ # on some systems, manext=l and MANDIR=/usr/man/man$(manext) may be appropriate
+ manext = 1
+-prefix = /usr/local
++prefix = /app
+ BINDIR = $(prefix)/bin#			where to install executables
+ MANDIR = $(prefix)/man/man$(manext)#	where to install man pages
+ INSTALLEDBIN = $(BINDIR)/funzip$E $(BINDIR)/unzip$E $(BINDIR)/unzipsfx$E \

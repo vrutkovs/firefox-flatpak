@@ -1,0 +1,11 @@
+--- a/unix/Makefile
++++ b/unix/Makefile
+@@ -38,7 +38,7 @@
+ MANFLAGS = 644
+ 
+ # target directories - where to install executables and man pages to
+-prefix = /usr/local
++prefix = /app
+ BINDIR = $(prefix)/bin
+ MANEXT=1
+ MANDIR = $(prefix)/man/man$(MANEXT)

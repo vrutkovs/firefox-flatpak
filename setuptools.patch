@@ -1,0 +1,12 @@
+diff --git a/setup.cfg b/setup.cfg
+index 1d45057..f77345a 100755
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -24,3 +24,7 @@ universal = 1
+ 
+ [bumpversion:file:setup.py]
+ 
++[install]
++prefix=/app
++install_lib=/app/lib/python3.4/dist-packages
++install_scripts=/app/bin
