@@ -17,7 +17,9 @@
         /* Needs to talk to the network: */
         "--share=network",
         /* Use dark decorations for window */
-        "--env=GTK_THEME_VARIANT=dark"
+        "--env=GTK_THEME_VARIANT=dark",
+        /* Enable playing sound thru pulseaudio */
+        "--socket=pulseaudio"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
@@ -64,6 +66,17 @@
               "sha256": "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
           }
         ]
+      },
+      {
+            "name": "libnotify",
+            "config-opts": ["--disable-static"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.6.tar.xz",
+                    "sha256": "0ef61ca400d30e28217979bfa0e73a7406b19c32dd76150654ec5b2bdf47d837"
+                }
+            ]
       },
       {
           "name": "firefox",
