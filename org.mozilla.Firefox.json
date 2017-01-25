@@ -280,14 +280,15 @@
     {
       "name": "firefox",
       "no-autogen": true,
+      "builddir": true,
       "make-install-args": [
         "prefix=/app"
       ],
       "sources": [
         {
-          "type": "git",
-          "url": "https://github.com/mozilla/gecko-dev",
-          "branch": "esr45"
+          "type": "archive",
+          "url": "https://ftp.mozilla.org/pub/firefox/releases/45.7.0esr/source/firefox-45.7.0esr.source.tar.xz",
+          "sha256": "4b5610691d32b77dd0dec25902f0d19e530c184cedc11babb530621cbdd33143"
         },
         {
           "type": "file",
