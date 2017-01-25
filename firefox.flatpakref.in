@@ -1,6 +1,6 @@
 [Flatpak Ref]
 Title=vlc
-Name=org.mozilla.firefox.App
+Name=org.mozilla.Firefox
 Branch=master
 Url=@URL@
 IsRuntime=False

@@ -1,5 +1,5 @@
 {
-  "app-id": "org.mozilla.firefox",
+  "app-id": "org.mozilla.Firefox",
   "runtime": "com.endlessm.Platform",
   "runtime-version": "eos3.1",
   "sdk": "com.endlessm.Sdk",
@@ -295,7 +295,7 @@
         },
         {
           "type": "file",
-          "path": "org.mozilla.firefox.desktop"
+          "path": "org.mozilla.Firefox.desktop"
         },
         {
           "type": "patch",

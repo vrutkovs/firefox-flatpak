@@ -18,8 +18,8 @@ index 38656c8..7af0bf4 100644
 -.PHONY: all build clean
 +install:
 +	$(MAKE) -f client.mk install $@
-+	desktop-file-install --dir $(prefix)/share/applications org.mozilla.firefox.desktop
-+	install -D browser/branding/official/mozicon128.png $(prefix)/share/icons/hicolor/128x128/apps/org.mozilla.firefox.png
++	desktop-file-install --dir $(prefix)/share/applications org.mozilla.Firefox.desktop
++	install -D browser/branding/official/mozicon128.png $(prefix)/share/icons/hicolor/128x128/apps/org.mozilla.Firefox.png
 +
 +.PHONY: all build clean install
 -- 
