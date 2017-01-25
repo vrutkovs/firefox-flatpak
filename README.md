@@ -9,5 +9,5 @@ Now we're ready to run ```build.sh```, which will build Firefox from master bran
 
 After the build is finished you can start sandboxed Firefox:
 ```
-$ flatpak run org.mozilla.firefox
+$ flatpak run org.mozilla.Firefox
 ```
