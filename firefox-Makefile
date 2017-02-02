@@ -5,3 +5,4 @@ install:
 	mkdir -p /app/bin
 	install apply_extra /app/bin
 	install firefox.sh /app/bin/firefox
+	install -m 755 firefox-plugins-installer /app/bin

@@ -13,7 +13,6 @@
     "--socket=pulseaudio",
     "--share=network",
     "--filesystem=home",
-    "--extra-data=flash-player.tar.gz:c721b59102d12597a8592f0e8d2fb3d65ccda33d8e499435fe02871b46874663:9698084::https://fpdownload.adobe.com/pub/flashplayer/pdc/24.0.0.186/flash_player_npapi_linux.x86_64.tar.gz",
     "--extra-data=firefox.tar.bz2:9825b706128d6d3268fc1303a070be89a4b249368e2619a0782ae53dab5f45fd:57050362::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/en-US/firefox-51.0.1.tar.bz2"
   ],
   "modules": [
@@ -31,113 +30,12 @@
         },
         {
           "type": "file",
+          "path": "firefox-plugins-installer"
+        },
+        {
+          "type": "file",
           "path": "firefox-Makefile",
           "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "setuptools",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pypa/setuptools",
-          "branch": "v33.0.0"
-        },
-        {
-          "type": "file",
-          "path": "setuptools-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "setuptools-scm",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pypa/setuptools_scm",
-          "branch": "1.15.0"
-        },
-        {
-          "type": "file",
-          "path": "setuptools-scm-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "pytest-runner",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pytest-dev/pytest-runner",
-          "branch": "2.10.1"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "six",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/benjaminp/six"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "python-utils",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/WoLpH/python-utils/archive/v2.0.1.tar.gz",
-          "sha256": "615bf41699b84bf231ad644e00101610f94182aed9170926cebbbff7ebdfec2e"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-
-        }
-      ]
-    },
-    {
-      "name": "python-progressbar",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/WoLpH/python-progressbar/archive/v3.12.0.tar.gz",
-          "sha256": "13561586ee64d68816779f2d938768d46350237d10058d18a32db1ad260bf465"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "installer",
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/kinvolk/firefox-flatpak-oracle-jre-installer"
         }
       ]
     }
