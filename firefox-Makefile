@@ -8,3 +8,5 @@ install:
 	install -m 755 firefox-plugins-installer /app/bin
 	mkdir -p /app/share/applications/
 	install -m 644 org.mozilla.Firefox.desktop /app/share/applications/
+	mkdir -p /app/cache/mozilla/
+	install -m 644 endless-default-prefs.js /app/cache/mozilla/
