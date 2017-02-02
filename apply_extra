@@ -7,3 +7,9 @@ mkdir -p lib/mozilla/plugins
 cp flash-player/libflashplayer.so lib/mozilla/plugins
 
 rm -rf flash-player flash-player.tar.gz
+
+# Install Firefox binaries
+
+# Extracts into the 'firefox' folder
+tar xjf firefox.tar.bz2
+rm firefox.tar.bz2

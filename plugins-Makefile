@@ -1,6 +1,0 @@
-all:
-	true
-
-install:
-	install apply_extra /app/bin
-	install firefox.sh /app/bin/firefox-wrapper

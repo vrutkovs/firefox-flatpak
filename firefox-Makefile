@@ -1,10 +1,7 @@
-# File is run at the end of the flatpak-build
-
 all:
 	true
 
 install:
-	echo Hi there!
-	# install apply_extra /app/bin
-	# install firefox.sh /app/bin/firefox
-	# cp /usr/bin/ar /app/bin
+	mkdir -p /app/bin
+	install apply_extra /app/bin
+	install firefox.sh /app/bin/firefox
