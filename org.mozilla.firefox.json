@@ -4,7 +4,6 @@
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
-    "strip": false,
     "tags": ["nightly"],
     "rename-desktop-file": "firefox.desktop",
     "desktop-file-name-prefix": "(Nightly) ",
@@ -87,16 +86,17 @@
                   "url": "https://github.com/stransky/gecko-dev"
               },
               {
-                  "type": "patch",
-                  "path": "firefox-buildconfig.patch"
+                  "type": "file",
+                  "path": "firefox.desktop"
+              },
+              {
+                  "type": "file",
+                  "path": "firefox-mozconfig",
+                  "dest-filename": ".mozconfig"
               },
               {
                   "type": "patch",
                   "path": "firefox-makeinstall.patch"
-              },
-              {
-                  "type": "patch",
-                  "path": "firefox-desktop.patch"
               },
               {
                   "type": "patch",
