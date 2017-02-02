@@ -30,6 +30,10 @@
         },
         {
           "type": "file",
+          "path": "org.mozilla.Firefox.desktop"
+        },
+        {
+          "type": "file",
           "path": "firefox-plugins-installer"
         },
         {
