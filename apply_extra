@@ -1,9 +1,32 @@
 #!/bin/sh
 
-mkdir flash-player
-tar zxf flash-player.tar.gz -C flash-player
+# Install Firefox binaries
 
-mkdir -p lib/mozilla/plugins
-cp flash-player/libflashplayer.so lib/mozilla/plugins
+# Extracts into the 'firefox' folder
+tar xjf firefox.tar.bz2
+rm firefox.tar.bz2
 
-rm -rf flash-player flash-player.tar.gz
+FIREFOX_DIR=$(pwd)/firefox
+
+# Install languages
+
+# Retrieve the extension id for an addon from its install.rdf
+# This function is taken from http://kb.mozillazine.org/Determine_extension_ID
+get_extension_id() {
+  unzip -qc $1 install.rdf | xmlstarlet sel \
+    -N rdf=http://www.w3.org/1999/02/22-rdf-syntax-ns# \
+    -N em=http://www.mozilla.org/2004/em-rdf# \
+    -t -v \
+    "//rdf:Description[@about='urn:mozilla:install-manifest']/@em:id"
+}
+
+EXTENSIONS_DIR=${FIREFOX_DIR}/distribution/extensions
+mkdir -p ${EXTENSIONS_DIR}
+for addon in $(ls *.xpi); do
+    mv "${addon}" "${EXTENSIONS_DIR}/$(get_extension_id ${addon}).xpi"
+done
+
+# Override preferences
+PREFERENCES_DIR=${FIREFOX_DIR}/browser/defaults/preferences
+mkdir -p ${PREFERENCES_DIR}
+ln -s /app/cache/mozilla/endless-default-prefs.js ${PREFERENCES_DIR}

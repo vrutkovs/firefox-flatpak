@@ -4,7 +4,7 @@
   "runtime-version": "eos3.1",
   "sdk": "com.endlessm.Sdk",
   "branch": "50.1.0",
-  "command": "firefox-wrapper",
+  "command": "firefox",
   "separate-locales": false,
   "finish-args": [
     "--share=ipc",
@@ -13,303 +13,137 @@
     "--socket=pulseaudio",
     "--share=network",
     "--filesystem=home",
-    "--extra-data=flash-player.tar.gz:c721b59102d12597a8592f0e8d2fb3d65ccda33d8e499435fe02871b46874663:9698084::https://fpdownload.adobe.com/pub/flashplayer/pdc/24.0.0.186/flash_player_npapi_linux.x86_64.tar.gz"
+    "--extra-data=firefox.tar.bz2:9825b706128d6d3268fc1303a070be89a4b249368e2619a0782ae53dab5f45fd:57050362::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/en-US/firefox-51.0.1.tar.bz2",
+    "--extra-data=ach.xpi:0628d0515250f57161f9fbcc70a0be35572b7453f27d1165deeabe8efae24e8f:422479::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ach.xpi",
+    "--extra-data=af.xpi:575085ce9f1c4031dbe5969cdefc1dd3fc81a215984b10ec488849735d613be7:430611::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/af.xpi",
+    "--extra-data=an.xpi:6268f367d5dc9a3745b1b2a03a424c3b0b7cf4e09c553a86805a10def4d02d24:439499::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/an.xpi",
+    "--extra-data=ar.xpi:3e840abe28c565ba6fb214356bbbbbd170cb8e737326365386174ed6c209787b:467367::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ar.xpi",
+    "--extra-data=as.xpi:0272850a7404c65fc18f1a5348aba0bac2a3979ff701d11fd64fd17edc57add6:481208::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/as.xpi",
+    "--extra-data=ast.xpi:41576fb3c5c04a3502fea8e0f66f12803839b9a118ddf4b73eb451cc4515a768:433415::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ast.xpi",
+    "--extra-data=az.xpi:b3a8e38d7cf2ed0d99e076d5d041fa30176b092c217a96395a38c4e8f16182d5:448403::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/az.xpi",
+    "--extra-data=bg.xpi:5c31c1c7118abef8fc99d76f8fe42eea040b7c6aa2941c7868ce0e77720123fa:481421::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/bg.xpi",
+    "--extra-data=bn-BD.xpi:2fb92cc4d7c82b0f348abdce56817c3064b59207ed74cf3cd49b8c519db333f5:506133::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/bn-BD.xpi",
+    "--extra-data=bn-IN.xpi:e81cbeccc6f35e609586536497235d9f2f0d68aab7a31c0a790ec4161a8670db:503272::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/bn-IN.xpi",
+    "--extra-data=br.xpi:320b70ec97d6ce0aa87799766f3a423ed1b3b2d95ee31b148233830d12505995:429720::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/br.xpi",
+    "--extra-data=bs.xpi:e771812823d94aff2f89acac2d7545174e12016338602e5d8b32033baee27792:435979::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/bs.xpi",
+    "--extra-data=ca.xpi:3450fe8240ccfa3a244e984a9bb8b83b9300fcb2c5f1382aa2b6608cf808b53c:437598::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ca.xpi",
+    "--extra-data=cak.xpi:aaf431f69f2aa4c9ebcff3003d1b2cce946bae66616fb18ec8d6796bb510a1d5:453019::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/cak.xpi",
+    "--extra-data=cs.xpi:7f7be83f906f89fb1c3605f8b986ec49c828dc54c416e1d795e443069e70f1a0:437013::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/cs.xpi",
+    "--extra-data=cy.xpi:2b648600bfc4e90cc63ba77f09eb698d9f779182cd260533162d738e4d2b6fa0:430769::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/cy.xpi",
+    "--extra-data=da.xpi:a96bd358b28d42c73b289217868d7331c50709ceeb22eb6eb96b617ba6bc0205:418409::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/da.xpi",
+    "--extra-data=de.xpi:dc5655de1c65eca20f275bff35fc26906cfe38d7664513e234de7a051695ce8d:435631::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/de.xpi",
+    "--extra-data=dsb.xpi:b36d7832a876d1619bac646ee077028a0ef375c4c6a0b3ff50b81f0c9e507505:453124::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/dsb.xpi",
+    "--extra-data=el.xpi:1c2fe62f1aeaa5506e6b5aa101f9d00fb597cf58c2ea4453745381baa54ac6fb:498859::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/el.xpi",
+    "--extra-data=en-GB.xpi:550de1211fd4bae2d814d492015933a7401501cb56e40751552194a1022860f0:412809::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/en-GB.xpi",
+    "--extra-data=en-US.xpi:90cda569cdadb6a37333ca822339eb6b8cec7a762f220367079b35f369e4755f:422549::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/en-US.xpi",
+    "--extra-data=en-ZA.xpi:c32ccf19c94d5c3c953e962185c51248e1fbe87d97856ea15c86d12d7729de0c:406319::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/en-ZA.xpi",
+    "--extra-data=eo.xpi:621715960d2ea321b81428ec9cc22e431980db48437e26b46c8c39a1a8001c3a:431478::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/eo.xpi",
+    "--extra-data=es-AR.xpi:78db8dd653bbfffe15c655402a790ba36c64c089d235b4e995f202c25c92765b:436851::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/es-AR.xpi",
+    "--extra-data=es-CL.xpi:084959bd485842cfb2c86676ac0e82c1b952957d6d5e9edae63c6da11c0d2a77:439571::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/es-CL.xpi",
+    "--extra-data=es-ES.xpi:c434c922f9e44033830f8631c0fd589300af235b30657d28b30af861a25193b3:340417::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/es-ES.xpi",
+    "--extra-data=es-MX.xpi:68c5e5a0110ed68135ce42ef4bb31d5b8a397fd4ff6a43486347dc021a2dd03b:442427::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/es-MX.xpi",
+    "--extra-data=et.xpi:dea32627b9f1bc0a0c67078cb15486e6328452cf5bec66a910163a05bd24f782:419373::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/et.xpi",
+    "--extra-data=eu.xpi:53597d5e632dfaabcb0a9a8adc45e87403b1198418ef0e9c2a4fe0c0bd4ada05:432703::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/eu.xpi",
+    "--extra-data=fa.xpi:a2493f3bc86e08cc0be56442f87c4a115822c01db265c9a367491f68d5a0c8a5:484368::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/fa.xpi",
+    "--extra-data=ff.xpi:1abcc6d99a3e86b07a41cafd03e9b35acb1a25ce878ea35b016d88b693371968:435446::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ff.xpi",
+    "--extra-data=fi.xpi:6cdbbac2c7422b8691ad9fd42bd529d9cdf30675e795a35ff9dc8b761124c9e2:424028::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/fi.xpi",
+    "--extra-data=fr.xpi:85d48106e8d29fdcf50e55396bf4cfd891f4a247c930d2999a859a3d1fbd10a0:444130::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/fr.xpi",
+    "--extra-data=fy-NL.xpi:1154daa81c30ec5b0e8cf504edc9ff980fd3b02760392dd3873f69062e024cc7:439356::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/fy-NL.xpi",
+    "--extra-data=ga-IE.xpi:dc1d5468f4185e38d04c89cc0067a3799ded093f60b0896a5e65aa630240c87f:452113::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ga-IE.xpi",
+    "--extra-data=gd.xpi:9fbee09c0094ee722cc26a3dee55aea2324965838da4affe30fc84afb6672f55:441392::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/gd.xpi",
+    "--extra-data=gl.xpi:f7fe0836fe19bb7ff3772592955edc0e4f84cb918fae7805e04e3e80f197edfc:444053::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/gl.xpi",
+    "--extra-data=gn.xpi:e942e80d1aff71d3886f1f20c188424f6ca24c2e1a1fb48ffcbec1a0202c74b4:450228::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/gn.xpi",
+    "--extra-data=gu-IN.xpi:8886b5d8995511b2386b288fc09a5b90f41fb1daae17c239eb149a3f602dd129:483516::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/gu-IN.xpi",
+    "--extra-data=he.xpi:adcbcc66cfc42713287628d8f80471c41d40d44b39fde9c568014a49bce7ff87:452772::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/he.xpi",
+    "--extra-data=hi-IN.xpi:0ef2b4908f13d877cdd6604acc1c1b8fb7b60244f558b07001faa67b923d1d64:499949::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/hi-IN.xpi",
+    "--extra-data=hr.xpi:b6008b3a176e9a61f3d775e21a539d80d3ae5136d22076d182fe0dcd24aa1981:441584::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/hr.xpi",
+    "--extra-data=hsb.xpi:ddd302d7b356a04a7894a1c1ab63c35b395d01d022a2f7fd54ff08537b0e4051:451004::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/hsb.xpi",
+    "--extra-data=hu.xpi:5370b1944332a14142d35418158127af311291ea8691bcea3b59dc80435a024c:445382::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/hu.xpi",
+    "--extra-data=hy-AM.xpi:6d6316757d063fb36a45f54c1426d22960f16cdc177919096343008789444de4:489195::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/hy-AM.xpi",
+    "--extra-data=id.xpi:f72e1ac377e4319b5a43eabf912a51b072ae85cd68bc36d56428db79f3be4046:420117::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/id.xpi",
+    "--extra-data=is.xpi:8196693d0840e7902b981ef206b792971ceb5353a3ac113917d5c255401d16db:432636::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/is.xpi",
+    "--extra-data=it.xpi:4d7ccbcbd4c19015300eb052ac17c4b56c6a1986908ba87009c824ce7b892453:334924::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/it.xpi",
+    "--extra-data=ja.xpi:2077447aea1c846d5df5128c7863cb3ce2015293bb844204906aea0a0eed5ca6:481878::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ja.xpi",
+    "--extra-data=ka.xpi:f36bfe066b9523a10d838f76295eebf48d5463b760b8d6677f3432831c030294:469578::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ka.xpi",
+    "--extra-data=kab.xpi:92ead7a7a5fc84c1f858452ed45ab0fd21eee60cace60f42c63ae7076cab8623:438430::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/kab.xpi",
+    "--extra-data=kk.xpi:cc8720a461fe30f6c96f880afd0c457c59cf7b06d81c0da949cb4b3904607b9d:490749::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/kk.xpi",
+    "--extra-data=km.xpi:6e42b55f3ec11d8996c1975caa4ae5ccb419b1106fd0f47c618f55714d71d8f3:514274::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/km.xpi",
+    "--extra-data=kn.xpi:235155e7251c0c96a2b988176b6550ccea7d89d7801f77139edca3211e086d50:514065::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/kn.xpi",
+    "--extra-data=ko.xpi:a19df693b0f1be6c89e8c0c675a337a917b740e3128790237746376d8995e278:457539::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ko.xpi",
+    "--extra-data=lij.xpi:838b57a2a140f3063157da89545ac083bbf9c13dbb53d862091ab18b75e0849b:410714::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/lij.xpi",
+    "--extra-data=lt.xpi:d2209399e2cdfd2b595588473f02734cc43f6b0077573005afcdb473706c8da6:446155::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/lt.xpi",
+    "--extra-data=lv.xpi:1b0b1bbec0b319600598c675c4f56004f8491fd468e3a8b1b9ff48cc471b46c2:442272::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/lv.xpi",
+    "--extra-data=mai.xpi:309a1618acda0c6d470dadc4d74a967591ec86eb371e0d85cf569f71150638ea:494294::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/mai.xpi",
+    "--extra-data=mk.xpi:0da7ca53584b2e94846c65ea170d0aa251ca78b06c053d6fba453bb82aebd61b:490963::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/mk.xpi",
+    "--extra-data=ml.xpi:870d0d4ad817fc36f7ff3fa329abbf28a78a1adabb3ca5588b07281c4d45dcfd:510898::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ml.xpi",
+    "--extra-data=mr.xpi:03904dfce3509513d79c4b3a459ee3345c1dec7d9a8bb130c6460b083e8e32f0:495860::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/mr.xpi",
+    "--extra-data=ms.xpi:76e6bef2d9fbe37140271086ab56f5f6cf2a549462ce8ddb9d5a73dc19632841:430333::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ms.xpi",
+    "--extra-data=nb-NO.xpi:665ea04eac0a6e432faca4b16b46a7b0dcc0267b287804933c94ad3ad4373d0a:428676::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/nb-NO.xpi",
+    "--extra-data=nl.xpi:7cb881ac319686759eea6edafb7c7efbb2a3d991d0caee06d224cb11836695c2:426239::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/nl.xpi",
+    "--extra-data=nn-NO.xpi:c3da5ba6047142226a711c5762ebfc285ee1e2470607bd1e659e32826c03d11b:422805::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/nn-NO.xpi",
+    "--extra-data=or.xpi:9f986f6e821942c67970d62525e6b97fae3917681d4d3907de92f393b4fff0a0:491274::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/or.xpi",
+    "--extra-data=pa-IN.xpi:5e041953b02701a6ffcbff49d0e11a02bc2f487bd1083dfb08974a7c58633eb6:471454::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/pa-IN.xpi",
+    "--extra-data=pl.xpi:39adc23ec8262427b074434e8a9fe4d1beddacfd3f211b0519b4aa289821c780:349712::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/pl.xpi",
+    "--extra-data=pt-BR.xpi:4b5b5c24792328972ff5553993b20302a3591b2b7af84b3f4a09aea02905f0a5:431876::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/pt-BR.xpi",
+    "--extra-data=pt-PT.xpi:231010dc31d98ebeed0a040dd7125990caf2b7dfc2a1cc609b2ff21a6e77e0ed:430722::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/pt-PT.xpi",
+    "--extra-data=rm.xpi:1b008d56b6c5715d7e15705b7f441b46960d10c2fb42c0e9795835d8c1b01b48:428939::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/rm.xpi",
+    "--extra-data=ro.xpi:6d9eac90768049081ddd320890a005b963a3d73c03a173e2f4f6caf4159106f6:442677::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ro.xpi",
+    "--extra-data=ru.xpi:c89988b3ebefde60191e33f363683857a6f1d7e980d313a567e857bf95d6d532:390304::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ru.xpi",
+    "--extra-data=si.xpi:aee6809591d9c993be831001d152e38d2fd40a288b19776c9e89f37880ed5583:486608::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/si.xpi",
+    "--extra-data=sk.xpi:a8216c2e609c1c2f0f97b5b0645d1ebef69448f3951fd55535762228d07c9384:449708::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/sk.xpi",
+    "--extra-data=sl.xpi:f18abf08ea35a015b52ffffaa419174c89f60f14716029b6350dea18b499df58:427698::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/sl.xpi",
+    "--extra-data=son.xpi:951ef2be96b96ef38a972514c045c8bb2be0b1c731e33fe298242f7cc70d7dde:430450::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/son.xpi",
+    "--extra-data=sq.xpi:a413921576a01b4d200005a6909b76eb8c036c486c7dea753e8c4d127b00764a:441712::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/sq.xpi",
+    "--extra-data=sr.xpi:d877231c40fc4e48eb8b4a00abdc4721a32ccecd045a197088166be14c332844:457269::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/sr.xpi",
+    "--extra-data=sv-SE.xpi:56c28c78ac668d48f2c64f8d3f09d45da20aeaaf62d4795c2e1223da3976f4a6:435422::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/sv-SE.xpi",
+    "--extra-data=ta.xpi:8184bcc428e9bb9ad6adbb30c3051b6fb27babea57a190e3c88582788d8234ab:487838::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/ta.xpi",
+    "--extra-data=te.xpi:1eb5acb74f9eccbcfcd7dcb242258fc8e81532219e08486b2f874b0313639b1c:509510::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/te.xpi",
+    "--extra-data=th.xpi:55617db3d665129b6bf35a26898bf92057ac274c86016e8411c2a54c3730649e:483237::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/th.xpi",
+    "--extra-data=tr.xpi:b34b8f4e7c70d664dded579b50c9cc15ce65f9cd5cde54908df3498aa0ff3f9f:437682::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/tr.xpi",
+    "--extra-data=uk.xpi:f06a28759711bc777f375c89b7d89e4a1857d086ac6f56525c10ad5e7427d58e:488162::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/uk.xpi",
+    "--extra-data=uz.xpi:a3da7b7f60c35f3be11669f1bd48242702bc967749ea55154ecd5c036462b980:441921::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/uz.xpi",
+    "--extra-data=vi.xpi:c07c7a1f12e0b47bf9383def491e159553d74c3af4c4682752dbeee7a9bf61a0:444519::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/vi.xpi",
+    "--extra-data=xh.xpi:2d3339edd74ddff727b4619500df5b363b6719d0cb747107ecfa80b2c9ef33e7:435397::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/xh.xpi",
+    "--extra-data=zh-CN.xpi:83e8f503a30b8817293f587d763dd5bbe13a2a28a5df1082ea748ff77e50b17e:455762::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/zh-CN.xpi",
+    "--extra-data=zh-TW.xpi:3cdb053ec936ceb311a2a74b27d9badcc8797ef900a0c0cd5610f3b7cab95fd1:466462::https://archive.mozilla.org/pub/firefox/releases/51.0.1/linux-x86_64/xpi/zh-TW.xpi"
   ],
   "modules": [
-    {
-      "name": "autoconf",
-      "config-opts": [
-        "--program-suffix=2.13"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz",
-          "sha256": "f0611136bee505811e9ca11ca7ac188ef5323a8e2ef19cffd3edb3cf08fd791e"
-        }
-      ]
-    },
-    {
-      "name": "dbus-glib",
-      "config-opts": [
-        "--enable-static=no",
-        "--enable-bash-completion=no"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.108.tar.gz",
-          "sha256": "9f340c7e2352e9cdf113893ca77ca9075d9f8d5e81476bf2bf361099383c602c"
-        }
-      ]
-    },
-    {
-      "name": "gconf",
-      "config-opts": [
-        "--disable-static",
-        "--disable-orbit"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "config-opts": [
-            "--enable-nls",
-            "--with-ssl=openssl"
-          ],
-          "url": "https://download.gnome.org/sources/GConf/3.2/GConf-3.2.6.tar.xz",
-          "sha256": "1912b91803ab09a5eed34d364bf09fe3a2a9c96751fde03a4e0cfa51a04d784c"
-        }
-      ]
-    },
-    {
-      "name": "yasm",
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz",
-          "sha256": "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
-        }
-      ]
-    },
-    {
-      "name": "libvpx",
-      "config-opts": [
-        "--enable-runtime-cpu-detect",
-        "--enable-shared",
-        "--enable-pic",
-        "--enable-vp8",
-        "--enable-postproc",
-        "--enable-vp9",
-        "--enable-vp9-highbitdepth",
-        "--enable-experimental",
-        "--enable-spatial-svc",
-        "--enable-install-srcs",
-        "--enable-codec-srcs"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/webmproject/libvpx/archive/v1.6.0.tar.gz",
-          "sha256": "e2fc00c9f60c76f91a1cde16a2356e33a45b76a5a5a1370df65fd57052a4994a"
-        }
-      ]
-    },
-    {
-      "name": "gstreamer",
-      "config-opts": [
-        "--disable-static"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.10.2.tar.xz",
-          "sha256": "150e8e81febac94c161d8141cde78a38038a8f56e8ec549f353da54994278d65"
-        }
-      ]
-    },
-    {
-      "name": "gst-plugins-base",
-      "config-opts": [
-        "--disable-static"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.10.2.tar.xz",
-          "sha256": "fbc0d40fcb746d2efe2ea47444674029912f66e6107f232766d33b722b97de20"
-        }
-      ]
-    },
     {
       "name": "unzip",
       "no-autogen": true,
       "sources": [
         {
-          "type": "archive",
-          "url": "https://netassist.dl.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz",
-          "sha256": "036d96991646d0449ed0aa952e4fbe21b476ce994abc276e49d30e686708bd37"
-        },
-        {
-          "type": "patch",
-          "path": "unzip.patch"
+          "type": "file",
+          "url": "http://ftp.de.debian.org/debian/pool/main/u/unzip/unzip_6.0-16+deb8u2_amd64.deb",
+          "sha256": "e5aa7a599354ac7a8e80dd8a27e37b40812ef1e833553a7d514dc525b3432568",
+          "dest-filename": "unzip.deb"
         },
         {
           "type": "file",
-          "path": "unzip-Makefile",
+          "path": "binarydeb-Makefile",
           "dest-filename": "Makefile"
         }
       ]
     },
     {
-      "name": "zip",
+      "name": "xmlstarlet",
       "no-autogen": true,
       "sources": [
         {
-          "type": "archive",
-          "url": "https://heanet.dl.sourceforge.net/project/infozip/Zip%203.x%20%28latest%29/3.0/zip30.tar.gz",
-          "sha256": "f0e8bb1f9b7eb0b01285495a2699df3a4b766784c1765a8f1aeedf63c0806369"
-        },
-        {
-          "type": "patch",
-          "path": "zip.patch"
+          "type": "file",
+          "url": "http://ftp.de.debian.org/debian/pool/main/x/xmlstarlet/xmlstarlet_1.6.1-1_amd64.deb",
+          "sha256": "754dc23a4836f156e111c3c7414f5438be653a6261745ef88bca5a4f5b53f133",
+          "dest-filename": "xmlstarlet.deb"
         },
         {
           "type": "file",
-          "path": "unzip-Makefile",
+          "path": "binarydeb-Makefile",
           "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "alsa-lib",
-      "config-opts": [
-        "--disable-maintainer-mode",
-        "--enable-shared",
-        "--disable-resmgr",
-        "--enable-rawmidi",
-        "--enable-seq",
-        "--enable-aload"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://ftp.osuosl.org/pub/blfs/conglomeration/alsa-lib/alsa-lib-1.1.2.tar.bz2",
-          "sha256": "d38dacd9892b06b8bff04923c380b38fb2e379ee5538935ff37e45b395d861d6"
-        }
-      ]
-    },
-    {
-      "name": "json-c",
-      "config-opts": [
-        "--prefix=/app",
-        "--disable-static"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://s3.amazonaws.com/json-c_releases/releases/json-c-0.12.1.tar.gz",
-          "sha256": "2a136451a7932d80b7d197b10441e26e39428d67b1443ec43bbba824705e1123"
-        }
-      ]
-    },
-    {
-      "name": "libogg",
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz",
-          "sha256": "3f687ccdd5ac8b52d76328fbbfebc70c459a40ea891dbf3dccb74a210826e79b"
-        }
-      ]
-    },
-    {
-      "name": "flac",
-      "config-opts": [
-        "--disable-sse",
-        "--disable-doxygen-docs",
-        "--disable-xmms-plugin",
-        "--disable-examples"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz",
-          "sha256": "4773c0099dba767d963fd92143263be338c48702172e8754b9bc5103efe1c56c"
-        }
-      ]
-    },
-    {
-      "name": "libvorbis",
-      "config-opts": [
-        "--disable-static"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz",
-          "sha256": "54f94a9527ff0a88477be0a71c0bab09a4c3febe0ed878b24824906cd4b0e1d1"
-        }
-      ]
-    },
-    {
-      "name": "libsndfile",
-      "config-opts": [
-        "--prefix=/app",
-        "--disable-sqlite"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz",
-          "sha256": "a391952f27f4a92ceb2b4c06493ac107896ed6c76be9a613a4731f076d30fac0"
-        }
-      ]
-    },
-    {
-      "name": "tdb",
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://www.samba.org/ftp/tdb/tdb-1.3.12.tar.gz",
-          "sha256": "60134e32253cac8e2efe5e0185d20123c208bcf6ad15edf2f50d80daadf8c348"
-        }
-      ]
-    },
-    {
-      "name": "pulseaudio",
-      "config-opts": [
-        "--prefix=/app",
-        "--libexecdir=/app/lib",
-        "--with-udev-rules-dir=/app/lib/udev/rules.d",
-        "--with-database=tdb",
-        "--disable-tcpwrap",
-        "--disable-bluez4",
-        "--disable-samplerate",
-        "--disable-rpath",
-        "--disable-default-build-tests",
-        "--without-caps"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://freedesktop.org/software/pulseaudio/releases/pulseaudio-9.0.tar.xz",
-          "sha256": "c3d3d66b827f18fbe903fe3df647013f09fc1e2191c035be1ee2d82a9e404686"
         }
       ]
     },
     {
       "name": "firefox",
-      "no-autogen": true,
-      "builddir": true,
-      "make-install-args": [
-        "prefix=/app"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://ftp.mozilla.org/pub/firefox/releases/45.7.0esr/source/firefox-45.7.0esr.source.tar.xz",
-          "sha256": "4b5610691d32b77dd0dec25902f0d19e530c184cedc11babb530621cbdd33143"
-        },
-        {
-          "type": "file",
-          "path": ".mozconfig"
-        },
-        {
-          "type": "file",
-          "path": "org.mozilla.Firefox.desktop"
-        },
-        {
-          "type": "patch",
-          "path": "firefox-makeinstall.patch"
-        },
-        {
-          "type": "patch",
-          "path": "firefox-extension-dir.patch"
-        }
-      ]
-    },
-    {
-      "name": "plugins",
       "no-autogen": true,
       "sources": [
         {
@@ -322,113 +156,20 @@
         },
         {
           "type": "file",
-          "path": "plugins-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "setuptools",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pypa/setuptools",
-          "branch": "v33.0.0"
+          "path": "org.mozilla.Firefox.desktop"
         },
         {
           "type": "file",
-          "path": "setuptools-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "setuptools-scm",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pypa/setuptools_scm",
-          "branch": "1.15.0"
+          "path": "endless-default-prefs.js"
         },
         {
           "type": "file",
-          "path": "setuptools-scm-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "pytest-runner",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/pytest-dev/pytest-runner",
-          "branch": "2.10.1"
+          "path": "firefox-plugins-installer"
         },
         {
           "type": "file",
-          "path": "python-modules-Makefile",
+          "path": "firefox-Makefile",
           "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "six",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/benjaminp/six"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "python-utils",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/WoLpH/python-utils/archive/v2.0.1.tar.gz",
-          "sha256": "615bf41699b84bf231ad644e00101610f94182aed9170926cebbbff7ebdfec2e"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-
-        }
-      ]
-    },
-    {
-      "name": "python-progressbar",
-      "no-autogen": true,
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/WoLpH/python-progressbar/archive/v3.12.0.tar.gz",
-          "sha256": "13561586ee64d68816779f2d938768d46350237d10058d18a32db1ad260bf465"
-        },
-        {
-          "type": "file",
-          "path": "python-modules-Makefile",
-          "dest-filename": "Makefile"
-        }
-      ]
-    },
-    {
-      "name": "installer",
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/kinvolk/firefox-flatpak-oracle-jre-installer"
         }
       ]
     }

@@ -1,0 +1,8 @@
+all:
+	true
+
+install:
+	ar x *.deb
+	tar xvf data.tar.*
+	mkdir -p /app/bin
+	install usr/bin/* /app/bin

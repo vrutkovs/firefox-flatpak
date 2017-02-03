@@ -1,5 +1,0 @@
-all:
-	make -f unix/Makefile generic
-
-install:
-	make -f unix/Makefile install

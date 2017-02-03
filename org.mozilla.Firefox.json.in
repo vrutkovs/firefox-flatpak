@@ -1,0 +1,84 @@
+{
+  "app-id": "org.mozilla.Firefox",
+  "runtime": "com.endlessm.Platform",
+  "runtime-version": "eos3.1",
+  "sdk": "com.endlessm.Sdk",
+  "branch": "50.1.0",
+  "command": "firefox",
+  "separate-locales": false,
+  "finish-args": [
+    "--share=ipc",
+    "--socket=wayland",
+    "--socket=x11",
+    "--socket=pulseaudio",
+    "--share=network",
+    "--filesystem=home"
+  ],
+  "modules": [
+    {
+      "name": "unzip",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://ftp.de.debian.org/debian/pool/main/u/unzip/unzip_6.0-16+deb8u2_amd64.deb",
+          "sha256": "e5aa7a599354ac7a8e80dd8a27e37b40812ef1e833553a7d514dc525b3432568",
+          "dest-filename": "unzip.deb"
+        },
+        {
+          "type": "file",
+          "path": "binarydeb-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "xmlstarlet",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://ftp.de.debian.org/debian/pool/main/x/xmlstarlet/xmlstarlet_1.6.1-1_amd64.deb",
+          "sha256": "754dc23a4836f156e111c3c7414f5438be653a6261745ef88bca5a4f5b53f133",
+          "dest-filename": "xmlstarlet.deb"
+        },
+        {
+          "type": "file",
+          "path": "binarydeb-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "firefox",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "path": "apply_extra"
+        },
+        {
+          "type": "file",
+          "path": "firefox.sh"
+        },
+        {
+          "type": "file",
+          "path": "org.mozilla.Firefox.desktop"
+        },
+        {
+          "type": "file",
+          "path": "endless-default-prefs.js"
+        },
+        {
+          "type": "file",
+          "path": "firefox-plugins-installer"
+        },
+        {
+          "type": "file",
+          "path": "firefox-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    }
+  ]
+}
