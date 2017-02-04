@@ -80,6 +80,10 @@
           "name": "firefox",
           "no-autogen": true,
           "make-install-args": ["prefix=/app"],
+          "build-options": {
+            "strip": false,
+            "no-debuginfo": true
+          },
           "sources": [
               {
                   "type": "git",
