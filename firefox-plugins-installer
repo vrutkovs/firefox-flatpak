@@ -116,15 +116,7 @@ install_flash() {
     rm ${FLASH_FILE_PATH}
 }
 
-check_link() {
-    if [ -e $1 ]; then
-       return 0;
-    else
-           return 1;
-    fi
-}
-
-if ! check_link ${JAVA_LINK}; then
+if [ ! -e ${JAVA_LINK} ]; then
     echo "JAVA is not correctly installed for Firefox"
 
     java_plugin=`ls ${JAVA_DIR}/jre*/lib/amd64/libnpjp2.so 2>/dev/null` || echo ""
@@ -140,7 +132,7 @@ else
     echo "Found JAVA plugin"
 fi
 
-if ! check_link ${FLASH_LINK}; then
+if [ ! -e ${FLASH_LINK} ]; then
     echo "Flash is not correctly installed for Firefox"
     if [ ! -e "${FLASH_DIR}/libflashplayer.so" ]; then
         download_flash
