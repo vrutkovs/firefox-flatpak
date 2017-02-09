@@ -50,6 +50,11 @@ FLASH_FILE_PATH=${CACHE_DIR}/${FLASH_FILENAME}
 FLASH_URL_FILENAME=http://download.macromedia.com/pub/flashplayer/installers/archive/${FLASH_FILENAME}
 FLASH_LINK=${PLUGINS_DIR}/libflashplayer.so
 
+recreate_dir() {
+    rm -rf $1
+    mkdir -p $1
+}
+
 download_java() {
     echo "Downloading ${JAVA_FILENAME}"
     if ! ${WGET_COMMAND} --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JAVA_URL_FILENAME} -O "${JAVA_FILE_PATH}"; then
@@ -64,8 +69,7 @@ download_java() {
 }
 
 install_java() {
-    rm -rf ${JAVA_DIR}
-    mkdir -p ${JAVA_DIR}
+    recreate_dir ${JAVA_DIR}
 
     echo "Installing ${JAVA_FILE_PATH}"
     if ! tar -xf ${JAVA_FILE_PATH} -C ${JAVA_DIR} ; then
@@ -90,8 +94,7 @@ download_flash() {
 }
 
 install_flash() {
-    rm -rf ${FLASH_DIR}
-    mkdir -p ${FLASH_DIR}
+    recreate_dir ${FLASH_DIR}
 
     echo "Installing ${FLASH_FILE_PATH}"
 
