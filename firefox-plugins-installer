@@ -73,7 +73,7 @@ install_java() {
 
     echo "Installing ${JAVA_FILE_PATH}"
     if ! tar -xf ${JAVA_FILE_PATH} -C ${JAVA_DIR} ; then
-        exit_with_error "Cannot unpack tar file ${JAVA_FILENAME}"
+        exit_with_error "Cannot unpack tar file ${JAVA_FILE_PATH}"
     fi
 
     # Remove downloaded file
@@ -100,7 +100,7 @@ install_flash() {
 
     pushd ${CACHE_DIR}
     if ! unzip ${FLASH_FILE_PATH} ; then
-        exit_with_error "Cannot unpack zip file ${FLASH_FILENAME}"
+        exit_with_error "Cannot unpack zip file ${FLASH_FILE_PATH}"
     fi
     flash_inner_path=$(echo -n ${FLASH_VERSION} | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9])/\1_\2_r\3_\4/")
     flash_inner_file=$(echo -n ${FLASH_VERSION} | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9])/\1_\2r\3_\4/")
