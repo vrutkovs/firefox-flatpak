@@ -1,23 +1,24 @@
 {
-    "app-id": "org.mozilla.FirefoxDevEdition",
+    "app-id": "org.mozilla.FirefoxNightlyWayland",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.20",
+    "runtime-version": "3.22",
+    /*"branch" : "nightly",*/
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
-    "desktop-file-name-suffix": " - Developer Edition",
-    "rename-icon": "firefox",
+    "desktop-file-name-suffix": " Nightly - Wayland build",
+    "rename-desktop-file": "org.mozilla.Firefox.desktop",
+    "rename-appdata-file" : "org.mozilla.Firefox.appdata.xml",
+    "rename-icon" : "org.mozilla.Firefox",
     "finish-args": [
         /* X11 + XShm access */
-        "--share=ipc", "--socket=x11",
+        /* "--share=ipc", "--socket=x11",*/
         /* Wayland access */
         "--socket=wayland",
-        /* We want full fs access so we can read the files */
-        "--filesystem=home:rw",
+        /* We don't want full fs access so we can read the files */
+        /*"--filesystem=home:rw",*/
         /* Needs to talk to the network: */
         "--share=network",
-        /* Use dark decorations for window */
-        "--env=GTK_THEME_VARIANT=dark",
         /* Enable playing sound thru pulseaudio */
         "--socket=pulseaudio"
     ],
@@ -88,8 +89,22 @@
                     "sha256": "c71325cfea1b6f0bdc5189fa4c50ff96f828096ff3f7b5056367f9685d6a4d04"
                 },
                 {
-                    "type": "patch",
-                    "path": "rust-makeinstall.patch"
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"],
+                    "dest-filename": "configure"
+                },
+                {
+                    "type": "script",
+                    "commands": ["all:",
+                                 "	echo 'Nothing to do'",
+                                 "install:", 
+                                 "	./install.sh --prefix=/app"
+                                ],
+                    "dest-filename": "Makefile"
+                },
+                {
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"]
                 },
                 {
                     "type": "shell",
@@ -108,8 +123,8 @@
           "sources": [
               {
                   "type": "git",
-                  "url": "https://github.com/mozilla/gecko-dev",
-                  "branch" : "aurora"
+                  "url": "https://github.com/stransky/gecko-dev",
+                  "branch" : "master"
               },
               {
                   "type": "patch",
@@ -117,7 +132,7 @@
               },
               {
                   "type": "file",
-                  "path": "org.mozilla.FirefoxDevEdition.appdata.xml",
+                  "path": "org.mozilla.Firefox.appdata.xml",
                   "dest": ""
               },
               {
@@ -128,7 +143,7 @@
               },
               {
                   "type": "file",
-                  "path": "org.mozilla.FirefoxDevEdition.desktop",
+                  "path": "org.mozilla.Firefox.desktop",
                   "dest": ""
               }
           ]
