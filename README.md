@@ -22,17 +22,17 @@ will build Firefox from master branch.
 
 After the build is finished you can install the app by:
 ```
-$ ./install.sh BUILD_NAME
+./install.sh BUILD_NAME
 ```
 
 To start Firefox use:
 ```
-$ flatpak run BUILD_NAME
+flatpak run BUILD_NAME
 ```
 
 For example:
 ```
-$ flatpak run org.mozilla.FirefoxNightly
+flatpak run org.mozilla.FirefoxNightly
 ```
 
 # Repository
