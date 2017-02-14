@@ -10,9 +10,20 @@ Currently there are three builds available:
 * org.mozilla.FirefoxNightlyWayland - to build nightly with wayland support
 * org.mozilla.FirefoxDevEdition - Firefox Developer Edition (branded aurora build)
 
-To build specific build run ```./build.sh BUILD_NAME```, for example ```./build.sh org.mozilla.FirefoxNightly``` which will build Firefox from master branch.
+To build specific build run:
+```
+./build.sh BUILD_NAME
+```
+for example 
+```
+./build.sh org.mozilla.FirefoxNightly
+``` 
+will build Firefox from master branch.
 
-After the build is finished you can install the app by ```$ ./install.sh BUILD_NAME```. 
+After the build is finished you can install the app by:
+```
+$ ./install.sh BUILD_NAME
+```
 
 To start Firefox use:
 ```
