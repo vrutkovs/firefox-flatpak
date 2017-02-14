@@ -50,6 +50,11 @@ FLASH_FILE_PATH=${CACHE_DIR}/${FLASH_FILENAME}
 FLASH_URL_FILENAME=http://download.macromedia.com/pub/flashplayer/installers/archive/${FLASH_FILENAME}
 FLASH_LINK=${PLUGINS_DIR}/libflashplayer.so
 
+recreate_dir() {
+    rm -rf $1
+    mkdir -p $1
+}
+
 download_java() {
     echo "Downloading ${JAVA_FILENAME}"
     if ! ${WGET_COMMAND} --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JAVA_URL_FILENAME} -O "${JAVA_FILE_PATH}"; then
@@ -64,12 +69,11 @@ download_java() {
 }
 
 install_java() {
-    rm -rf ${JAVA_DIR}
-    mkdir -p ${JAVA_DIR}
+    recreate_dir ${JAVA_DIR}
 
     echo "Installing ${JAVA_FILE_PATH}"
     if ! tar -xf ${JAVA_FILE_PATH} -C ${JAVA_DIR} ; then
-        exit_with_error "Cannot unpack tar file ${JAVA_FILENAME}"
+        exit_with_error "Cannot unpack tar file ${JAVA_FILE_PATH}"
     fi
 
     # Remove downloaded file
@@ -90,14 +94,13 @@ download_flash() {
 }
 
 install_flash() {
-    rm -rf ${FLASH_DIR}
-    mkdir -p ${FLASH_DIR}
+    recreate_dir ${FLASH_DIR}
 
     echo "Installing ${FLASH_FILE_PATH}"
 
     pushd ${CACHE_DIR}
     if ! unzip ${FLASH_FILE_PATH} ; then
-        exit_with_error "Cannot unpack zip file ${FLASH_FILENAME}"
+        exit_with_error "Cannot unpack zip file ${FLASH_FILE_PATH}"
     fi
     flash_inner_path=$(echo -n ${FLASH_VERSION} | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9])/\1_\2_r\3_\4/")
     flash_inner_file=$(echo -n ${FLASH_VERSION} | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9])/\1_\2r\3_\4/")
@@ -113,15 +116,7 @@ install_flash() {
     rm ${FLASH_FILE_PATH}
 }
 
-check_link() {
-    if [ -e $1 ]; then
-       return 0;
-    else
-           return 1;
-    fi
-}
-
-if ! check_link ${JAVA_LINK}; then
+if [ ! -e ${JAVA_LINK} ]; then
     echo "JAVA is not correctly installed for Firefox"
 
     java_plugin=`ls ${JAVA_DIR}/jre*/lib/amd64/libnpjp2.so 2>/dev/null` || echo ""
@@ -137,7 +132,7 @@ else
     echo "Found JAVA plugin"
 fi
 
-if ! check_link ${FLASH_LINK}; then
+if [ ! -e ${FLASH_LINK} ]; then
     echo "Flash is not correctly installed for Firefox"
     if [ ! -e "${FLASH_DIR}/libflashplayer.so" ]; then
         download_flash
