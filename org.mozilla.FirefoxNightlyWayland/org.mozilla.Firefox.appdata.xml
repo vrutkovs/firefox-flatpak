@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2016 Jiri Eischmann <eischmann@redhat.com> -->
 <application>
-  <id type="desktop">org.mozilla.Firefox.desktop</id>
+  <id type="desktop">org.mozilla.FirefoxNightlyWayland.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
