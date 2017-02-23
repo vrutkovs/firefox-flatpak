@@ -25,12 +25,14 @@ FLASH_DIR=${DEST_DIR}/flash
 PLUGINS_DIR=~/.mozilla/plugins
 WGET_COMMAND="wget -c --tries=5"
 CACHE_DIR=${XDG_CACHE_HOME}
+DAYS_CHECK=7
 
 exit_with_error() {
     echo $1
     exit 1
 }
 
+# Data needed for the Java plugin
 JAVA_BUILD=8u112-b15
 JAVA_VERSION=`echo ${JAVA_BUILD} | cut -f 1 -d -`
 JAVA_FILENAME=jre-${JAVA_VERSION}-linux-x64.tar.gz
@@ -39,20 +41,123 @@ JAVA_URL_FILENAME=http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/${JA
 JAVA_SHA256SUM=94053c6aa4d672b728c7788fb7d2676e5c6d7e7fcdbc1c86beaa796a083b4e5b
 JAVA_LINK=${PLUGINS_DIR}/libnpjp2.so
 
-# While the following would be a faster download of the current version,
-# previous versions are often removed from the server, so it is safest
-# for an automated script to use the stable version in the archive
-# http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.643/install_flash_player_11_linux.x86_64.tar.gz
-FLASH_VERSION=24.0.0.221
-FLASH_SHA256SUM=087048af5fa3c46a8c283403a341d4684ef4b966f4e407195b43c24bf5ae64b1
-FLASH_FILENAME=flash_player_npapi_linux.x86_64.tar.gz
-FLASH_FILE_PATH=${CACHE_DIR}/${FLASH_FILENAME}
-FLASH_URL_FILENAME=https://fpdownload.adobe.com/pub/flashplayer/pdc/${FLASH_VERSION}/${FLASH_FILENAME}
-FLASH_LINK=${PLUGINS_DIR}/libflashplayer.so
+# Data needed for the Flash plugin, from Adobe
+FLASH_FALLBACK_VERSION="24.0.0.221"
+FLASH_FALLBACK_URL="https://fpdownload.adobe.com/pub/flashplayer/pdc/${FLASH_FALLBACK_VERSION}/flash_player_npapi_linux.$(arch).tar.gz"
+FLASH_FALLBACK_SHA256SUM="087048af5fa3c46a8c283403a341d4684ef4b966f4e407195b43c24bf5ae64b1"
+
+FLASH_LKGV_FILE_URL="https://s3-us-west-2.amazonaws.com/abacadaba/flashplugin-$(arch).lkgv"
+FLASH_LKGV_VERSION=
+FLASH_LKGV_URL=
+FLASH_LKGV_SHA256SUM=
+FLASH_LKGV_FILENAME=
+
+FLASH_VERSION=
+FLASH_CACHE_DIR=${CACHE_DIR}/flash
+FLASH_SO_FILE=libflashplayer.so
+FLASH_VERSION_FILE=${FLASH_DIR}/Flash_VERSION.txt
 
 recreate_dir() {
     rm -rf $1
     mkdir -p $1
+}
+
+fetch_flash_metadata() {
+    local filename=$(basename ${FLASH_LKGV_FILE_URL})
+    if ${WGET_COMMAND} "${FLASH_LKGV_FILE_URL}" -O "${FLASH_CACHE_DIR}/${filename}"; then
+        while IFS='=' read key value; do
+            case "$key" in
+                "NPAPI_VERSION") FLASH_LKGV_VERSION="$value" ;;
+                "NPAPI_URL") FLASH_LKGV_URL="$value" ;;
+                "NPAPI_SHA256SUM") FLASH_LKGV_SHA256SUM="$value" ;;
+                *) ;;
+            esac
+        done < ${FLASH_CACHE_DIR}/${filename}
+    fi
+
+    if [ -z ${FLASH_LKGV_URL} ]; then
+        echo "Failed to retrieve the last known good version of the flash plugin"
+        echo "Using fallbacks values (Flash plugin version: ${FLASH_FALLBACK_VERSION})"
+
+        FLASH_LKGV_VERSION="${FLASH_FALLBACK_VERSION}"
+        FLASH_LKGV_SHA256SUM="${FLASH_FALLBACK_SHA256SUM}"
+        FLASH_LKGV_URL="${FLASH_FALLBACK_URL}"
+    fi
+
+    # This will be needed then downloading and installing
+    FLASH_LKGV_FILENAME=$(basename ${FLASH_LKGV_URL})
+}
+
+refresh_version_file() {
+    local version_file="$1"
+    if [ ! -f ${version_file} ]; then
+        echo "Version file ${version_file} does not exist. Nothing to refresh"
+        return
+    fi
+
+    if [ ! -s ${version_file} ]; then
+        echo "Version file ${version_file} is invalid (empty). Removing..."
+        rm -f ${version_file}
+        return;
+    fi
+
+    echo "Refreshing version file ${version_file}..."
+    touch ${version_file}
+}
+
+flash_init() {
+    mkdir -p ${FLASH_CACHE_DIR}
+}
+
+flash_should_check_updates() {
+    local should_check_updates=true
+
+    FLASH_VERSION="not installed"
+    if [ -f ${FLASH_VERSION_FILE} ] ; then
+        local current_version="$(cat ${FLASH_VERSION_FILE})"
+        local target_plugin="${FLASH_DIR}/$(basename ${FLASH_SO_FILE})"
+
+        # Make sure that the current version stored is valid AND that the actual
+        # plugin file is also a valid object file before giving up on checking.
+        if [ -z "${current_version}" ]; then
+            # No point on keeping these files in this case
+            echo "Invalid version of the Flash plugin found. Removing..."
+            rm -f ${FLASH_VERSION_FILE} ${target_plugin}
+        else
+            # If reached, we know we have a valid version file
+            FLASH_VERSION=${current_version}
+            if ! [ `find ${FLASH_VERSION_FILE} -daystart -mtime +${DAYS_CHECK}` ] && \
+               ! [ `find ${FLASH_VERSION_FILE} -newermt "0 days"` ] ; then
+                # It has been checked recently so nothing to do for now
+                should_check_updates=false
+            fi
+        fi
+    fi
+
+    if ! ${should_check_updates}; then
+        echo "No need to check the Flash plugin yet (version: ${FLASH_VERSION})"
+        return 1;
+    fi
+
+    echo "Flash plugin is not installed or might be too old. Checking for a new version"
+    return 0
+}
+
+flash_should_update() {
+    if fetch_flash_metadata; then
+       if [ "${FLASH_VERSION}" = "${FLASH_LKGV_VERSION}" ] ; then
+           # Refresh the VERSION so it is not checked again until ${DAYS_CHECK} passed
+           echo "Flash plugin is up-to-date (Current: ${FLASH_VERSION})"
+           refresh_version_file ${FLASH_VERSION_FILE}
+           return 1
+       else
+           echo "A new version of Flash is available: ${FLASH_LKGV_VERSION} (Current: ${FLASH_VERSION})"
+           return 0
+       fi
+    else
+        echo "An error happened fetching metadata for the the Flash plugin"
+        return 1
+    fi
 }
 
 download_java() {
@@ -80,37 +185,68 @@ install_java() {
     rm ${JAVA_FILE_PATH}
 }
 
-download_flash() {
-    echo "Downloading ${FLASH_FILENAME}"
-    if ! ${WGET_COMMAND} "${FLASH_URL_FILENAME}" -O "${CACHE_DIR}/${FLASH_FILENAME}"; then
-        exit_with_error "Failed to download ${FLASH_URL_FILENAME}"
+flash_download() {
+    # Get the Adobe Flash Plugin
+    echo "Downloading ${FLASH_LKGV_FILENAME}"
+    if ! ${WGET_COMMAND} "${FLASH_LKGV_URL}" -O "${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"; then
+        echo "Failed to download ${FLASH_LKGV_URL}"
+        return 1
     fi
 
-    echo "Verifying ${FLASH_FILE_PATH}"
-    echo "${FLASH_SHA256SUM} ${FLASH_FILE_PATH}" | sha256sum -c > /dev/null 2>&1 || \
+    # Verify SHA256 checksum of debian file
+    echo "Verifying ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"
+    echo "${FLASH_LKGV_SHA256SUM} ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}" | sha256sum -c > /dev/null 2>&1 || \
     {
-        exit_with_error "sha256sum mismatch ${FLASH_FILE_PATH}"
+        echo "sha256sum mismatch ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"
+        return 1
     }
 }
 
-install_flash() {
-    recreate_dir ${FLASH_DIR}
+flash_install() {
+    echo "Installing ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"
+    mkdir -p ${FLASH_DIR}
 
-    echo "Installing ${FLASH_FILE_PATH}"
+    if ! tar zxv -C ${FLASH_CACHE_DIR} -f ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME} > /dev/null 2>&1 ; then
+        echo "Cannot extract files from ${FLASH_LKGV_FILENAME}"
+    elif ! [ -f ${FLASH_CACHE_DIR}/${FLASH_SO_FILE} ]; then
+        echo "Could not find ${FLASH_SO_FILE}"
+    elif ! install -m 644 ${FLASH_CACHE_DIR}/${FLASH_SO_FILE} ${FLASH_DIR} ; then
+        echo "Could not copy ${FLASH_SO_FILE} into ${FLASH_DIR}"
+    else
+        local link_source=${PLUGINS_DIR}/${FLASH_SO_FILE}
+        local link_target=${FLASH_DIR}/${FLASH_SO_FILE}
 
-    pushd ${CACHE_DIR}
-    if ! tar -xf ${FLASH_FILE_PATH} ; then
-        exit_with_error "Cannot unpack tar file ${FLASH_FILE_PATH}"
+        echo "Creating the symlink for the Flash: ${link_source} -> ${link_target}"
+        mkdir -p ${PLUGINS_DIR}
+        ln -snf ${link_target} ${link_source}
+
+        # Sanity check: don't ever write a VERSION file with an empty value
+        if [ -n "${FLASH_LKGV_VERSION}" ]; then
+            echo -n "${FLASH_LKGV_VERSION}" > ${FLASH_VERSION_FILE}
+        fi
+        echo "Flash plugin installed"
+        return
     fi
-    if ! install -m 644 libflashplayer.so ${FLASH_DIR} ; then
-        exit_with_error "Cannot install libflashplayer.so"
-    fi
-    popd
 
-    # Remove downloaded file
-    rm ${FLASH_FILE_PATH}
+    echo "Flash plugin could NOT be installed"
 }
 
+flash_finish() {
+    rm -rf ${FLASH_CACHE_DIR}
+}
+
+# Flash plugin installation
+flash_init
+if flash_should_check_updates ; then
+    if flash_should_update && flash_download; then
+        flash_install
+    else
+        echo "The Flash plugin was NOT updated"
+    fi
+fi
+flash_finish
+
+# Java plugin installation
 if [ ! -e ${JAVA_LINK} ]; then
     echo "JAVA is not correctly installed for Firefox"
 
@@ -125,18 +261,4 @@ if [ ! -e ${JAVA_LINK} ]; then
     ln -sf ${java_plugin} ${JAVA_LINK}
 else
     echo "Found JAVA plugin"
-fi
-
-if [ ! -e ${FLASH_LINK} ]; then
-    echo "Flash is not correctly installed for Firefox"
-    if [ ! -e "${FLASH_DIR}/libflashplayer.so" ]; then
-        download_flash
-        install_flash
-    fi
-
-    echo "Creating the symlink for the Flash: ${FLASH_LINK} -> ${FLASH_DIR}/libflashplayer.so"
-    mkdir -p ${PLUGINS_DIR}
-    ln -sf ${FLASH_DIR}/libflashplayer.so ${FLASH_LINK}
-else
-    echo "Found Flash plugin"
 fi
