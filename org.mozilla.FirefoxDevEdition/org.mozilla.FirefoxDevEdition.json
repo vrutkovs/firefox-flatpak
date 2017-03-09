@@ -86,8 +86,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://static.rust-lang.org/dist/rust-1.14.0-x86_64-unknown-linux-gnu.tar.gz",
-                    "sha256": "c71325cfea1b6f0bdc5189fa4c50ff96f828096ff3f7b5056367f9685d6a4d04"
+                    "url": "https://static.rust-lang.org/dist/rust-1.15.1-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "b1e7c818a3cc8b010932f0efc1cf0ede7471958310f808d543b6e32d2ec748e7"
                 },
                 {
                     "type": "script",
@@ -130,6 +130,10 @@
               {
                   "type": "patch",
                   "path": "firefox-makeinstall.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "mozlog-no-blessings-req.patch"
               },
               {
                   "type": "file",

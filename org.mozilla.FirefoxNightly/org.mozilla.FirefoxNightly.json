@@ -132,6 +132,10 @@
                   "path": "firefox-makeinstall.patch"
               },
               {
+                  "type": "patch",
+                  "path": "mozlog-no-blessings-req.patch"
+              },
+              {
                   "type": "file",
                   "path": "org.mozilla.Firefox.appdata.xml",
                   "dest": ""
