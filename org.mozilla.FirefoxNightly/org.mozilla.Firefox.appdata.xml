@@ -2,6 +2,8 @@
 <!-- Copyright 2016 Jiri Eischmann <eischmann@redhat.com> -->
 <application>
   <id type="desktop">org.mozilla.FirefoxNightly.desktop</id>
+  <name>Firefox Nightly</name>
+  <summary>Firefox Nightly Web Browser</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
