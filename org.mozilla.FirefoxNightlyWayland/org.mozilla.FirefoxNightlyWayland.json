@@ -20,7 +20,9 @@
         /* Needs to talk to the network: */
         "--share=network",
         /* Enable playing sound thru pulseaudio */
-        "--socket=pulseaudio"
+        "--socket=pulseaudio",
+        /* Keep user profile after application exit */
+        "--persist=.mozilla/"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
