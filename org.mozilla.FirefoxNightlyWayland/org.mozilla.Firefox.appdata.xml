@@ -5,6 +5,7 @@
   <name>Firefox Nightly - Wayland build</name>
   <summary>Experimental Wayland build of Firefox Nightly</summary>
   <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MPL-2.0</project_license>
   <description>
     <p>
       Bringing together all kinds of awesomeness to make browsing better for you. Get to your favorite sites quickly – even if you don’t remember the URLs. Type your term into the location bar (aka the Awesome Bar) and the autocomplete function will include possible matches from your browsing history, bookmarked sites and open tabs.
@@ -14,6 +15,11 @@
     </p>
     <!-- FIXME: Needs more paragraphs -->
   </description>
+  <keywords>
+    <keyword>mozilla</keyword>
+    <keyword>internet</keyword>
+    <keyword>web</keyword>
+  </keywords>
   <url type="homepage">https://github.com/stransky/gecko-dev</url>
   <screenshots>
     <screenshot type="default">https://dl.dropboxusercontent.com/u/1309518/firefox-de.png</screenshot>
