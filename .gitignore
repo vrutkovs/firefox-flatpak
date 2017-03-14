@@ -2,4 +2,4 @@
 gnome-sdk.gpg
 app/
 repo/
-org.mozilla.FirefoxDevEdition
+*.flatpak

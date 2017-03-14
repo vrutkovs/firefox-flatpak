@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2016 Jiri Eischmann <eischmann@redhat.com> -->
+<application>
+  <id type="desktop">org.mozilla.FirefoxDevEdition.desktop</id>
+  <name>Firefox Developer Edition</name>
+  <summary>Mozilla Firefox Developer Edition Web browser</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>
+      Bringing together all kinds of awesomeness to make browsing better for you. Get to your favorite sites quickly – even if you don’t remember the URLs. Type your term into the location bar (aka the Awesome Bar) and the autocomplete function will include possible matches from your browsing history, bookmarked sites and open tabs.
+    </p>
+    <p>
+      Firefox Developer Edition brings your core dev tools together with some powerful new ones that will extend your ability to work across multiple platforms from one place. It’s everything you’re used to, only better. And only from Firefox.
+    </p>
+    <!-- FIXME: Needs more paragraphs -->
+  </description>
+  <url type="homepage">https://www.mozilla.org/firefox/developer/</url>
+  <screenshots>
+    <screenshot type="default">https://dl.dropboxusercontent.com/u/1309518/firefox-de.png</screenshot>
+    <screenshot>https://dl.dropboxusercontent.com/u/1309518/firefox-de2.png</screenshot>
+    <screenshot>https://dl.dropboxusercontent.com/u/1309518/firefox-de3.png</screenshot>
+  </screenshots>
+  <!-- FIXME: change this to an upstream email address for spec updates
+  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+   -->
+</application>
