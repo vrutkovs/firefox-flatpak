@@ -24,7 +24,7 @@
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    print('Please install BeautifulSoup!')
+    print('Please install BeautifulSoup! (e.g., `sudo pip3 install bs4`)')
     exit(1)
 
 from collections import OrderedDict
