@@ -84,6 +84,7 @@
       },
       {
             "name":"rust",
+            "build-options" : { "no-debuginfo": true, "strip":false }, /* Stripped rust does not work */
             "sources": [
                 {
                     "type": "archive",

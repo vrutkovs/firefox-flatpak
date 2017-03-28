@@ -85,11 +85,12 @@
       },
       {
             "name":"rust",
+            "build-options" : { "no-debuginfo": true, "strip":false }, /* Stripped rust does not work */
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://static.rust-lang.org/dist/rust-1.15.1-x86_64-unknown-linux-gnu.tar.gz",
-                    "sha256": "b1e7c818a3cc8b010932f0efc1cf0ede7471958310f808d543b6e32d2ec748e7"
+                    "url": "https://static.rust-lang.org/dist/rust-1.16.0-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "48621912c242753ba37cad5145df375eeba41c81079df46f93ffb4896542e8fd"
                 },
                 {
                     "type": "script",
@@ -101,7 +102,7 @@
                     "commands": ["all:",
                                  "	echo 'Nothing to do'",
                                  "install:", 
-                                 "	./install.sh --prefix=/app"
+                                 "	./install.sh --verbose --prefix='/app'"
                                 ],
                     "dest-filename": "Makefile"
                 },
