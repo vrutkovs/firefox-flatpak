@@ -13,6 +13,7 @@
     "--socket=pulseaudio",
     "--share=network",
     "--filesystem=home",
+    "--talk-name=org.gnome.GConf",
     "--extra-data=firefox.tar.bz2:33a854915df70646d83a191fbad864a539bfd52b7d82e8f58e05abbbf5408dde:57773849::https://archive.mozilla.org/pub/firefox/releases/52.0.1esr/linux-x86_64/en-US/firefox-52.0.1esr.tar.bz2",
     "--extra-data=ach.xpi:239427180c36b96e3a153f987058463f3a96488835601f3b5e113460b478c056:427640::https://archive.mozilla.org/pub/firefox/releases/52.0.1esr/linux-x86_64/xpi/ach.xpi",
     "--extra-data=af.xpi:be5fdfe6702abe09c38ae55859fb4f888bbd24435d399f5aa493cda4eacc1ae4:436822::https://archive.mozilla.org/pub/firefox/releases/52.0.1esr/linux-x86_64/xpi/af.xpi",

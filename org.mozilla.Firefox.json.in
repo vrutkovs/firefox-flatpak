@@ -12,7 +12,8 @@
     "--socket=x11",
     "--socket=pulseaudio",
     "--share=network",
-    "--filesystem=home"
+    "--filesystem=home",
+    "--talk-name=org.gnome.GConf"
   ],
   "modules": [
     {
