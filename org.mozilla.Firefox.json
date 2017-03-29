@@ -161,6 +161,10 @@
         },
         {
           "type": "file",
+          "path": "org.mozilla.Firefox.appdata.xml"
+        },
+        {
+          "type": "file",
           "path": "endless-default-prefs.js"
         },
         {

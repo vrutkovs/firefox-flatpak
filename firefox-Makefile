@@ -10,3 +10,5 @@ install:
 	install -m 644 org.mozilla.Firefox.desktop /app/share/applications/
 	mkdir -p /app/cache/mozilla/
 	install -m 644 endless-default-prefs.js /app/cache/mozilla/
+	mkdir -p /app/share/appdata/
+	install -m 644 org.mozilla.Firefox.appdata.xml /app/share/appdata
