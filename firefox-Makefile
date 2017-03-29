@@ -12,3 +12,5 @@ install:
 	install -m 644 endless-default-prefs.js /app/cache/mozilla/
 	mkdir -p /app/share/appdata/
 	install -m 644 org.mozilla.Firefox.appdata.xml /app/share/appdata
+	mkdir -p /app/share/icons/hicolor/64x64/apps/
+	install -m 644 eos-app-org.mozilla.Firefox.png /app/share/icons/hicolor/64x64/apps/org.mozilla.Firefox.png
