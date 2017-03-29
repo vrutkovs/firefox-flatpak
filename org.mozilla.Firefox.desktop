@@ -7,3 +7,4 @@ Exec=firefox %u
 Icon=org.mozilla.firefox
 Terminal=false
 Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme-handler/https;
