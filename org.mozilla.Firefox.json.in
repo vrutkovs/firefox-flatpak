@@ -1,7 +1,7 @@
 {
   "app-id": "org.mozilla.Firefox",
   "runtime": "com.endlessm.Platform",
-  "runtime-version": "eos3.1",
+  "runtime-version": "@BRANCH@",
   "sdk": "com.endlessm.Sdk",
   "command": "firefox",
   "separate-locales": false,
