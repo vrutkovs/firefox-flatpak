@@ -48,8 +48,9 @@ class FirefoxJsonGenerator():
         self._json_data = None
         self._versioned_url = self.MOZILLA_ARCHIVE_URL.format(version=self._version)
 
-        with open('{}.in'.format(self.JSON_FILE_NAME)) as json_file:
+        with open(self.JSON_FILE_NAME) as json_file:
             self._json_data = json.load(json_file, object_pairs_hook=OrderedDict)
+            self._json_data['finish-args'] = [arg for arg in self._json_data.get('finish-args', []) if not arg.startswith('--extra-data=')]
 
     def _get_extra_data_info(self, url):
         '''Fetches the extra data info for the given URL
