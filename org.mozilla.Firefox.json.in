@@ -3,7 +3,6 @@
   "runtime": "com.endlessm.Platform",
   "runtime-version": "eos3.1",
   "sdk": "com.endlessm.Sdk",
-  "branch": "52.0.1esr",
   "command": "firefox",
   "separate-locales": false,
   "finish-args": [
