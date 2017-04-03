@@ -138,6 +138,7 @@ class FirefoxJsonGenerator():
             finish_args.append('--extra-data={name}:{sha256sum}:{size}::{url}'.format(**info))
         with open(self.JSON_FILE_NAME, 'w') as f:
             f.write(json.dumps(self._json_data, indent=2))
+            f.write("\n")
 
 if __name__ == '__main__':
     generator = FirefoxJsonGenerator(CURRENT_VERSION)
