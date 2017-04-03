@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #
-# generate-json: A tool to generate the json for the Firefox manifest
+# update-firefox-version: A tool to generate extra-data entries in the
+# manifest for the new Firefox version
 #
 # Copyright (C) 2017 Endless Mobile, Inc.
 #
