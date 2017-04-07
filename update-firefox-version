@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #
-# generate-json: A tool to generate the json for the Firefox manifest
+# update-firefox-version: A tool to generate extra-data entries in the
+# manifest for the new Firefox version
 #
 # Copyright (C) 2017 Endless Mobile, Inc.
 #
@@ -39,7 +40,7 @@ import urllib.request
 CURRENT_VERSION = '52.0.1esr'
 
 class FirefoxJsonGenerator():
-    JSON_FILE_NAME = 'org.mozilla.Firefox.json'
+    JSON_FILE_NAME = 'org.mozilla.Firefox.json.in'
     MOZILLA_ARCHIVE_URL = 'https://archive.mozilla.org/pub/firefox/releases/{version}/linux-x86_64/'
 
     def __init__(self, version):
@@ -48,8 +49,9 @@ class FirefoxJsonGenerator():
         self._json_data = None
         self._versioned_url = self.MOZILLA_ARCHIVE_URL.format(version=self._version)
 
-        with open('{}.in'.format(self.JSON_FILE_NAME)) as json_file:
+        with open(self.JSON_FILE_NAME) as json_file:
             self._json_data = json.load(json_file, object_pairs_hook=OrderedDict)
+            self._json_data['finish-args'] = [arg for arg in self._json_data.get('finish-args', []) if not arg.startswith('--extra-data=')]
 
     def _get_extra_data_info(self, url):
         '''Fetches the extra data info for the given URL
@@ -136,6 +138,7 @@ class FirefoxJsonGenerator():
             finish_args.append('--extra-data={name}:{sha256sum}:{size}::{url}'.format(**info))
         with open(self.JSON_FILE_NAME, 'w') as f:
             f.write(json.dumps(self._json_data, indent=2))
+            f.write("\n")
 
 if __name__ == '__main__':
     generator = FirefoxJsonGenerator(CURRENT_VERSION)

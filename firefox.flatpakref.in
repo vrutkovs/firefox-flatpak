@@ -1,5 +1,5 @@
 [Flatpak Ref]
-Title=vlc
+Title=firefox
 Name=org.mozilla.Firefox
 Branch=master
 Url=@URL@
