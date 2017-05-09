@@ -1,0 +1,11 @@
+diff -up rust-1.16.0-x86_64-unknown-linux-gnu/install.sh.uninstall-fix rust-1.16.0-x86_64-unknown-linux-gnu/install.sh
+--- rust-1.16.0-x86_64-unknown-linux-gnu/install.sh.uninstall-fix	2017-04-20 16:42:26.332631287 +0200
++++ rust-1.16.0-x86_64-unknown-linux-gnu/install.sh	2017-04-20 16:42:54.318869276 +0200
+@@ -127,6 +127,7 @@ write_to_file() {
+     local _msg="$1"
+     local _file="$2"
+     local _line="$ echo \"$_msg\" > \"$_file\""
++    rm -f "$_file"
+     echo "$_msg" > "$_file"
+     local _retval=$?
+     log_line "$_line"

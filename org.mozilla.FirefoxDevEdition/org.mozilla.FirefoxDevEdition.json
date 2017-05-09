@@ -111,12 +111,21 @@
                 {
                     "type": "shell",
                     "commands": ["chmod +x configure"]
+                },
+                {
+                    "type": "patch",
+                    "path": "rust-uninstall.patch"
                 }
             ]
 
       },
       {
           "name": "firefox",
+          "build-options" : {
+            "env": {
+              "STRIP": "/bin/true"
+            }
+          },
           "config-opts": ["--without-system-nspr",
                         "--without-system-nss",
                         "--disable-documentation"],
@@ -126,7 +135,7 @@
               {
                   "type": "git",
                   "url": "https://github.com/mozilla/gecko-dev",
-                  "branch" : "aurora"
+                  "branch" : "beta"
               },
               {
                   "type": "patch",
