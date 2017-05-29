@@ -23,7 +23,9 @@
         /* Enable playing sound thru pulseaudio */
         "--socket=pulseaudio",
         /* Keep user profile after application exit */
-        "--persist=.mozilla/"
+        "--persist=.mozilla/",
+        /* Allow access to Download folder */
+        "--filesystem=xdg-download:rw"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
