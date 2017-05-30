@@ -33,16 +33,16 @@ exit_with_error() {
 }
 
 # Data needed for the Java plugin
-JAVA_BUILD=8u121-b13
+JAVA_BUILD=8u131-b11
 JAVA_VERSION=`echo ${JAVA_BUILD} | cut -f 1 -d -`
 JAVA_FAMILY=`echo ${JAVA_VERSION} | cut -f 1 -d u`
 JAVA_UPDATE=`echo ${JAVA_VERSION} | cut -f 2 -d u`
 JAVA_JRE_VERSION=1.${JAVA_FAMILY}.0_${JAVA_UPDATE}
 JAVA_FILENAME=jre-${JAVA_VERSION}-linux-x64.tar.gz
 JAVA_FILE_PATH=${CACHE_DIR}/${JAVA_FILENAME}
-JAVA_URL_HASH=e9e7ea248e2c4826b92b3f075a80e441
+JAVA_URL_HASH=d54c1d3a095b4ff2b6607d096fa80163
 JAVA_URL_FILENAME=http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/${JAVA_URL_HASH}/${JAVA_FILENAME}
-JAVA_SHA256SUM=30bf5fbac0cfbc9201cac1d6973dbc96e5f55043ab315eda8c7aeb23df4f2644
+JAVA_SHA256SUM=355e5cdb066d4cada1f9f16f358b6fa6280ff5caf7470cf0d5cdd43083408d35
 JAVA_LINK=${PLUGINS_DIR}/libnpjp2.so
 
 # Data needed for the Flash plugin, from Adobe
