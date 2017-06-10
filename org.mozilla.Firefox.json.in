@@ -116,8 +116,8 @@
       "sources": [
         {
           "type": "file",
-          "url": "http://ftp.de.debian.org/debian/pool/main/u/unzip/unzip_6.0-16+deb8u2_amd64.deb",
-          "sha256": "e5aa7a599354ac7a8e80dd8a27e37b40812ef1e833553a7d514dc525b3432568",
+          "url": "http://ftp.us.debian.org/debian/pool/main/u/unzip/unzip_6.0-16+deb8u3_amd64.deb",
+          "sha256": "1ccc48a0a5d9a5fd655f7d319ca788f4de6cc65a7d33b525f2c5010a2fe9e224",
           "dest-filename": "unzip.deb"
         },
         {
