@@ -26,7 +26,9 @@
         /* Keep user profile after application exit */
         "--persist=.mozilla/",
         /* Allow access to Download folder */
-        "--filesystem=xdg-download:rw"
+        "--filesystem=xdg-download:rw",
+        /* Enable access to dri */
+        "--device=dri"
     ],
     "build-options" : {
         "cflags": "-O2 -g",

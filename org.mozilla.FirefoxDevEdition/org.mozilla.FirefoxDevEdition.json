@@ -21,7 +21,9 @@
         /* Use dark decorations for window */
         "--env=GTK_THEME_VARIANT=dark",
         /* Enable playing sound thru pulseaudio */
-        "--socket=pulseaudio"
+        "--socket=pulseaudio",
+        /* Enable access to dri */
+        "--device=dri"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
