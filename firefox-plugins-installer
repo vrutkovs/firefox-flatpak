@@ -167,14 +167,24 @@ flash_should_update() {
 download_java() {
     echo "Downloading ${JAVA_FILENAME}"
     if ! ${WGET_COMMAND} --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" ${JAVA_URL_FILENAME} -O "${JAVA_FILE_PATH}"; then
-        exit_with_error "Failed to download ${JAVA_URL_FILENAME}"
+        echo "Failed to download ${JAVA_URL_FILENAME}"
+        return 1
     fi
 
     echo "Verifying ${JAVA_FILE_PATH}"
     echo "${JAVA_SHA256SUM} ${JAVA_FILE_PATH}" | sha256sum -c > /dev/null 2>&1 || \
     {
-        exit_with_error "sha256sum mismatch ${JAVA_FILE_PATH}"
+        echo "sha256sum mismatch ${JAVA_FILE_PATH}"
+        return 1
     }
+}
+
+try_download_java() {
+    if ! download_java; then
+        echo "Deleting ${JAVA_FILE_PATH} and retrying once more..."
+        rm -f "${JAVA_FILE_PATH}"
+        return download_java
+    fi
 }
 
 install_java() {
@@ -189,7 +199,7 @@ install_java() {
     rm ${JAVA_FILE_PATH}
 }
 
-flash_download() {
+download_flash() {
     # Get the Adobe Flash Plugin
     echo "Downloading ${FLASH_LKGV_FILENAME}"
     if ! ${WGET_COMMAND} "${FLASH_LKGV_URL}" -O "${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"; then
@@ -204,6 +214,14 @@ flash_download() {
         echo "sha256sum mismatch ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"
         return 1
     }
+}
+
+try_download_flash() {
+    if ! download_flash; then
+        echo "Deleting ${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME} and retrying once more..."
+        rm -f "${FLASH_CACHE_DIR}/${FLASH_LKGV_FILENAME}"
+        return download_flash
+    fi
 }
 
 flash_install() {
@@ -242,7 +260,7 @@ flash_finish() {
 # Flash plugin installation
 flash_init
 if flash_should_check_updates ; then
-    if flash_should_update && flash_download; then
+    if flash_should_update && try_download_flash; then
         flash_install
     else
         echo "The Flash plugin was NOT updated"
@@ -256,7 +274,9 @@ if [ ! -e ${JAVA_LINK} ]; then
 
     java_plugin=`ls ${JAVA_DIR}/jre${JAVA_JRE_VERSION}/lib/amd64/libnpjp2.so 2>/dev/null` || echo ""
     if [ ! -e "${java_plugin}" ]; then
-        download_java
+        if ! try_download_java; then
+            exit 1
+        fi
         install_java
     fi
     java_plugin=$(ls ${JAVA_DIR}/jre*/lib/amd64/libnpjp2.so)
