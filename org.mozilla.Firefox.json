@@ -1,0 +1,114 @@
+{
+  "app-id": "org.mozilla.Firefox",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk": "org.gnome.Sdk",
+  "command": "firefox",
+  "separate-locales": false,
+  "finish-args": [
+    "--share=ipc",
+    "--socket=wayland",
+    "--socket=x11",
+    "--socket=pulseaudio",
+    "--share=network",
+    "--filesystem=home",
+    "--filesystem=/var/lib/codecs:ro",
+    "--env=LD_LIBRARY_PATH=/var/lib/codecs:/app/lib",
+    "--talk-name=org.gnome.GConf",
+    "--extra-data=firefox.tar.bz2:bcfe57532e42fa85003381dde9047877792d32ad11ddc641d3f17462ee22433b:57806183::https://archive.mozilla.org/pub/firefox/releases/52.0.2esr/linux-x86_64/en-US/firefox-52.0.2esr.tar.bz2",
+    "--extra-data=en-US.xpi:f969cb84fd963700d15846ad392467b0ca91ffe6629d2cd1e28872748ea602db:428630::https://archive.mozilla.org/pub/firefox/releases/52.0.2esr/linux-x86_64/xpi/en-US.xpi"
+  ],
+  "modules": [
+    {
+      "name": "libbz2",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://ftp.us.debian.org/debian/pool/main/b/bzip2/libbz2-1.0_1.0.6-7+b3_amd64.deb",
+          "sha256": "5930454002ca3bbf13ff3d2829252de1ec512617f5d2b997d3c6006e176d6c38",
+          "dest-filename": "libbz2.deb"
+        },
+        {
+          "type": "file",
+          "path": "binarydeb-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "unzip",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://ftp.us.debian.org/debian/pool/main/u/unzip/unzip_6.0-16+deb8u3_amd64.deb",
+          "sha256": "1ccc48a0a5d9a5fd655f7d319ca788f4de6cc65a7d33b525f2c5010a2fe9e224",
+          "dest-filename": "unzip.deb"
+        },
+        {
+          "type": "file",
+          "path": "binarydeb-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "xmlstarlet",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://ftp.de.debian.org/debian/pool/main/x/xmlstarlet/xmlstarlet_1.6.1-1_amd64.deb",
+          "sha256": "754dc23a4836f156e111c3c7414f5438be653a6261745ef88bca5a4f5b53f133",
+          "dest-filename": "xmlstarlet.deb"
+        },
+        {
+          "type": "file",
+          "path": "binarydeb-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    },
+    {
+      "name": "firefox",
+      "no-autogen": true,
+      "sources": [
+        {
+          "type": "file",
+          "path": "apply_extra"
+        },
+        {
+          "type": "file",
+          "path": "firefox.sh"
+        },
+        {
+          "type": "file",
+          "path": "org.mozilla.Firefox.desktop"
+        },
+        {
+          "type": "file",
+          "path": "org.mozilla.Firefox.appdata.xml"
+        },
+        {
+          "type": "file",
+          "url": "https://github.com/endlessm/eos-shell-content/raw/master/icons/bundle/64x64/apps/eos-app-org.mozilla.Firefox.png",
+          "sha256": "213c0872899a7187e470d19787dafa8b9b27bfed8bf93cf2d9f78fea94e06b43"
+        },
+        {
+          "type": "file",
+          "path": "endless-default-prefs.js"
+        },
+        {
+          "type": "file",
+          "path": "firefox-plugins-installer"
+        },
+        {
+          "type": "file",
+          "path": "firefox-Makefile",
+          "dest-filename": "Makefile"
+        }
+      ]
+    }
+  ]
+}
