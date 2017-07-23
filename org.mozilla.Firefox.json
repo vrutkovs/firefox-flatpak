@@ -11,7 +11,7 @@
     "--socket=x11",
     "--socket=pulseaudio",
     "--share=network",
-    "--filesystem=home",
+    "--filesystem=downloads",
     "--filesystem=/var/lib/codecs:ro",
     "--env=LD_LIBRARY_PATH=/var/lib/codecs:/app/lib",
     "--talk-name=org.gnome.GConf",
