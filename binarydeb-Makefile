@@ -5,4 +5,6 @@ install:
 	ar x *.deb
 	tar xvf data.tar.*
 	mkdir -p /app/bin
-	install usr/bin/* /app/bin
+	install usr/bin/* /app/bin || true
+	mkdir -p /app/lib
+	install lib/x86_64-linux-gnu/* /app/lib || true
