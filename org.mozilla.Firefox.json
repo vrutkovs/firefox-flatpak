@@ -92,8 +92,8 @@
         },
         {
           "type": "file",
-          "url": "https://github.com/endlessm/eos-shell-content/raw/master/icons/bundle/64x64/apps/eos-app-org.mozilla.Firefox.png",
-          "sha256": "213c0872899a7187e470d19787dafa8b9b27bfed8bf93cf2d9f78fea94e06b43"
+          "url": "http://icons.iconarchive.com/icons/artcore-illustrations/artcore/512/firefox-icon.png",
+          "sha256": "be7c7a2adf47eaab3c78789c8c47d2c7c529c8ffb460c85eeda8f4d3d315fc8c"
         },
         {
           "type": "file",
