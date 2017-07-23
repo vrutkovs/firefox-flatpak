@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Firefox web browser
+Name=Firefox (Flatpak)
 GenericName=Web browser
-Comment=Firefox web browser
+Comment=Firefox (Flatpak)
 Exec=firefox %u
 Icon=org.mozilla.Firefox
 Terminal=false
