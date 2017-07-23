@@ -3,7 +3,7 @@ include Makefile.config
 json := org.mozilla.Firefox.json
 app := firefox
 
-all: test
+all: test prune
 
 test: repo $(json)
 	flatpak-builder --force-clean --repo=repo --ccache --require-changes $(app) $(json)
@@ -16,6 +16,13 @@ release: release-repo $(json)
 
 clean:
 	rm -rf $(app)/*
+
+prune:
+	flatpak build-update-repo --prune --prune-depth=20 repo
+
+install-repo:
+	flatpak --user remote-add --if-not-exists --no-gpg-verify nightly-firefox ./repo
+	flatpak --user -v install nightly-firefox org.mozilla.Firefox || true
 
 repo:
 	ostree init --mode=archive-z2 --repo=repo
