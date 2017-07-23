@@ -119,8 +119,10 @@ class FirefoxJsonGenerator():
             if not link.string.endswith('.xpi') or not 'href' in link.attrs:
                 continue
             lang_link = link.get('href')
+
             # Make sure we add the full URL for the language add-ons
-            languages.append(urllib.parse.urljoin(url, lang_link))
+            if lang_link.endswith('en-US.xpi'):
+                languages.append(urllib.parse.urljoin(url, lang_link))
 
         info = []
         for lang in languages:
