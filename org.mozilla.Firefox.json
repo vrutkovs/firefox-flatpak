@@ -11,7 +11,7 @@
     "--socket=x11",
     "--socket=pulseaudio",
     "--share=network",
-    "--filesystem=downloads",
+    "--filesystem=xdg-download",
     "--filesystem=/usr/lib64/gstreamer-1.0:ro",
     "--env=LD_LIBRARY_PATH=/usr/lib64/gstreamer-1.0:/app/lib",
     "--talk-name=org.gnome.GConf",
