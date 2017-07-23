@@ -2,4 +2,5 @@ persist/
 .flatpak-builder/
 repo/
 tmp/
+firefox/
 *gpg
