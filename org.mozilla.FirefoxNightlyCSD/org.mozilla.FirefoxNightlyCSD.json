@@ -1,0 +1,172 @@
+{
+    "app-id": "org.mozilla.FirefoxNightlyCSD",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.24",
+    /*"branch" : "nightly",*/
+    "sdk": "org.gnome.Sdk",
+    "command": "firefox",
+    /*"tags": [""],*/
+    "desktop-file-name-suffix": " Nightly - CSD build",
+    "rename-desktop-file": "org.mozilla.Firefox.desktop",
+    "rename-appdata-file" : "org.mozilla.Firefox.appdata.xml",
+    "rename-icon" : "org.mozilla.Firefox",
+    "finish-args": [
+        /* X11 + XShm access */
+        "--share=ipc", "--socket=x11",
+        /* Required for x-remote replacement for wayland */
+        "--socket=session-bus",
+        /* We don't want full fs access so we can read the files */
+        /*"--filesystem=home:rw",*/
+        /* Needs to talk to the network: */
+        "--share=network",
+        /* Enable playing sound thru pulseaudio */
+        "--socket=pulseaudio",
+        /* Keep user profile after application exit */
+        "--persist=.mozilla/",
+        /* Allow access to Download folder */
+        "--filesystem=xdg-download:rw",
+        /* Enable access to dri */
+        "--device=dri"
+    ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": ["/include", "/lib/pkgconfig",
+                "/share/pkgconfig", "/share/aclocal",
+                "/man", "/share/man", "/share/gtk-doc",
+                "*.la", "*.a"],
+    "cleanup-commands": [ "/app/lib/rustlib/uninstall.sh"],
+    "modules": [
+      {
+          "name": "autoconf-2.13",
+          "config-opts": ["--program-suffix=2.13"],
+          "sources": [
+            {
+                "type": "archive",
+                "url": "http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz",
+                "sha256": "f0611136bee505811e9ca11ca7ac188ef5323a8e2ef19cffd3edb3cf08fd791e"
+            }
+          ]
+      },
+      {
+        "name": "gconf",
+        "config-opts": ["--disable-orbit",
+                        "--disable-gtk",
+                        "--disable-documentation"],
+        "sources": [
+            {
+                "type": "git",
+                "url": "git://git.gnome.org/gconf"
+            }
+        ]
+      },
+      {
+        "name": "yasm",
+        "config-opts": [],
+        "sources": [
+          {
+              "type": "archive",
+              "url": "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz",
+              "sha256": "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
+          }
+        ]
+      },
+      {
+            "name": "libnotify",
+            "config-opts": ["--disable-static"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.6.tar.xz",
+                    "sha256": "0ef61ca400d30e28217979bfa0e73a7406b19c32dd76150654ec5b2bdf47d837"
+                }
+            ]
+      },
+      {
+            "name":"rust",
+            "build-options" : { "no-debuginfo": true, "strip":false }, /* Stripped rust does not work */
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://static.rust-lang.org/dist/rust-1.19.0-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "30ff67884464d32f6bbbde4387e7557db98868e87fb2afbb77c9b7716e3bff09"
+                },
+                {
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"],
+                    "dest-filename": "configure"
+                },
+                {
+                    "type": "script",
+                    "commands": ["all:",
+                                 "	echo 'Nothing to do'",
+                                 "install:",
+                                 "	./install.sh --prefix=/app"
+                                ],
+                    "dest-filename": "Makefile"
+                },
+                {
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"]
+                },
+                {
+                    "type": "shell",
+                    "commands": ["chmod +x configure"]
+                },
+                {
+                    "type": "patch",
+                    "path": "rust-uninstall.patch"
+                }
+            ]
+
+      },
+      {
+          "name": "firefox",
+          "build-options" : {
+            "env": {
+              "STRIP": "/bin/true"
+            }
+          },
+          "config-opts": ["--without-system-nspr",
+                        "--without-system-nss",
+                        "--disable-documentation"],
+          "no-autogen": true,
+          "make-install-args": ["prefix=/app"],
+          "sources": [
+              {
+                  "type": "git",
+                  "url": "https://github.com/stransky/gecko-dev",
+                  "branch" : "titlebar"
+              },
+              {
+                  "type": "patch",
+                  "path": "firefox-makeinstall.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "mozlog-no-blessings-req.patch"
+              },
+              {
+                  "type": "file",
+                  "path": "org.mozilla.Firefox.appdata.xml",
+                  "dest": ""
+              },
+              {
+                  "type": "file",
+                  "path": "firefox-mozconfig",
+                  "dest": "",
+                  "dest-filename": ".mozconfig"
+              },
+              {
+                  "type": "file",
+                  "path": "org.mozilla.Firefox.desktop",
+                  "dest": ""
+              }
+          ]
+      }
+    ]
+}
