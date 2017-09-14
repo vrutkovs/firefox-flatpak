@@ -140,7 +140,7 @@
               {
                   "type": "git",
                   "url": "https://github.com/stransky/gecko-dev",
-                  "branch" : "titlebar"
+                  "branch" : "titlebar-csd"
               },
               {
                   "type": "patch",
