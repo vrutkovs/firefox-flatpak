@@ -152,6 +152,10 @@
                   "path": "mozlog-no-blessings-req.patch"
               },
               {
+                  "type": "patch",
+                  "path": "sandbox-flatpak.patch"
+              },
+              {
                   "type": "file",
                   "path": "org.mozilla.Firefox.appdata.xml",
                   "dest": ""
