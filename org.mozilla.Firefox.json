@@ -14,8 +14,8 @@
     "--filesystem=xdg-download",
     "--filesystem=~/.mozilla",
     "--talk-name=org.gnome.GConf",
-    "--extra-data=firefox.tar.bz2:356b2996514d1bea621eb057743f910559a639ac399945efe2c8b8344128bb68:51117513::https://archive.mozilla.org/pub/firefox/releases/55.0b9/linux-x86_64/en-US/firefox-55.0b9.tar.bz2",
-    "--extra-data=en-US.xpi:5caf8ec0abed31549af6d2033d47af428898c3d45d31bc7d1d7968f3a8a2c150:439815::https://archive.mozilla.org/pub/firefox/releases/55.0b9/linux-x86_64/xpi/en-US.xpi"
+    "--extra-data=firefox.tar.bz2:6bafdecb9717957c3fad8d4b3a668b581e1fbfa119204e9af5d0a712e0844f58:53525534::https://archive.mozilla.org/pub/firefox/releases/57.0b3/linux-x86_64/en-US/firefox-57.0b3.tar.bz2",
+    "--extra-data=en-US.xpi:9b1083300ac378543e591559eb8e7f132c8788dc3ec162c891e8a42155acf996:431462::https://archive.mozilla.org/pub/firefox/releases/57.0b3/linux-x86_64/xpi/en-US.xpi"
   ],
   "modules": [
     {
