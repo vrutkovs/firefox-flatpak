@@ -3,7 +3,10 @@ include Makefile.config
 json := org.mozilla.Firefox.json
 app := firefox
 
-all: test prune
+all: test prune update
+
+update:
+	flatpak --user update org.mozilla.Firefox
 
 test: repo $(json)
 	flatpak-builder --force-clean --repo=repo --ccache --require-changes $(app) $(json)
