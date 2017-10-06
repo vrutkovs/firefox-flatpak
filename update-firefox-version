@@ -37,10 +37,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CURRENT_VERSION = '57.0b3'
+CURRENT_VERSION = '57.0b6'
 
 class FirefoxJsonGenerator():
-    JSON_FILE_NAME = 'org.mozilla.Firefox.json.in'
+    JSON_FILE_NAME = 'org.mozilla.Firefox.json'
     MOZILLA_ARCHIVE_URL = 'https://archive.mozilla.org/pub/firefox/releases/{version}/linux-x86_64/'
 
     def __init__(self, version):
