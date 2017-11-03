@@ -1,0 +1,8 @@
+[Flatpak Ref]
+Title=Unofficial Mozilla Firefox flatpak
+Name=org.mozilla.Firefox
+Branch=master
+Url=https://vrutkovs.github.io/firefox-flatpak/repo
+IsRuntime=False
+RuntimeRepo=https://flathub.org/repo/flathub.flatpakrepo
+Comment=A flatpak for Mozilla Firefox, using freedesktop runtime and official beta binaries
