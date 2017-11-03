@@ -1,8 +1,8 @@
 {
   "app-id": "org.mozilla.Firefox",
-  "runtime": "com.endlessm.Platform",
+  "runtime": "org.freedesktop.Platform",
   "runtime-version": "@BRANCH@",
-  "sdk": "com.endlessm.Sdk",
+  "sdk": "org.freedesktop.Sdk",
   "command": "firefox",
   "separate-locales": false,
   "finish-args": [

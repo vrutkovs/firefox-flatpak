@@ -1,0 +1,26 @@
+---
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull vrutkovs/flatpak
+
+script:
+  - git clone -b gh-pages https://github.com/$TRAVIS_REPO_SLUG export/ || mkdir export /
+  - cp -rf export/repo . || true
+  - docker run --privileged -v ${PWD}:/source --name flatpak -i vrutkovs/flatpak sh -c "cd source/; make"
+  - rm -rf export && mkdir export
+  - cp -rf repo/ export/
+  - cp -rf firefox.flatpakref export/
+
+deploy:
+  provider: pages
+  local_dir: export
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
