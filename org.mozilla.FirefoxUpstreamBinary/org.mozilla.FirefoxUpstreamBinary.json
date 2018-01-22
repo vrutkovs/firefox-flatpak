@@ -40,8 +40,8 @@
           "sources": [
               {
                   "type": "archive",
-                  "url": "https://archive.mozilla.org/pub/firefox/candidates/57.0b9-candidates/build1/linux-x86_64/en-US/firefox-57.0b9.tar.bz2",
-                  "sha256": "52812df1d427695446223e1fc5ff2f562982e24f103e3aecb278ad4943a34ee9",
+                  "url": "http://download.cdn.mozilla.net/pub/firefox/releases/58.0b16/linux-x86_64/en-US/firefox-58.0b16.tar.bz2 ",
+                  "sha256": "6edb4c29cb339da7f6de0515805052a833d18a361541bbbcfc51305cf7602368",
                   "dest": "firefox"
               },
               {
