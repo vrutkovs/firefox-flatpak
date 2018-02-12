@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxNightly",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.24",
+    "runtime-version": "3.26",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
@@ -27,7 +27,10 @@
         /* Allow access to Download folder */
         "--filesystem=xdg-download:rw",
         /* Enable access to dri */
-        "--device=dri"
+        "--device=dri",
+        /* Enable themes support */
+        "--filesystem=~/.config/dconf:ro",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
@@ -93,8 +96,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://static.rust-lang.org/dist/rust-1.21.0-x86_64-unknown-linux-gnu.tar.gz",
-                    "sha256": "b41e70e018402bc04d02fde82f91bea24428e6be432f0df12ac400cfb03108e8"
+                    "url": "https://static.rust-lang.org/dist/rust-1.23.0-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "9a34b23a82d7f3c91637e10ceefb424539dcfa327c2dcd292ff10c047b1fdc7e"
                 },
                 {
                     "type": "script",
