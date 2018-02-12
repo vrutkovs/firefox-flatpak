@@ -11,7 +11,7 @@ diff --git a/GNUmakefile b/GNUmakefile
 index 38656c8..6f6c941 100644
 --- a/GNUmakefile
 +++ b/GNUmakefile
-@@ -11,4 +11,11 @@ build:
+@@ -11,4 +11,18 @@ build:
  clean:
  	./mach clobber
  
@@ -23,6 +23,13 @@ index 38656c8..6f6c941 100644
 +	#cp -p browser/branding/aurora/default16.png $(prefix)/share/icons/hicolor/16x16/apps/org.mozilla.Firefox.png
 +	cp -p org.mozilla.Firefox.appdata.xml $(prefix)/share/appdata
 +	cp -p browser/branding/aurora/default128.png $(prefix)/share/icons/hicolor/128x128/apps/org.mozilla.Firefox.png
++	mv $(prefix)/bin/firefox $(prefix)/bin/firefox-bin
++	# Create wrapper script which will make files downloaded for opening available outside of sandbox
++	echo '#!/bin/bash' > $(prefix)/bin/firefox
++	echo 'export TMPDIR=$$XDG_CACHE_HOME/tmp' >> $(prefix)/bin/firefox
++	echo 'firefox-bin $$*' >> $(prefix)/bin/firefox
++	chmod +x $(prefix)/bin/firefox
++
 +.PHONY: all build clean install
 -- 
 2.5.5
