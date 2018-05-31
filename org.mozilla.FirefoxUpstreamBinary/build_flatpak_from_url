@@ -1,0 +1,50 @@
+#!/bin/bash
+set -x
+PACKAGE_NAME=org.mozilla.FirefoxUpstreamBinary
+
+MANIFEST_FILE_TEMPLATE=$PACKAGE_NAME.json.template
+MANIFEST_FILE=$PACKAGE_NAME.json
+
+if [ -z $1 ]; then
+  echo "Usage: $0 URL"
+  echo ""
+  echo "Example: $0 https://archive.mozilla.org/pub/firefox/candidates/57.0b9-candidates/build1/linux-x86_64/en-US/firefox-57.0b9.tar.bz2"
+  exit 1
+fi
+
+BINARY=$1
+BUILD_DIR_URL=`echo $BINARY | sed -e 's|\(build[0-9]\).*|\1|'`
+BUILD_FILE_WITH_PATH=`echo $BINARY | sed -e "s|.*build[0-9]\+/||"`
+
+CHECKSUM=`curl $BUILD_DIR_URL/SHA256SUMS|grep $BUILD_FILE_WITH_PATH | cut -d\  -f1`
+
+export FIREFOX_BINARY_URL=$BINARY
+export FIREFOX_BINARY_CHECKSUM=$CHECKSUM
+
+mkdir -p langpacks
+cd langpacks
+
+wget -nd -np --recursive --level=0 $BUILD_DIR_URL/linux-x86_64/xpi/
+BUILD_DIR_URL=https://archive.mozilla.org/pub/firefox/candidates/57.0b9-candidates/build1
+for l in $(ls *.xpi)
+do
+LOCALE=`basename -s .xpi $l`
+LANGPACKS="$LANGPACKS
+              {
+                  'type': 'file',
+                  'path': 'langpacks/$l',
+                  'dest': 'langpacks/',
+                  'dest-filename': 'langpack-$LOCALE@firefox.mozilla.org.xpi'
+              },"
+done
+cd -
+
+export LANGPACKS
+
+cat $MANIFEST_FILE_TEMPLATE | envsubst > $MANIFEST_FILE
+
+rm -rf app repo
+flatpak-builder --disable-cache --repo=repo app $MANIFEST_FILE
+flatpak build-bundle repo $PACKAGE_NAME.flatpak $PACKAGE_NAME
+# Cleanup downloaded langpacks
+rm -rf langpacks
