@@ -5,7 +5,7 @@ To build flatpak package from upstream binaries use following steps:
 1. find a binary which you want to pack
 1. use the URL of the binary as a parameter to the `build_flatpak_from_url` script, for example:
 ```
- build_flatpak_from_url http://archive.mozilla.org/pub/firefox/candidates/60.0esr-candidates/build6/linux-x86_64/en-US/firefox-60.0esr.tar.bz2
+ ./build_flatpak_from_url http://archive.mozilla.org/pub/firefox/candidates/60.0esr-candidates/build6/linux-x86_64/en-US/firefox-60.0esr.tar.bz2
 ```
 
 This will download all langpacks available for the binary (in above example 
