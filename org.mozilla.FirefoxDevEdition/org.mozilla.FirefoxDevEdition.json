@@ -55,18 +55,6 @@
           ]
       },
       {
-        "name": "gconf",
-        "config-opts": ["--disable-orbit",
-                        "--disable-gtk",
-                        "--disable-documentation"],
-        "sources": [
-            {
-                "type": "git",
-                "url": "git://git.gnome.org/gconf"
-            }
-        ]
-      },
-      {
         "name": "yasm",
         "config-opts": [],
         "sources": [
