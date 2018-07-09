@@ -15,3 +15,4 @@ build:
 
 update-repo:
 	flatpak build-update-repo --prune --prune-depth=20 --generate-static-deltas repo
+	rm -rf repo/.lock

@@ -11,7 +11,7 @@ before_install:
 
 script:
   - git clone -b gh-pages https://github.com/$TRAVIS_REPO_SLUG export/ && cp -rf export/repo . || mkdir export
-  - docker run --privileged -v ${PWD}:/source --name flatpak -i vrutkovs/flatpak sh -c "cd source/; make"
+  - docker run --privileged -v ${PWD}:/source --name flatpak -i vrutkovs/flatpak make -C source
   - rm -rf export && mkdir export
   - cp -rf repo/ export/
   - cp -rf firefox.flatpakref export/
