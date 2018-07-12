@@ -86,8 +86,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://static.rust-lang.org/dist/rust-1.24.1-x86_64-unknown-linux-gnu.tar.gz",
-                    "sha256": "4567e7f6e5e0be96e9a5a7f5149b5452828ab6a386099caca7931544f45d5327"
+                    "url": "https://static.rust-lang.org/dist/rust-1.27.1-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "435778a837af764da2a7a7fb4d386b7b78516c7dfc732d892858e9a8a539989b"
                 },
                 {
                     "type": "script",
@@ -98,7 +98,7 @@
                     "type": "script",
                     "commands": ["all:",
                                  "	echo 'Nothing to do'",
-                                 "install:", 
+                                 "install:",
                                  "	./install.sh --verbose --prefix='/app'"
                                 ],
                     "dest-filename": "Makefile"
@@ -117,6 +117,21 @@
                 }
             ]
 
+      },
+      {
+        "name": "PipeWire",
+        "buildsystem": "meson",
+        "sources": [
+            {
+                "type": "archive",
+                "url": "https://github.com/PipeWire/pipewire/archive/0.1.9.tar.gz",
+                "sha256": "d7dc591d60c3544f3c24b2b0ab1db458991dd69d0610337fd0accf136373916b"
+            },
+            {
+                "type": "patch",
+                "path": "pipewire-build.patch"
+            }
+        ]
       },
       {
           "name": "firefox",
@@ -143,6 +158,10 @@
               {
                   "type": "patch",
                   "path": "mozlog-no-blessings-req.patch"
+              },
+              {
+                "type": "patch",
+                "path": "firefox-pipewire.patch"
               },
               {
                   "type": "file",

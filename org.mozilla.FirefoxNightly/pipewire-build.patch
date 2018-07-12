@@ -1,0 +1,34 @@
+diff --git a/spa/meson.build b/spa/meson.build
+index 74e92d2b..f209d545 100644
+--- a/spa/meson.build
++++ b/spa/meson.build
+@@ -1,7 +1,6 @@
+ #project('spa', 'c')
+ 
+ alsa_dep = dependency('alsa')
+-v4l2_dep = dependency('libv4l2')
+ x11_dep = dependency('x11', required : false)
+ sdl_dep = dependency('sdl2', required : false)
+ avcodec_dep = dependency('libavcodec', required : false)
+@@ -9,7 +8,6 @@ avformat_dep = dependency('libavformat', required : false)
+ avfilter_dep = dependency('libavfilter', required : false)
+ libva_dep = dependency('libva', required : false)
+ sbc_dep = dependency('sbc', required : false)
+-libudev_dep = dependency('libudev')
+ threads_dep = dependency('threads')
+ 
+ #cc = meson.get_compiler('c')
+diff --git a/spa/plugins/meson.build b/spa/plugins/meson.build
+index 889fa7d2..eeea7917 100644
+--- a/spa/plugins/meson.build
++++ b/spa/plugins/meson.build
+@@ -1,4 +1,3 @@
+-subdir('alsa')
+ subdir('audiomixer')
+ subdir('audiotestsrc')
+ if sbc_dep.found()
+@@ -11,4 +10,3 @@ subdir('support')
+ subdir('test')
+ subdir('videotestsrc')
+ subdir('volume')
+-subdir('v4l2')
