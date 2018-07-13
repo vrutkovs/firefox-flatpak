@@ -42,8 +42,8 @@
               },
               {
                   "type": "file",
-                  "path": "Makefile",
-                  "dest": ""
+                  "path": "build-makefile",
+                  "dest-filename": "Makefile"
               },
 $LANGPACKS
               {
