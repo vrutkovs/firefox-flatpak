@@ -1,9 +1,3 @@
-From a159255be5cc219835f73cb94f133e54491fc752 Mon Sep 17 00:00:00 2001
-From: Jan Grulich <jgrulich@redhat.com>
-Date: Thu, 12 Jul 2018 16:34:32 +0200
-Subject: PipeWire support
-
-
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
 index 60967bd51792..11eb07a650ca 100644
 --- a/config/system-headers.mozbuild
@@ -532,10 +526,10 @@ index 000000000000..8c155102ed74
 +}  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc
 new file mode 100644
-index 000000000000..660dcf0b4f9d
+index 000000000000..e53b04a8a288
 --- /dev/null
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc
-@@ -0,0 +1,1003 @@
+@@ -0,0 +1,1080 @@
 +/*
 + *  Copyright (c) 2018 The WebRTC project authors. All Rights Reserved.
 + *
@@ -547,6 +541,7 @@ index 000000000000..660dcf0b4f9d
 + */
 +
 +#include <sys/mman.h>
++#include <dlfcn.h>
 +
 +#include <gio/gio.h>
 +#include <gio/gunixfdlist.h>
@@ -563,6 +558,17 @@ index 000000000000..660dcf0b4f9d
 +#include "webrtc/base/logging.h"
 +#include "webrtc/modules/desktop_capture/desktop_capture_options.h"
 +#include "webrtc/modules/desktop_capture/desktop_capturer.h"
++
++#ifdef __has_include
++#  if __has_include(<pipewire/version.h>)
++#    include<pipewire/version.h>
++#    define PW_API_PRE_0_2_0 false
++#  else
++#    define PW_API_PRE_0_2_0 true
++#  endif
++#else
++#define PW_API_PRE_0_2_0 true
++#endif
 +
 +namespace webrtc {
 +namespace {
@@ -649,7 +655,11 @@ index 000000000000..660dcf0b4f9d
 +  void InitPipeWireTypes();
 +
 +  void CreateReceivingStream();
-+  void HandleBuffer(spa_buffer* buffer);
++#if PW_API_PRE_0_2_0
++  void HandleBuffer(spa_buffer* spa_buffer);
++#else
++  void HandleBuffer(pw_buffer* buffer);
++#endif
 +
 +  static void OnStateChanged(void* data,
 +                             pw_remote_state old,
@@ -659,8 +669,13 @@ index 000000000000..660dcf0b4f9d
 +                                   pw_stream_state old,
 +                                   pw_stream_state state,
 +                                   const char* error_message);
++#if PW_API_PRE_0_2_0
 +  static void OnStreamFormatChanged(void* data, struct spa_pod* format);
 +  static void OnNewBuffer(void* data, uint32_t id);
++#else
++  static void OnStreamFormatChanged(void* data, const struct spa_pod* format);
++  static void OnStreamProcess(void* data);
++#endif
 +  static gboolean PipeWireLoopSourceCheck(GSource* source);
 +  static gboolean PipeWireLoopSourcePrepare(GSource* source, int* timeout);
 +  static gboolean PipeWireLoopSourceDispatch(GSource* source,
@@ -773,7 +788,11 @@ index 000000000000..660dcf0b4f9d
 +
 +// static
 +void ScreenCapturerPipeWire::OnStreamFormatChanged(void* data,
++#if PW_API_PRE_0_2_0
 +                                                   struct spa_pod* format) {
++#else
++                                                   const struct spa_pod* format) {
++#endif
 +  ScreenCapturerPipeWire* that = static_cast<ScreenCapturerPipeWire*>(data);
 +  RTC_DCHECK(that);
 +
@@ -797,7 +816,11 @@ index 000000000000..660dcf0b4f9d
 +  auto builder = spa_pod_builder{buffer, sizeof(buffer)};
 +
 +  // setup buffers and meta header for new format
++#if PW_API_PRE_0_2_0
 +  struct spa_pod* params[2];
++#else
++  const struct spa_pod* params[2];
++#endif
 +  params[0] = reinterpret_cast<spa_pod*>(spa_pod_builder_object(
 +      &builder, that->pw_core_type_->param.idBuffers,
 +      that->pw_core_type_->param_buffers.Buffers, ":",
@@ -818,16 +841,28 @@ index 000000000000..660dcf0b4f9d
 +}
 +
 +// static
++#if PW_API_PRE_0_2_0
 +void ScreenCapturerPipeWire::OnNewBuffer(void* data, uint32_t id) {
++#else
++void ScreenCapturerPipeWire::OnStreamProcess(void* data) {
++#endif
 +  ScreenCapturerPipeWire* that = static_cast<ScreenCapturerPipeWire*>(data);
 +  RTC_DCHECK(that);
 +
++#if PW_API_PRE_0_2_0
 +  spa_buffer* buf = pw_stream_peek_buffer(that->pw_stream_, id);
-+
++#else
++  pw_buffer* buf = pw_stream_dequeue_buffer(that->pw_stream_);
++#endif
 +  that->HandleBuffer(buf);
 +
++#if PW_API_PRE_0_2_0
 +  pw_stream_recycle_buffer(that->pw_stream_, id);
++#else
++  pw_stream_queue_buffer(that->pw_stream_, buf);
++#endif
 +}
++
 +
 +// static
 +gboolean ScreenCapturerPipeWire::PipeWireLoopSourceCheck(GSource* source) {
@@ -867,6 +902,33 @@ index 000000000000..660dcf0b4f9d
 +}
 +
 +ScreenCapturerPipeWire::ScreenCapturerPipeWire() {
++  void* handle = dlopen("libpipewire-0.1.so.0", RTLD_LAZY);
++
++  if (!handle) {
++    // Assume newer PipeWire library is used
++#if PW_API_PRE_0_2_0
++    LOG(LS_ERROR) << "WebRTC has been built with older PipeWire version and cannot be used";
++    return;
++#endif
++  }
++
++  // Test newer PipeWire library without bumped soname
++  if (dlsym(handle, "pw_get_library_version") == nullptr) {
++#if !PW_API_PRE_0_2_0
++    LOG(LS_ERROR) << "WebRTC has been built with newer PipeWire version and cannot be used";
++    dlclose(handle);
++    return;
++#endif
++  } else {
++#if PW_API_PRE_0_2_0
++    LOG(LS_ERROR) << "WebRTC has been built with older PipeWire version and cannot be used";
++    dlclose(handle);
++    return;
++#endif
++  }
++
++  dlclose(handle);
++
 +  g_dbus_proxy_new_for_bus(
 +      G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE, nullptr, kDesktopBusName,
 +      kDesktopObjectPath, kScreenCastInterfaceName, nullptr,
@@ -958,7 +1020,11 @@ index 000000000000..660dcf0b4f9d
 +  pw_stream_events_.version = PW_VERSION_STREAM_EVENTS;
 +  pw_stream_events_.state_changed = &OnStreamStateChanged;
 +  pw_stream_events_.format_changed = &OnStreamFormatChanged;
++#if PW_API_PRE_0_2_0
 +  pw_stream_events_.new_buffer = &OnNewBuffer;
++#else
++  pw_stream_events_.process = &OnStreamProcess;
++#endif
 +
 +  pw_remote_add_listener(pw_remote_, &spa_remote_listener_, &pw_remote_events_,
 +                         this);
@@ -1027,25 +1093,30 @@ index 000000000000..660dcf0b4f9d
 +  }
 +}
 +
-+void ScreenCapturerPipeWire::HandleBuffer(spa_buffer* buffer) {
-+  gint32 map_length = buffer->datas[0].maxsize + buffer->datas[0].mapoffset;
++#if PW_API_PRE_0_2_0
++void ScreenCapturerPipeWire::HandleBuffer(spa_buffer* spa_buffer) {
++#else
++void ScreenCapturerPipeWire::HandleBuffer(pw_buffer* buffer) {
++  spa_buffer* spa_buffer = buffer->buffer;
++#endif
++  gint32 map_length = spa_buffer->datas[0].maxsize + spa_buffer->datas[0].mapoffset;
 +
 +  void* mapped = nullptr;
 +  void* src = nullptr;
-+  if (buffer->datas[0].type == pw_core_type_->data.MemFd ||
-+      buffer->datas[0].type == pw_core_type_->data.DmaBuf) {
++  if (spa_buffer->datas[0].type == pw_core_type_->data.MemFd ||
++      spa_buffer->datas[0].type == pw_core_type_->data.DmaBuf) {
 +    mapped = mmap(nullptr, map_length, PROT_READ, MAP_PRIVATE,
-+                  buffer->datas[0].fd, 0);
-+    src = SPA_MEMBER(mapped, buffer->datas[0].mapoffset, void);
-+  } else if (buffer->datas[0].type == pw_core_type_->data.MemPtr) {
++                  spa_buffer->datas[0].fd, 0);
++    src = SPA_MEMBER(mapped, spa_buffer->datas[0].mapoffset, void);
++  } else if (spa_buffer->datas[0].type == pw_core_type_->data.MemPtr) {
 +    mapped = nullptr;
-+    src = buffer->datas[0].data;
++    src = spa_buffer->datas[0].data;
 +  } else {
-+    LOG(LS_ERROR) << "Got unsupported buffer type: " << buffer->datas[0].type;
++    LOG(LS_ERROR) << "Got unsupported buffer type: " << spa_buffer->datas[0].type;
 +    return;
 +  }
 +
-+  gint32 src_stride = buffer->datas[0].chunk->stride;
++  gint32 src_stride = spa_buffer->datas[0].chunk->stride;
 +  if (src_stride != (desktop_size_.width() * kBytesPerPixel)) {
 +    LOG(LS_ERROR) << "Got buffer with stride different from screen stride: "
 +                  << src_stride
@@ -1055,11 +1126,11 @@ index 000000000000..660dcf0b4f9d
 +
 +  // TODO maybe find a better way how to pass buffers
 +  if (!current_frame_) {
-+    current_frame_ = static_cast<uint8_t*>(malloc(buffer->datas[0].maxsize));
++    current_frame_ = static_cast<uint8_t*>(malloc(spa_buffer->datas[0].maxsize));
 +  }
 +
 +  RTC_DCHECK(current_frame_ != nullptr);
-+  std::memcpy(current_frame_, src, buffer->datas[0].maxsize);
++  std::memcpy(current_frame_, src, spa_buffer->datas[0].maxsize);
 +
 +  if (mapped) {
 +    munmap(mapped, map_length);
