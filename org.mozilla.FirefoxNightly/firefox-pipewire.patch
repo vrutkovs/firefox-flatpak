@@ -102,12 +102,12 @@ index 5a0b1a28f058..84a7e5951032 100644
 -#include "webrtc/modules/desktop_capture/window_capturer.h"
  #include "webrtc/modules/desktop_capture/app_capturer.h"
 +#include "webrtc/modules/desktop_capture/desktop_capturer.h"
- 
+
  #include <assert.h>
- 
+
 @@ -29,9 +29,11 @@ public:
    virtual bool BringAppToFront()	override;
- 
+
    // DesktopCapturer interface.
 -  virtual void Start(Callback* callback) override;
 -  virtual void Stop() override;
@@ -117,13 +117,13 @@ index 5a0b1a28f058..84a7e5951032 100644
 +  void CaptureFrame() override;
 +  bool GetSourceList(SourceList* sources) override;
 +  bool SelectSource(SourceId id) override;
- 
+
  private:
    Callback* callback_;
 @@ -61,7 +63,16 @@ bool AppCapturerNull::BringAppToFront() {
    return false;
  }
- 
+
 -// DesktopCapturer interface.
 +bool AppCapturerNull::GetSourceList(SourceList* sources) {
 +  // Not implemented yet.
@@ -141,7 +141,7 @@ index 5a0b1a28f058..84a7e5951032 100644
 @@ -73,16 +84,19 @@ void AppCapturerNull::Stop() {
    callback_ = NULL;
  }
- 
+
 -void AppCapturerNull::Capture(const DesktopRegion& region) {
 -  // Not implemented yet: See Bug 1036653
 -  callback_->OnCaptureCompleted(NULL);
@@ -149,9 +149,9 @@ index 5a0b1a28f058..84a7e5951032 100644
 +  // Not implemented yet.
 +  callback_->OnCaptureResult(Result::ERROR_TEMPORARY, nullptr);
  }
- 
+
  }  // namespace
- 
+
 +#if not defined(USE_PIPEWIRE)
  // static
 -AppCapturer* AppCapturer::Create(const DesktopCaptureOptions& options) {
@@ -161,7 +161,7 @@ index 5a0b1a28f058..84a7e5951032 100644
 +  return std::unique_ptr<DesktopCapturer>(new AppCapturerNull());
  }
 +#endif // not defined(USE_PIPEWIRE)
- 
+
  }  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.cc
 index 8215823672b6..5c20ed0a517b 100755
@@ -170,7 +170,7 @@ index 8215823672b6..5c20ed0a517b 100755
 @@ -53,10 +53,13 @@ protected:
    std::unique_ptr<DesktopFrame> frame_;
  };
- 
+
 -class AppCapturerLinux : public AppCapturer {
 +class AppCapturerX11 : public AppCapturer {
  public:
@@ -181,12 +181,12 @@ index 8215823672b6..5c20ed0a517b 100755
 +
 +  static AppCapturer* Create(const DesktopCaptureOptions& options);
 +  static std::unique_ptr<DesktopCapturer> CreateRawAppCapturer(const DesktopCaptureOptions& options);
- 
+
    // AppCapturer interface.
    virtual bool GetAppList(AppList* apps) override;
 @@ -91,10 +94,9 @@ private:
    Region rgn_background_;
- 
+
    rtc::scoped_refptr<SharedXDisplay> x_display_;
 -  RTC_DISALLOW_COPY_AND_ASSIGN(AppCapturerLinux);
 +  RTC_DISALLOW_COPY_AND_ASSIGN(AppCapturerX11);
@@ -200,7 +200,7 @@ index 8215823672b6..5c20ed0a517b 100755
 @@ -103,7 +105,7 @@ AppCapturerLinux::AppCapturerLinux(const DesktopCaptureOptions& options)
    rgn_background_ = XCreateRegion();
  }
- 
+
 -AppCapturerLinux::~AppCapturerLinux() {
 +AppCapturerX11::~AppCapturerX11() {
    if (rgn_mask_) {
@@ -208,7 +208,7 @@ index 8215823672b6..5c20ed0a517b 100755
    }
 @@ -116,32 +118,32 @@ AppCapturerLinux::~AppCapturerLinux() {
  }
- 
+
  // AppCapturer interface.
 -bool AppCapturerLinux::GetAppList(AppList* apps) {
 +bool AppCapturerX11::GetAppList(AppList* apps) {
@@ -225,65 +225,65 @@ index 8215823672b6..5c20ed0a517b 100755
    // Not implemented yet: See Bug 1036653
    return true;
  }
- 
+
  // DesktopCapturer interface.
 -void AppCapturerLinux::Start(Callback* callback) {
 +void AppCapturerX11::Start(Callback* callback) {
    assert(!callback_);
    assert(callback);
- 
+
    callback_ = callback;
  }
- 
+
 -void AppCapturerLinux::Stop() {
 +void AppCapturerX11::Stop() {
    callback_ = NULL;
  }
- 
+
 -void AppCapturerLinux::CaptureFrame() {
 +void AppCapturerX11::CaptureFrame() {
    XErrorTrap error_trap(GetDisplay());
- 
+
    //Capture screen >> set root window as capture window
 @@ -169,7 +171,7 @@ void AppCapturerLinux::CaptureFrame() {
    }
  }
- 
+
 -void AppCapturerLinux::FillDesktopFrameRegionWithColor(DesktopFrame* pDesktopFrame, Region rgn, uint32_t color) {
 +void AppCapturerX11::FillDesktopFrameRegionWithColor(DesktopFrame* pDesktopFrame, Region rgn, uint32_t color) {
    XErrorTrap error_trap(GetDisplay());
- 
+
    if (!pDesktopFrame) {
 @@ -192,7 +194,7 @@ void AppCapturerLinux::FillDesktopFrameRegionWithColor(DesktopFrame* pDesktopFra
    }
  }
- 
+
 -bool AppCapturerLinux::UpdateRegions() {
 +bool AppCapturerX11::UpdateRegions() {
    XErrorTrap error_trap(GetDisplay());
- 
+
    XSubtractRegion(rgn_visual_, rgn_visual_, rgn_visual_);
 @@ -272,18 +274,18 @@ bool AppCapturerLinux::UpdateRegions() {
  }  // namespace
- 
+
  // static
 -AppCapturer* AppCapturer::Create(const DesktopCaptureOptions& options) {
 -  return new AppCapturerLinux(options);
 +AppCapturer* AppCapturerX11::Create(const DesktopCaptureOptions& options) {
 +  return new AppCapturerX11(options);
  }
- 
+
  // static
 -std::unique_ptr<DesktopCapturer> DesktopCapturer::CreateRawAppCapturer(
 +std::unique_ptr<DesktopCapturer> AppCapturerX11::CreateRawAppCapturer(
      const DesktopCaptureOptions& options) {
- 
+
    if (!options.x_display())
      return nullptr;
- 
+
 -  std::unique_ptr<AppCapturerLinux> capturer(new AppCapturerLinux(options));
 +  std::unique_ptr<AppCapturerX11> capturer(new AppCapturerX11(options));
- 
+
    return std::unique_ptr<DesktopCapturer>(std::move(capturer));
  }
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build
@@ -292,7 +292,7 @@ index ea1726a51c85..de3d22793a56 100644
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build
 @@ -166,10 +166,6 @@ if CONFIG["OS_TARGET"] == "Linux":
      ]
- 
+
      UNIFIED_SOURCES += [
 -        "/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.cc",
 -        "/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc",
@@ -304,7 +304,7 @@ index ea1726a51c85..de3d22793a56 100644
 @@ -177,6 +173,36 @@ if CONFIG["OS_TARGET"] == "Linux":
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/x_server_pixel_buffer.cc"
      ]
- 
+
 +# Common stuff between Pipewire and X11
 +if CONFIG["OS_TARGET"] == "Linux":
 +
@@ -322,7 +322,7 @@ index ea1726a51c85..de3d22793a56 100644
 +
 +    OS_LIBS += [
 +        "rt",
-+        "pipewire-0.1",
++        "pipewire-0.2",
 +        "glib-2.0",
 +        "gio-2.0",
 +        "gobject-2.0",
@@ -336,7 +336,7 @@ index ea1726a51c85..de3d22793a56 100644
 +    ]
 +
  if CONFIG["OS_TARGET"] == "NetBSD":
- 
+
      DEFINES["USE_X11"] = "1"
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.cc
 index 7510bde47fbb..9dab1eb503f6 100644
@@ -345,7 +345,7 @@ index 7510bde47fbb..9dab1eb503f6 100644
 @@ -66,4 +66,17 @@ std::unique_ptr<DesktopCapturer> DesktopCapturer::CreateAppCapturer(
    return capturer;
  }
- 
+
 +#if defined(USE_PIPEWIRE) || defined(USE_X11)
 +bool DesktopCapturer::IsRunningUnderWayland() {
 +  const char* xdg_session_type = getenv("XDG_SESSION_TYPE");
@@ -367,7 +367,7 @@ index eb84d3c3bf50..17cacc5dcac6 100644
 @@ -129,6 +129,10 @@ class DesktopCapturer {
    static std::unique_ptr<DesktopCapturer> CreateAppCapturer(
        const DesktopCaptureOptions& options);
- 
+
 +#if defined(USE_PIPEWIRE) || defined(USE_X11)
 +  static bool IsRunningUnderWayland();
 +#endif
@@ -430,9 +430,9 @@ index 3a632cc0d9cd..b70b4e2568dc 100644
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_null.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_null.cc
 @@ -14,6 +14,7 @@
- 
+
  namespace webrtc {
- 
+
 +#if not defined(USE_PIPEWIRE)
  MouseCursorMonitor* MouseCursorMonitor::CreateForWindow(
      const DesktopCaptureOptions& options,
@@ -442,7 +442,7 @@ index 3a632cc0d9cd..b70b4e2568dc 100644
    return NULL;
  }
 +#endif // not defined(USE_PIPEWIRE)
- 
+
  }  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc
 index 2dcad5b3887f..a8397f1ec15c 100644
@@ -451,7 +451,7 @@ index 2dcad5b3887f..a8397f1ec15c 100644
 @@ -69,6 +69,9 @@ class MouseCursorMonitorX11 : public MouseCursorMonitor,
    void Stop() override;
    void Capture() override;
- 
+
 +  static MouseCursorMonitor* CreateForWindow(const DesktopCaptureOptions& options, WindowId window);
 +  static MouseCursorMonitor* CreateForScreen(const DesktopCaptureOptions& options, ScreenId screen);
 +
@@ -460,7 +460,7 @@ index 2dcad5b3887f..a8397f1ec15c 100644
    bool HandleXEvent(const XEvent& event) override;
 @@ -244,7 +247,7 @@ void MouseCursorMonitorX11::CaptureCursor() {
  }
- 
+
  // static
 -MouseCursorMonitor* MouseCursorMonitor::CreateForWindow(
 +MouseCursorMonitor* MouseCursorMonitorX11::CreateForWindow(
@@ -470,7 +470,7 @@ index 2dcad5b3887f..a8397f1ec15c 100644
 @@ -254,7 +257,7 @@ MouseCursorMonitor* MouseCursorMonitor::CreateForWindow(
    return new MouseCursorMonitorX11(options, outer_window, window);
  }
- 
+
 -MouseCursorMonitor* MouseCursorMonitor::CreateForScreen(
 +MouseCursorMonitor* MouseCursorMonitorX11::CreateForScreen(
      const DesktopCaptureOptions& options,
@@ -526,10 +526,10 @@ index 000000000000..8c155102ed74
 +}  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc
 new file mode 100644
-index 000000000000..e53b04a8a288
+index 000000000000..55f5204c2a2b
 --- /dev/null
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_pipewire.cc
-@@ -0,0 +1,1080 @@
+@@ -0,0 +1,1085 @@
 +/*
 + *  Copyright (c) 2018 The WebRTC project authors. All Rights Reserved.
 + *
@@ -560,15 +560,14 @@ index 000000000000..e53b04a8a288
 +#include "webrtc/modules/desktop_capture/desktop_capturer.h"
 +
 +#ifdef __has_include
-+#  if __has_include(<pipewire/version.h>)
-+#    include<pipewire/version.h>
-+#    define PW_API_PRE_0_2_0 false
-+#  else
-+#    define PW_API_PRE_0_2_0 true
-+#  endif
++  #if __has_include(<pipewire/version.h>)
++    #include<pipewire/version.h>
++  #else
++    #define PW_API_PRE_0_2_0
++  #endif // __has_include(<pipewire/version.h>)
 +#else
-+#define PW_API_PRE_0_2_0 true
-+#endif
++  #define PW_API_PRE_0_2_0
++#endif // __has_include
 +
 +namespace webrtc {
 +namespace {
@@ -655,11 +654,11 @@ index 000000000000..e53b04a8a288
 +  void InitPipeWireTypes();
 +
 +  void CreateReceivingStream();
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  void HandleBuffer(spa_buffer* spa_buffer);
 +#else
 +  void HandleBuffer(pw_buffer* buffer);
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +
 +  static void OnStateChanged(void* data,
 +                             pw_remote_state old,
@@ -669,13 +668,13 @@ index 000000000000..e53b04a8a288
 +                                   pw_stream_state old,
 +                                   pw_stream_state state,
 +                                   const char* error_message);
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  static void OnStreamFormatChanged(void* data, struct spa_pod* format);
 +  static void OnNewBuffer(void* data, uint32_t id);
 +#else
 +  static void OnStreamFormatChanged(void* data, const struct spa_pod* format);
 +  static void OnStreamProcess(void* data);
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  static gboolean PipeWireLoopSourceCheck(GSource* source);
 +  static gboolean PipeWireLoopSourcePrepare(GSource* source, int* timeout);
 +  static gboolean PipeWireLoopSourceDispatch(GSource* source,
@@ -788,11 +787,11 @@ index 000000000000..e53b04a8a288
 +
 +// static
 +void ScreenCapturerPipeWire::OnStreamFormatChanged(void* data,
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +                                                   struct spa_pod* format) {
 +#else
 +                                                   const struct spa_pod* format) {
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  ScreenCapturerPipeWire* that = static_cast<ScreenCapturerPipeWire*>(data);
 +  RTC_DCHECK(that);
 +
@@ -816,11 +815,11 @@ index 000000000000..e53b04a8a288
 +  auto builder = spa_pod_builder{buffer, sizeof(buffer)};
 +
 +  // setup buffers and meta header for new format
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  struct spa_pod* params[2];
 +#else
 +  const struct spa_pod* params[2];
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  params[0] = reinterpret_cast<spa_pod*>(spa_pod_builder_object(
 +      &builder, that->pw_core_type_->param.idBuffers,
 +      that->pw_core_type_->param_buffers.Buffers, ":",
@@ -841,26 +840,26 @@ index 000000000000..e53b04a8a288
 +}
 +
 +// static
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +void ScreenCapturerPipeWire::OnNewBuffer(void* data, uint32_t id) {
 +#else
 +void ScreenCapturerPipeWire::OnStreamProcess(void* data) {
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  ScreenCapturerPipeWire* that = static_cast<ScreenCapturerPipeWire*>(data);
 +  RTC_DCHECK(that);
 +
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  spa_buffer* buf = pw_stream_peek_buffer(that->pw_stream_, id);
 +#else
 +  pw_buffer* buf = pw_stream_dequeue_buffer(that->pw_stream_);
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  that->HandleBuffer(buf);
 +
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  pw_stream_recycle_buffer(that->pw_stream_, id);
 +#else
 +  pw_stream_queue_buffer(that->pw_stream_, buf);
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +}
 +
 +
@@ -906,28 +905,28 @@ index 000000000000..e53b04a8a288
 +
 +  if (!handle) {
 +    // Assume newer PipeWire library is used
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +    LOG(LS_ERROR) << "WebRTC has been built with older PipeWire version and cannot be used";
 +    return;
-+#endif
-+  }
-+
-+  // Test newer PipeWire library without bumped soname
-+  if (dlsym(handle, "pw_get_library_version") == nullptr) {
-+#if !PW_API_PRE_0_2_0
-+    LOG(LS_ERROR) << "WebRTC has been built with newer PipeWire version and cannot be used";
-+    dlclose(handle);
-+    return;
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  } else {
-+#if PW_API_PRE_0_2_0
-+    LOG(LS_ERROR) << "WebRTC has been built with older PipeWire version and cannot be used";
-+    dlclose(handle);
-+    return;
-+#endif
-+  }
++    // Test newer PipeWire library without bumped soname
++    if (dlsym(handle, "pw_get_library_version") == nullptr) {
++#if !defined(PW_API_PRE_0_2_0)
++      LOG(LS_ERROR) << "WebRTC has been built with newer PipeWire version and cannot be used";
++      dlclose(handle);
++      return;
++#endif // !defined(PW_API_PRE_0_2_0)
++    } else {
++#if defined(PW_API_PRE_0_2_0)
++      LOG(LS_ERROR) << "WebRTC has been built with older PipeWire version and cannot be used";
++      dlclose(handle);
++      return;
++#endif // defined(PW_API_PRE_0_2_0)
++    }
 +
-+  dlclose(handle);
++    dlclose(handle);
++  }
 +
 +  g_dbus_proxy_new_for_bus(
 +      G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE, nullptr, kDesktopBusName,
@@ -993,8 +992,14 @@ index 000000000000..e53b04a8a288
 +  g_free(sources_handle_);
 +  g_free(session_handle_);
 +  g_free(portal_handle_);
-+  g_clear_object(&proxy_);
-+  g_clear_object(&connection_);
++
++  if (proxy_) {
++    g_clear_object(&proxy_);
++  }
++
++  if (connection_) {
++    g_clear_object(&connection_);
++  }
 +}
 +
 +void ScreenCapturerPipeWire::InitPipeWire() {
@@ -1020,11 +1025,11 @@ index 000000000000..e53b04a8a288
 +  pw_stream_events_.version = PW_VERSION_STREAM_EVENTS;
 +  pw_stream_events_.state_changed = &OnStreamStateChanged;
 +  pw_stream_events_.format_changed = &OnStreamFormatChanged;
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +  pw_stream_events_.new_buffer = &OnNewBuffer;
 +#else
 +  pw_stream_events_.process = &OnStreamProcess;
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +
 +  pw_remote_add_listener(pw_remote_, &spa_remote_listener_, &pw_remote_events_,
 +                         this);
@@ -1093,12 +1098,12 @@ index 000000000000..e53b04a8a288
 +  }
 +}
 +
-+#if PW_API_PRE_0_2_0
++#if defined(PW_API_PRE_0_2_0)
 +void ScreenCapturerPipeWire::HandleBuffer(spa_buffer* spa_buffer) {
 +#else
 +void ScreenCapturerPipeWire::HandleBuffer(pw_buffer* buffer) {
 +  spa_buffer* spa_buffer = buffer->buffer;
-+#endif
++#endif // defined(PW_API_PRE_0_2_0)
 +  gint32 map_length = spa_buffer->datas[0].maxsize + spa_buffer->datas[0].mapoffset;
 +
 +  void* mapped = nullptr;
@@ -1617,7 +1622,7 @@ index 7692f8b70181..ba137853456c 100644
 @@ -34,18 +34,20 @@
  namespace webrtc {
  namespace {
- 
+
 -// A class to perform video frame capturing for Linux.
 +// A class to perform video frame capturing for Linux on X11.
  //
@@ -1636,13 +1641,13 @@ index 7692f8b70181..ba137853456c 100644
 +  ~ScreenCapturerX11() override;
 +
 +  static std::unique_ptr<DesktopCapturer> CreateRawScreenCapturer(const DesktopCaptureOptions& options);
- 
+
    // TODO(ajwong): Do we really want this to be synchronous?
    bool Init(const DesktopCaptureOptions& options);
 @@ -118,14 +120,13 @@ class ScreenCapturerLinux : public DesktopCapturer,
    // current with the last buffer used.
    DesktopRegion last_invalid_region_;
- 
+
 -  RTC_DISALLOW_COPY_AND_ASSIGN(ScreenCapturerLinux);
 +  RTC_DISALLOW_COPY_AND_ASSIGN(ScreenCapturerX11);
  };
@@ -1651,7 +1656,7 @@ index 7692f8b70181..ba137853456c 100644
 +ScreenCapturerX11::ScreenCapturerX11() {
    helper_.SetLogGridSize(4);
  }
- 
+
 -ScreenCapturerLinux::~ScreenCapturerLinux() {
 +ScreenCapturerX11::~ScreenCapturerX11() {
    options_.x_display()->RemoveEventHandler(ConfigureNotify, this);
@@ -1660,16 +1665,16 @@ index 7692f8b70181..ba137853456c 100644
 @@ -134,7 +135,7 @@ ScreenCapturerLinux::~ScreenCapturerLinux() {
    DeinitXlib();
  }
- 
+
 -bool ScreenCapturerLinux::Init(const DesktopCaptureOptions& options) {
 +bool ScreenCapturerX11::Init(const DesktopCaptureOptions& options) {
    options_ = options;
- 
+
    root_window_ = RootWindow(display(), DefaultScreen(display()));
 @@ -177,7 +178,7 @@ bool ScreenCapturerLinux::Init(const DesktopCaptureOptions& options) {
    return true;
  }
- 
+
 -void ScreenCapturerLinux::InitXDamage() {
 +void ScreenCapturerX11::InitXDamage() {
    // Our use of XDamage requires XFixes.
@@ -1678,24 +1683,24 @@ index 7692f8b70181..ba137853456c 100644
 @@ -218,18 +219,18 @@ void ScreenCapturerLinux::InitXDamage() {
    LOG(LS_INFO) << "Using XDamage extension.";
  }
- 
+
 -void ScreenCapturerLinux::Start(Callback* callback) {
 +void ScreenCapturerX11::Start(Callback* callback) {
    RTC_DCHECK(!callback_);
    RTC_DCHECK(callback);
- 
+
    callback_ = callback;
  }
- 
+
 -void ScreenCapturerLinux::Stop() {
 +void ScreenCapturerX11::Stop() {
    callback_ = NULL;
  }
- 
+
 -void ScreenCapturerLinux::CaptureFrame() {
 +void ScreenCapturerX11::CaptureFrame() {
    int64_t capture_start_time_nanos = rtc::TimeNanos();
- 
+
    queue_.MoveToNextFrame();
 @@ -243,6 +244,7 @@ void ScreenCapturerLinux::CaptureFrame() {
    // in a good shape.
@@ -1706,7 +1711,7 @@ index 7692f8b70181..ba137853456c 100644
       return;
    }
 @@ -258,6 +260,7 @@ void ScreenCapturerLinux::CaptureFrame() {
- 
+
    std::unique_ptr<DesktopFrame> result = CaptureScreen();
    if (!result) {
 +    LOG(LS_WARNING) << "Temporarily failed to capture screen.";
@@ -1716,7 +1721,7 @@ index 7692f8b70181..ba137853456c 100644
 @@ -268,19 +271,19 @@ void ScreenCapturerLinux::CaptureFrame() {
    callback_->OnCaptureResult(Result::SUCCESS, std::move(result));
  }
- 
+
 -bool ScreenCapturerLinux::GetSourceList(SourceList* sources) {
 +bool ScreenCapturerX11::GetSourceList(SourceList* sources) {
    RTC_DCHECK(sources->size() == 0);
@@ -1724,13 +1729,13 @@ index 7692f8b70181..ba137853456c 100644
    sources->push_back({0});
    return true;
  }
- 
+
 -bool ScreenCapturerLinux::SelectSource(SourceId id) {
 +bool ScreenCapturerX11::SelectSource(SourceId id) {
    // TODO(jiayl): implement screen selection.
    return true;
  }
- 
+
 -bool ScreenCapturerLinux::HandleXEvent(const XEvent& event) {
 +bool ScreenCapturerX11::HandleXEvent(const XEvent& event) {
    if (use_damage_ && (event.type == damage_event_base_ + XDamageNotify)) {
@@ -1739,12 +1744,12 @@ index 7692f8b70181..ba137853456c 100644
 @@ -295,7 +298,7 @@ bool ScreenCapturerLinux::HandleXEvent(const XEvent& event) {
    return false;
  }
- 
+
 -std::unique_ptr<DesktopFrame> ScreenCapturerLinux::CaptureScreen() {
 +std::unique_ptr<DesktopFrame> ScreenCapturerX11::CaptureScreen() {
    std::unique_ptr<SharedDesktopFrame> frame = queue_.current_frame()->Share();
    RTC_DCHECK(x_server_pixel_buffer_.window_size().equals(frame->size()));
- 
+
 @@ -345,25 +348,26 @@ std::unique_ptr<DesktopFrame> ScreenCapturerLinux::CaptureScreen() {
      // Doing full-screen polling, or this is the first capture after a
      // screen-resolution change.  In either case, need a full-screen capture.
@@ -1754,15 +1759,15 @@ index 7692f8b70181..ba137853456c 100644
 +      return nullptr;
      updated_region->SetRect(screen_rect);
    }
- 
+
    return std::move(frame);
  }
- 
+
 -void ScreenCapturerLinux::ScreenConfigurationChanged() {
 +void ScreenCapturerX11::ScreenConfigurationChanged() {
    // Make sure the frame buffers will be reallocated.
    queue_.Reset();
- 
+
    helper_.ClearInvalidRegion();
    if (!x_server_pixel_buffer_.Init(display(), DefaultRootWindow(display()))) {
      LOG(LS_ERROR) << "Failed to initialize pixel buffer after screen "
@@ -1770,7 +1775,7 @@ index 7692f8b70181..ba137853456c 100644
 +                         "configuration change.";
    }
  }
- 
+
 -void ScreenCapturerLinux::SynchronizeFrame() {
 +void ScreenCapturerX11::SynchronizeFrame() {
    // Synchronize the current buffer with the previous one since we do not
@@ -1779,7 +1784,7 @@ index 7692f8b70181..ba137853456c 100644
 @@ -383,7 +387,7 @@ void ScreenCapturerLinux::SynchronizeFrame() {
    }
  }
- 
+
 -void ScreenCapturerLinux::DeinitXlib() {
 +void ScreenCapturerX11::DeinitXlib() {
    if (gc_) {
@@ -1787,24 +1792,24 @@ index 7692f8b70181..ba137853456c 100644
      gc_ = nullptr;
 @@ -407,17 +411,17 @@ void ScreenCapturerLinux::DeinitXlib() {
  }  // namespace
- 
+
  // static
 -std::unique_ptr<DesktopCapturer> DesktopCapturer::CreateRawScreenCapturer(
 +std::unique_ptr<DesktopCapturer> ScreenCapturerX11::CreateRawScreenCapturer(
      const DesktopCaptureOptions& options) {
    if (!options.x_display())
      return nullptr;
- 
+
 -  std::unique_ptr<ScreenCapturerLinux> capturer(new ScreenCapturerLinux());
 +  std::unique_ptr<ScreenCapturerX11> capturer(new ScreenCapturerX11());
    if (!capturer.get()->Init(options)) {
      return nullptr;
    }
- 
+
 -  return std::unique_ptr<DesktopCapturer>(capturer.release());
 +  return std::move(capturer);
  }
- 
+
  }  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_linux.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_linux.cc
 new file mode 100644
@@ -1857,9 +1862,9 @@ index 0f0159bb5f16..f6ef0639a586 100755
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc
 @@ -67,10 +67,12 @@ void WindowCapturerNull::CaptureFrame() {
- 
+
  }  // namespace
- 
+
 +#if not defined(USE_PIPEWIRE)
  // static
  std::unique_ptr<DesktopCapturer> DesktopCapturer::CreateRawWindowCapturer(
@@ -1867,16 +1872,16 @@ index 0f0159bb5f16..f6ef0639a586 100755
    return std::unique_ptr<DesktopCapturer>(new WindowCapturerNull());
  }
 +#endif // not defined(USE_PIPEWIRE)
- 
+
  }  // namespace webrtc
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x11.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x11.cc
 index fecb329db546..d478604aa3de 100644
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x11.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x11.cc
 @@ -32,11 +32,13 @@ namespace webrtc {
- 
+
  namespace {
- 
+
 -class WindowCapturerLinux : public DesktopCapturer,
 +class WindowCapturerX11 : public DesktopCapturer,
                              public SharedXDisplay::XEventHandler {
@@ -1887,17 +1892,17 @@ index fecb329db546..d478604aa3de 100644
 +  ~WindowCapturerX11() override;
 +
 +  static std::unique_ptr<DesktopCapturer> CreateRawWindowCapturer(const DesktopCaptureOptions& options);
- 
+
    // DesktopCapturer interface.
    void Start(Callback* callback) override;
 @@ -78,10 +80,10 @@ class WindowCapturerLinux : public DesktopCapturer,
    ::Window selected_window_ = 0;
    XServerPixelBuffer x_server_pixel_buffer_;
- 
+
 -  RTC_DISALLOW_COPY_AND_ASSIGN(WindowCapturerLinux);
 +  RTC_DISALLOW_COPY_AND_ASSIGN(WindowCapturerX11);
  };
- 
+
 -WindowCapturerLinux::WindowCapturerLinux(const DesktopCaptureOptions& options)
 +WindowCapturerX11::WindowCapturerX11(const DesktopCaptureOptions& options)
      : x_display_(options.x_display()) {
@@ -1906,61 +1911,61 @@ index fecb329db546..d478604aa3de 100644
 @@ -102,11 +104,11 @@ WindowCapturerLinux::WindowCapturerLinux(const DesktopCaptureOptions& options)
    x_display_->AddEventHandler(ConfigureNotify, this);
  }
- 
+
 -WindowCapturerLinux::~WindowCapturerLinux() {
 +WindowCapturerX11::~WindowCapturerX11() {
    x_display_->RemoveEventHandler(ConfigureNotify, this);
  }
- 
+
 -bool WindowCapturerLinux::GetSourceList(SourceList* sources) {
 +bool WindowCapturerX11::GetSourceList(SourceList* sources) {
    SourceList result;
- 
+
    XErrorTrap error_trap(display());
 @@ -159,7 +161,7 @@ bool WindowCapturerLinux::GetSourceList(SourceList* sources) {
    return true;
  }
- 
+
 -bool WindowCapturerLinux::SelectSource(SourceId id) {
 +bool WindowCapturerX11::SelectSource(SourceId id) {
    if (!x_server_pixel_buffer_.Init(display(), id))
      return false;
- 
+
 @@ -180,7 +182,7 @@ bool WindowCapturerLinux::SelectSource(SourceId id) {
    return true;
  }
- 
+
 -bool WindowCapturerLinux::FocusOnSelectedSource() {
 +bool WindowCapturerX11::FocusOnSelectedSource() {
    if (!selected_window_)
      return false;
- 
+
 @@ -229,18 +231,18 @@ bool WindowCapturerLinux::FocusOnSelectedSource() {
    return true;
  }
- 
+
 -void WindowCapturerLinux::Start(Callback* callback) {
 +void WindowCapturerX11::Start(Callback* callback) {
    assert(!callback_);
    assert(callback);
- 
+
    callback_ = callback;
  }
- 
+
 -void WindowCapturerLinux::Stop() {
 +void WindowCapturerX11::Stop() {
    callback_ = NULL;
  }
- 
+
 -void WindowCapturerLinux::CaptureFrame() {
 +void WindowCapturerX11::CaptureFrame() {
    x_display_->ProcessPendingXEvents();
- 
+
    if (!x_server_pixel_buffer_.IsWindowValid()) {
 @@ -274,7 +276,7 @@ void WindowCapturerLinux::CaptureFrame() {
    callback_->OnCaptureResult(Result::SUCCESS, std::move(frame));
  }
- 
+
 -bool WindowCapturerLinux::HandleXEvent(const XEvent& event) {
 +bool WindowCapturerX11::HandleXEvent(const XEvent& event) {
    if (event.type == ConfigureNotify) {
@@ -1969,34 +1974,34 @@ index fecb329db546..d478604aa3de 100644
 @@ -288,7 +290,7 @@ bool WindowCapturerLinux::HandleXEvent(const XEvent& event) {
    return false;
  }
- 
+
 -::Window WindowCapturerLinux::GetApplicationWindow(::Window window) {
 +::Window WindowCapturerX11::GetApplicationWindow(::Window window) {
    // Get WM_STATE property of the window.
    XWindowProperty<uint32_t> window_state(display(), window, wm_state_atom_);
- 
+
 @@ -326,7 +328,7 @@ bool WindowCapturerLinux::HandleXEvent(const XEvent& event) {
    return app_window;
  }
- 
+
 -bool WindowCapturerLinux::IsDesktopElement(::Window window) {
 +bool WindowCapturerX11::IsDesktopElement(::Window window) {
    if (window == 0)
      return false;
- 
+
 @@ -361,7 +363,7 @@ bool WindowCapturerLinux::IsDesktopElement(::Window window) {
    return result;
  }
- 
+
 -bool WindowCapturerLinux::GetWindowTitle(::Window window, std::string* title) {
 +bool WindowCapturerX11::GetWindowTitle(::Window window, std::string* title) {
    int status;
    bool result = false;
    XTextProperty window_name;
 @@ -392,7 +394,7 @@ bool WindowCapturerLinux::GetWindowTitle(::Window window, std::string* title) {
- 
+
  }  // namespace
- 
+
 -int WindowCapturerLinux::GetWindowProcessID(::Window window) {
 +int WindowCapturerX11::GetWindowProcessID(::Window window) {
    // Get _NET_WM_PID property of the window.
@@ -2004,7 +2009,7 @@ index fecb329db546..d478604aa3de 100644
    XWindowProperty<uint32_t> process_id(display(), window, process_atom);
 @@ -401,11 +403,11 @@ int WindowCapturerLinux::GetWindowProcessID(::Window window) {
  }
- 
+
  // static
 -std::unique_ptr<DesktopCapturer> DesktopCapturer::CreateRawWindowCapturer(
 +std::unique_ptr<DesktopCapturer> WindowCapturerX11::CreateRawWindowCapturer(
@@ -2014,5 +2019,5 @@ index fecb329db546..d478604aa3de 100644
 -  return std::unique_ptr<DesktopCapturer>(new WindowCapturerLinux(options));
 +  return std::unique_ptr<DesktopCapturer>(new WindowCapturerX11(options));
  }
- 
+
  }  // namespace webrtc
