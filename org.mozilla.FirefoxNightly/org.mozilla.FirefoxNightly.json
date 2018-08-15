@@ -124,8 +124,8 @@
         "sources": [
             {
                 "type": "archive",
-                "url": "https://github.com/PipeWire/pipewire/archive/0.1.9.tar.gz",
-                "sha256": "d7dc591d60c3544f3c24b2b0ab1db458991dd69d0610337fd0accf136373916b"
+                "url": "https://github.com/PipeWire/pipewire/archive/0.2.2.tar.gz",
+                "sha256": "b39773deb79badf951c136505c708d2177b3a4106ecb63e4c063584d5c26d5d7"
             },
             {
                 "type": "patch",
