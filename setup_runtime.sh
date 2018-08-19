@@ -5,3 +5,4 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 flatpak install flathub org.gnome.Platform//3.24 org.gnome.Sdk//3.24
 flatpak install flathub org.gnome.Platform//3.26 org.gnome.Sdk//3.26
+flatpak install flathub org.freedesktop.Sdk.Extension.rust-stable//1.6
