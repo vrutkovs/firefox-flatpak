@@ -1,0 +1,16 @@
+[package]
+name = "dummy"
+version = "0.0.1"
+description = """
+This is a dummy package which contains dependency on cbindgen
+to be used with 'cargo vendor' commmand.
+"""
+
+[dependencies]
+cbindgen = "0.6.3"
+
+[[bin]]
+name = "dummy"
+path = "dummy.rs"
+doc = false
+

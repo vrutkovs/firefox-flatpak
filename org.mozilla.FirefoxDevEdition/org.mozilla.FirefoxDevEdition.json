@@ -121,11 +121,13 @@
               "STRIP": "/bin/true"
             }
           },
-          "config-opts": ["--without-system-nspr",
-                        "--without-system-nss",
-                        "--disable-documentation"],
-          "no-autogen": true,
-          "make-install-args": ["prefix=/app"],
+          "buildsystem": "simple",
+            "build-commands": [
+               "env CARGO_HOME=.cargo cargo install cbindgen",
+               "env PATH=/run/build/firefox/.cargo/bin:$PATH ./mach build -j4",
+               "env prefix=/app make install"
+            ],
+					"make-install-args": ["prefix=/app"],
           "sources": [
               {
                   "type": "git",
@@ -155,6 +157,17 @@
                   "type": "file",
                   "path": "org.mozilla.Firefox.desktop",
                   "dest": ""
+              },
+              {
+                  "type": "file",
+                  "path": "cargo-config",
+                  "dest-filename": "config",
+                  "dest": ".cargo"
+              },
+              {
+                  "type": "dir",
+                  "path": "vendor",
+                  "dest": "vendor"
               }
           ]
       }
