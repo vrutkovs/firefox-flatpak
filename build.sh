@@ -12,6 +12,17 @@ else
   APP_NAME=$1
 fi
 
+if [ -f $APP_NAME/prepare_sources ]; then
+  cd $APP_NAME
+  if ./prepare_sources; then
+    echo "Sources prepared"
+  else
+    echo "Preparing sources failed: sources are required to start build of the package..."
+    echo "Check above output for failure."
+    exit 1
+  fi
+  cd -
+fi
 
 # Build repo
 flatpak-builder $GPG_SETTINGS --verbose --force-clean --ccache --require-changes --repo=repo --subject="Build of $APP_NAME" app $APP_NAME/$APP_NAME.json

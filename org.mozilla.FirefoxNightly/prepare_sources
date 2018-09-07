@@ -1,0 +1,4 @@
+#!/bin/bash
+cargo install cargo-vendor
+cargo vendor
+
