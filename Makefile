@@ -6,7 +6,8 @@ prepare-repo:
 
 install-deps:
 	flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-	flatpak --user install -y flathub org.gnome.Platform/x86_64/3.30 org.gnome.Sdk/x86_64/3.30 || true
+	flatpak --user remote-add --if-not-exists --no-gpg-verify gnome-testing https://gbm.gnome.org/gbm.flatpakrepo
+	flatpak --user install -y gnome-testing org.gnome.Platform/x86_64/3.30 org.gnome.Sdk/x86_64/3.30 || true
 
 build:
 	flatpak-builder --force-clean --ccache --require-changes --repo=repo \
