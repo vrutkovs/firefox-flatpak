@@ -146,7 +146,7 @@
                "env PATH=/run/build/firefox/.cargo/bin:$PATH ./mach build -j4",
                "env prefix=/app make install"
             ],
-					"make-install-args": ["prefix=/app"],
+          "make-install-args": ["prefix=/app"],
           "sources": [
               {
                   "type": "git",
