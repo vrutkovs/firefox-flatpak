@@ -284,7 +284,8 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_gn/moz.build
-@@ -100,10 +100,6 @@ if CONFIG["OS_TARGET"] == "DragonFly":
+
+@@ -166,16 +166,40 @@ if CONFIG["OS_TARGET"] == "Linux":
      ]
  
      UNIFIED_SOURCES += [
@@ -295,38 +296,37 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capture_g
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/desktop_device_info_x11.cc",
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/shared_x_display.cc",
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/shared_x_util.cc",
-@@ -176,6 +172,34 @@ if CONFIG["OS_TARGET"] == "Linux":
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/x_error_trap.cc",
          "/media/webrtc/trunk/webrtc/modules/desktop_capture/x11/x_server_pixel_buffer.cc"
      ]
-+# Common stuff between Pipewire and X11
-+if CONFIG["OS_TARGET"] == "Linux":
-+
-+    UNIFIED_SOURCES += [
-+        "/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_linux.cc",
-+        "/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_linux.cc",
-+        "/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_linux.cc",
-+        "/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_linux.cc"
-+    ]
-+
-+# Pipewire
-+if CONFIG["OS_TARGET"] == "Linux":
-+
-+    DEFINES["USE_PIPEWIRE"] = "1"
-+
-+    OS_LIBS += [
-+        "rt",
-+        "pipewire-0.2",
-+        "glib-2.0",
-+        "gio-2.0",
-+        "gobject-2.0"
-+    ]
-+
-+    CXXFLAGS += CONFIG['TK_CFLAGS']
-+
-+    UNIFIED_SOURCES += [
-+        "/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_null.cc"
-+    ]
++# Common stuff between Pipewire and X11
++if CONFIG["OS_TARGET"] == "Linux":
++
++    UNIFIED_SOURCES += [
++        "/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_linux.cc",
++        "/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_linux.cc",
++        "/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_linux.cc",
++        "/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_linux.cc"
++    ]
++
++# Pipewire
++if CONFIG["OS_TARGET"] == "Linux":
++
++    DEFINES["USE_PIPEWIRE"] = "1"
++
++    OS_LIBS += [
++        "rt",
++        "pipewire-0.2",
++        "glib-2.0",
++        "gio-2.0",
++        "gobject-2.0"
++    ]
++
++    CXXFLAGS += CONFIG['TK_CFLAGS']
++
++    UNIFIED_SOURCES += [
++        "/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_null.cc"
++    ]
  
  if CONFIG["OS_TARGET"] == "NetBSD":
  
