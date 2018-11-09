@@ -27,7 +27,7 @@ index 38656c8..6f6c941 100644
 +	# Create wrapper script which will make files downloaded for opening available outside of sandbox
 +	echo '#!/bin/bash' > $(prefix)/bin/firefox
 +	echo 'export TMPDIR=$$XDG_CACHE_HOME/tmp' >> $(prefix)/bin/firefox
-+	echo 'export GDK_BACKEND=wayland >> $(prefix)/bin/firefox
++	echo 'export GDK_BACKEND=wayland' >> $(prefix)/bin/firefox
 +	echo 'firefox-bin $$*' >> $(prefix)/bin/firefox
 +	chmod +x $(prefix)/bin/firefox
 +
