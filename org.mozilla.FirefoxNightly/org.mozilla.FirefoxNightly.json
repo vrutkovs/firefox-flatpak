@@ -33,7 +33,16 @@
         "--filesystem=~/.config/dconf:ro",
         "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
         /* Required for file reveal in file manager */
-        "--socket=session-bus"
+        "--talk-name=org.freedesktop.FileManager1",
+        /* For geolocation purposes (to get list of nearby wifi networks) */
+        "--system-talk-name=org.freedesktop.NetworkManager",
+        /* Accessibility support */
+        "--talk-name=org.a11y.Bus",
+        /* For screenshot inhibiting */
+        "--talk-name=org.gnome.SessionManager",
+        "--talk-name=org.freedesktop.ScreenSaver",
+        /* For Firefox remote control (to avoid relaunching FF when opening url from external source) */
+        "--talk-name=org.freedesktop.DBus"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
