@@ -42,7 +42,7 @@
         "--talk-name=org.gnome.SessionManager",
         "--talk-name=org.freedesktop.ScreenSaver",
         /* For Firefox remote control (to avoid relaunching FF when opening url from external source) */
-        "--talk-name=org.freedesktop.DBus"
+        "--own-name='org.mozilla.firefox.*'"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
@@ -168,6 +168,11 @@
                   "path": "cargo-config",
                   "dest-filename": "config",
                   "dest": ".cargo"
+              },
+              {
+                  "type": "file",
+                  "path": "firefox.sh",
+                  "dest": ""
               },
               {
                   "type": "dir",
