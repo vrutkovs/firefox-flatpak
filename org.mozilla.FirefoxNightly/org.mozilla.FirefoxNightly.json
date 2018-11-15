@@ -42,7 +42,7 @@
         "--talk-name=org.gnome.SessionManager",
         "--talk-name=org.freedesktop.ScreenSaver",
         /* For Firefox remote control (to avoid relaunching FF when opening url from external source) */
-        "--own-name='org.mozilla.firefox.*'"
+        "--own-name=org.mozilla.firefox.*"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
