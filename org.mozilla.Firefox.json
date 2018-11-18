@@ -15,6 +15,7 @@
     "--filesystem=xdg-download",
     "--filesystem=~/.mozilla",
     "--filesystem=/tmp",
+    "--env=MOZ_WEBRENDER=1",
     "--talk-name=org.gnome.GConf",
     "--extra-data=firefox.tar.bz2:061f6d3757fa8d4f09e90534c4ad6f09175cd6455427e21cd124e8d602d9f1d0:59286897::http://archive.mozilla.org/pub/firefox/releases/64.0b10/linux-x86_64/en-US/firefox-64.0b10.tar.bz2",
     "--extra-data=en-US.xpi:9a79760a60201306ea5f12c65f68e83ccd025e4e0962c44840363558bf55963b:413606::http://archive.mozilla.org/pub/firefox/releases/64.0b10/linux-x86_64/xpi/en-US.xpi"
