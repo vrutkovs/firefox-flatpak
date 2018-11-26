@@ -10,7 +10,7 @@ before_install:
   - docker pull vrutkovs/flatpak
 
 script:
-  - git clone -b gh-pages https://github.com/$TRAVIS_REPO_SLUG export/ && cp -rf export/repo . || mkdir export
+  - git clone -b gh-pages https://github.com/vrutkovs/flatpaks export/ && cp -rf export/repo . || mkdir export
   - docker run --privileged -v ${PWD}:/source --name flatpak -i vrutkovs/flatpak make -C source
   - rm -rf export && mkdir export
   - cp -rf repo/ export/
@@ -20,6 +20,7 @@ deploy:
   provider: pages
   local_dir: export
   skip_cleanup: true
+  repo: vrutkovs/flatpaks
   github_token: $GITHUB_TOKEN
   on:
     branch: binaries
