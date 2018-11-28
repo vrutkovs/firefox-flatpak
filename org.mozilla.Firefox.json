@@ -17,8 +17,8 @@
     "--filesystem=/tmp",
     "--env=MOZ_WEBRENDER=1",
     "--talk-name=org.gnome.GConf",
-    "--extra-data=firefox.tar.bz2:b5a4f59e8ee4b98fc28b6e9e0a43c5aff15816257914c1936a0e0f98d57ec63e:59323932::http://archive.mozilla.org/pub/firefox/releases/64.0b12/linux-x86_64/en-US/firefox-64.0b12.tar.bz2",
-    "--extra-data=en-US.xpi:c510c0b15573643c95ced5f75cb0a5b330fe6114b08bd0e0599229b8d91e656e:413607::http://archive.mozilla.org/pub/firefox/releases/64.0b12/linux-x86_64/xpi/en-US.xpi"
+    "--extra-data=firefox.tar.bz2:d1cfebcca1f203c73dcff40f1890092f7eb0c8d397a6511f541147feabaee8ab:59268215::http://archive.mozilla.org/pub/firefox/releases/64.0b13/linux-x86_64/en-US/firefox-64.0b13.tar.bz2",
+    "--extra-data=en-US.xpi:ee85b82b7690b37b37bb736426df7f7dac98d86adda8e92792e590fdfa04f514:413614::http://archive.mozilla.org/pub/firefox/releases/64.0b13/linux-x86_64/xpi/en-US.xpi"
   ],
   "modules": [
     {
