@@ -16,6 +16,9 @@ script:
   - cp -rf repo/ export/
   - cp -rf firefox.flatpakref export/
 
+notifications:
+  webhooks: https://hubot.vrutkovs.eu/travis-ci/103761953
+
 deploy:
   provider: pages
   local_dir: export
