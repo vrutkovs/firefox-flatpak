@@ -107,22 +107,20 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_null
  
  namespace webrtc {
  
-@@ -29,9 +29,11 @@ public:
+@@ -29,8 +29,10 @@ public:
    virtual bool BringAppToFront()	override;
  
    // DesktopCapturer interface.
 -  virtual void Start(Callback* callback) override;
--  virtual void Stop() override;
 -  virtual void Capture(const DesktopRegion& region) override;
 +  void Start(Callback* callback) override;
-+  void Stop() override;
 +  void CaptureFrame() override;
 +  bool GetSourceList(SourceList* sources) override;
 +  bool SelectSource(SourceId id) override;
  
  private:
    Callback* callback_;
-@@ -61,7 +63,16 @@ bool AppCapturerNull::BringAppToFront() 
+@@ -60,7 +62,16 @@ bool AppCapturerNull::BringAppToFront() 
    return false;
  }
  
@@ -140,8 +138,8 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_null
  void AppCapturerNull::Start(Callback* callback) {
    assert(!callback_);
    assert(callback);
-@@ -73,16 +84,19 @@ void AppCapturerNull::Stop() {
-   callback_ = NULL;
+@@ -68,16 +79,19 @@ void AppCapturerNull::Start(Callback* ca
+   callback_ = callback;
  }
  
 -void AppCapturerNull::Capture(const DesktopRegion& region) {
@@ -185,7 +183,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
  
    // AppCapturer interface.
    virtual bool GetAppList(AppList* apps) override;
-@@ -91,10 +94,9 @@ private:
+@@ -90,10 +93,9 @@ private:
    Region rgn_background_;
  
    rtc::scoped_refptr<SharedXDisplay> x_display_;
@@ -198,7 +196,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
      : callback_(NULL),
        selected_process_(0),
        x_display_(options.x_display()) {
-@@ -103,7 +105,7 @@ AppCapturerLinux::AppCapturerLinux(const
+@@ -102,7 +104,7 @@ AppCapturerLinux::AppCapturerLinux(const
    rgn_background_ = XCreateRegion();
  }
  
@@ -207,7 +205,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
    if (rgn_mask_) {
      XDestroyRegion(rgn_mask_);
    }
-@@ -116,32 +118,32 @@ AppCapturerLinux::~AppCapturerLinux() {
+@@ -115,28 +117,28 @@ AppCapturerLinux::~AppCapturerLinux() {
  }
  
  // AppCapturer interface.
@@ -236,17 +234,12 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
    callback_ = callback;
  }
  
--void AppCapturerLinux::Stop() {
-+void AppCapturerX11::Stop() {
-   callback_ = NULL;
- }
- 
 -void AppCapturerLinux::CaptureFrame() {
 +void AppCapturerX11::CaptureFrame() {
    XErrorTrap error_trap(GetDisplay());
  
    //Capture screen >> set root window as capture window
-@@ -169,7 +171,7 @@ void AppCapturerLinux::CaptureFrame() {
+@@ -164,7 +166,7 @@ void AppCapturerLinux::CaptureFrame() {
    }
  }
  
@@ -255,7 +248,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
    XErrorTrap error_trap(GetDisplay());
  
    if (!pDesktopFrame) {
-@@ -192,7 +194,7 @@ void AppCapturerLinux::FillDesktopFrameR
+@@ -187,7 +189,7 @@ void AppCapturerLinux::FillDesktopFrameR
    }
  }
  
@@ -264,7 +257,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/app_capturer_x11.
    XErrorTrap error_trap(GetDisplay());
  
    XSubtractRegion(rgn_visual_, rgn_visual_, rgn_visual_);
-@@ -272,18 +274,18 @@ bool AppCapturerLinux::UpdateRegions() {
+@@ -267,18 +269,18 @@ bool AppCapturerLinux::UpdateRegions() {
  }  // namespace
  
  // static
@@ -1145,7 +1138,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/base_capturer_pip
 new file mode 100644
 --- /dev/null
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/base_capturer_pipewire.h
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,166 @@
 +/*
 + *  Copyright 2018 The WebRTC project authors. All Rights Reserved.
 + *
@@ -1185,11 +1178,10 @@ new file mode 100644
 +  ~BaseCapturerPipeWire() override;
 +
 +  // DesktopCapturer interface.
-+  void Start(Callback* delegate) override;
-+  void Stop() override { callback_ = nullptr; }
-+  void CaptureFrame() override;
-+  bool GetSourceList(SourceList* sources) override;
-+  bool SelectSource(SourceId id) override;
++  virtual void Start(Callback* delegate) override;
++  virtual void CaptureFrame() override;
++  virtual bool GetSourceList(SourceList* sources) override;
++  virtual bool SelectSource(SourceId id) override;
 +
 + private:
 +  // PipeWire types -->
@@ -1389,7 +1381,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.h b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.h
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.h
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/desktop_capturer.h
-@@ -140,6 +140,10 @@ class DesktopCapturer {
+@@ -139,6 +139,10 @@ class DesktopCapturer {
    static std::unique_ptr<DesktopCapturer> CreateAppCapturer(
        const DesktopCaptureOptions& options);
  
@@ -1470,8 +1462,8 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_moni
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_monitor_x11.cc
-@@ -70,6 +70,9 @@ class MouseCursorMonitorX11 : public Mou
-   void Stop() override;
+@@ -69,6 +69,9 @@ class MouseCursorMonitorX11 : public Mou
+   void Init(Callback* callback, Mode mode) override;
    void Capture() override;
  
 +  static MouseCursorMonitor* CreateForWindow(const DesktopCaptureOptions& options, WindowId window);
@@ -1480,7 +1472,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_moni
   private:
    // SharedXDisplay::XEventHandler interface.
    bool HandleXEvent(const XEvent& event) override;
-@@ -263,7 +266,7 @@ void MouseCursorMonitorX11::CaptureCurso
+@@ -257,7 +260,7 @@ void MouseCursorMonitorX11::CaptureCurso
  }
  
  // static
@@ -1489,7 +1481,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/mouse_cursor_moni
      const DesktopCaptureOptions& options, WindowId window) {
    if (!options.x_display())
      return NULL;
-@@ -273,7 +276,7 @@ MouseCursorMonitor* MouseCursorMonitor::
+@@ -267,7 +270,7 @@ MouseCursorMonitor* MouseCursorMonitor::
    return new MouseCursorMonitorX11(options, outer_window, window);
  }
  
@@ -1645,7 +1637,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
  
    // TODO(ajwong): Do we really want this to be synchronous?
    bool Init(const DesktopCaptureOptions& options);
-@@ -118,14 +120,13 @@ class ScreenCapturerLinux : public Deskt
+@@ -117,14 +119,13 @@ class ScreenCapturerLinux : public Deskt
    // current with the last buffer used.
    DesktopRegion last_invalid_region_;
  
@@ -1663,7 +1655,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    options_.x_display()->RemoveEventHandler(ConfigureNotify, this);
    if (use_damage_) {
      options_.x_display()->RemoveEventHandler(
-@@ -134,7 +135,7 @@ ScreenCapturerLinux::~ScreenCapturerLinu
+@@ -133,7 +134,7 @@ ScreenCapturerLinux::~ScreenCapturerLinu
    DeinitXlib();
  }
  
@@ -1672,7 +1664,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    options_ = options;
  
    root_window_ = RootWindow(display(), DefaultScreen(display()));
-@@ -177,7 +178,7 @@ bool ScreenCapturerLinux::Init(const Des
+@@ -176,7 +177,7 @@ bool ScreenCapturerLinux::Init(const Des
    return true;
  }
  
@@ -1681,7 +1673,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    // Our use of XDamage requires XFixes.
    if (!has_xfixes_) {
      return;
-@@ -218,18 +219,18 @@ void ScreenCapturerLinux::InitXDamage() 
+@@ -217,14 +218,14 @@ void ScreenCapturerLinux::InitXDamage() 
    RTC_LOG(LS_INFO) << "Using XDamage extension.";
  }
  
@@ -1693,17 +1685,12 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    callback_ = callback;
  }
  
--void ScreenCapturerLinux::Stop() {
-+void ScreenCapturerX11::Stop() {
-   callback_ = NULL;
- }
- 
 -void ScreenCapturerLinux::CaptureFrame() {
 +void ScreenCapturerX11::CaptureFrame() {
    int64_t capture_start_time_nanos = rtc::TimeNanos();
  
    queue_.MoveToNextFrame();
-@@ -243,6 +244,7 @@ void ScreenCapturerLinux::CaptureFrame()
+@@ -238,6 +239,7 @@ void ScreenCapturerLinux::CaptureFrame()
    // in a good shape.
    if (!x_server_pixel_buffer_.is_initialized()) {
       // We failed to initialize pixel buffer.
@@ -1711,7 +1698,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
       callback_->OnCaptureResult(Result::ERROR_PERMANENT, nullptr);
       return;
    }
-@@ -258,6 +260,7 @@ void ScreenCapturerLinux::CaptureFrame()
+@@ -253,6 +255,7 @@ void ScreenCapturerLinux::CaptureFrame()
  
    std::unique_ptr<DesktopFrame> result = CaptureScreen();
    if (!result) {
@@ -1719,7 +1706,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
      callback_->OnCaptureResult(Result::ERROR_TEMPORARY, nullptr);
      return;
    }
-@@ -268,19 +271,19 @@ void ScreenCapturerLinux::CaptureFrame()
+@@ -263,19 +266,19 @@ void ScreenCapturerLinux::CaptureFrame()
    callback_->OnCaptureResult(Result::SUCCESS, std::move(result));
  }
  
@@ -1742,7 +1729,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    if (use_damage_ && (event.type == damage_event_base_ + XDamageNotify)) {
      const XDamageNotifyEvent* damage_event =
          reinterpret_cast<const XDamageNotifyEvent*>(&event);
-@@ -295,7 +298,7 @@ bool ScreenCapturerLinux::HandleXEvent(c
+@@ -290,7 +293,7 @@ bool ScreenCapturerLinux::HandleXEvent(c
    return false;
  }
  
@@ -1751,7 +1738,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    std::unique_ptr<SharedDesktopFrame> frame = queue_.current_frame()->Share();
    RTC_DCHECK(x_server_pixel_buffer_.window_size().equals(frame->size()));
  
-@@ -353,7 +356,7 @@ std::unique_ptr<DesktopFrame> ScreenCapt
+@@ -348,7 +351,7 @@ std::unique_ptr<DesktopFrame> ScreenCapt
    return std::move(frame);
  }
  
@@ -1760,7 +1747,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    // Make sure the frame buffers will be reallocated.
    queue_.Reset();
  
-@@ -364,7 +367,7 @@ void ScreenCapturerLinux::ScreenConfigur
+@@ -359,7 +362,7 @@ void ScreenCapturerLinux::ScreenConfigur
    }
  }
  
@@ -1769,7 +1756,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    // Synchronize the current buffer with the previous one since we do not
    // capture the entire desktop. Note that encoder may be reading from the
    // previous buffer at this time so thread access complaints are false
-@@ -384,7 +387,7 @@ void ScreenCapturerLinux::SynchronizeFra
+@@ -379,7 +382,7 @@ void ScreenCapturerLinux::SynchronizeFra
    }
  }
  
@@ -1778,7 +1765,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/screen_capturer_x
    if (gc_) {
      XFreeGC(display(), gc_);
      gc_ = nullptr;
-@@ -408,12 +411,12 @@ void ScreenCapturerLinux::DeinitXlib() {
+@@ -403,12 +406,12 @@ void ScreenCapturerLinux::DeinitXlib() {
  }  // namespace
  
  // static
@@ -1841,7 +1828,7 @@ new file mode 100644
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_null.cc
-@@ -67,10 +67,12 @@ void WindowCapturerNull::CaptureFrame() 
+@@ -62,10 +62,12 @@ void WindowCapturerNull::CaptureFrame() 
  
  }  // namespace
  
@@ -1945,7 +1932,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
  
    // DesktopCapturer interface.
    void Start(Callback* callback) override;
-@@ -72,10 +74,10 @@ class WindowCapturerLinux : public Deskt
+@@ -71,10 +73,10 @@ class WindowCapturerLinux : public Deskt
    XAtomCache atom_cache_;
    WindowFinderX11 window_finder_;
  
@@ -1958,7 +1945,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
      : x_display_(options.x_display()),
        atom_cache_(display()),
        window_finder_(&atom_cache_) {
-@@ -92,11 +94,11 @@ WindowCapturerLinux::WindowCapturerLinux
+@@ -91,11 +93,11 @@ WindowCapturerLinux::WindowCapturerLinux
    x_display_->AddEventHandler(ConfigureNotify, this);
  }
  
@@ -1972,7 +1959,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    return GetWindowList(&atom_cache_,
                         [this, sources](::Window window) {
                           Source w;
-@@ -109,7 +111,7 @@ bool WindowCapturerLinux::GetSourceList(
+@@ -108,7 +110,7 @@ bool WindowCapturerLinux::GetSourceList(
                         });
  }
  
@@ -1981,7 +1968,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    if (!x_server_pixel_buffer_.Init(display(), id))
      return false;
  
-@@ -130,7 +132,7 @@ bool WindowCapturerLinux::SelectSource(S
+@@ -129,7 +131,7 @@ bool WindowCapturerLinux::SelectSource(S
    return true;
  }
  
@@ -1990,7 +1977,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    if (!selected_window_)
      return false;
  
-@@ -179,18 +181,18 @@ bool WindowCapturerLinux::FocusOnSelecte
+@@ -178,14 +180,14 @@ bool WindowCapturerLinux::FocusOnSelecte
    return true;
  }
  
@@ -2002,17 +1989,12 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    callback_ = callback;
  }
  
--void WindowCapturerLinux::Stop() {
-+void WindowCapturerX11::Stop() {
-   callback_ = NULL;
- }
- 
 -void WindowCapturerLinux::CaptureFrame() {
 +void WindowCapturerX11::CaptureFrame() {
    x_display_->ProcessPendingXEvents();
  
    if (!x_server_pixel_buffer_.IsWindowValid()) {
-@@ -233,12 +235,12 @@ void WindowCapturerLinux::CaptureFrame()
+@@ -228,12 +230,12 @@ void WindowCapturerLinux::CaptureFrame()
    callback_->OnCaptureResult(Result::SUCCESS, std::move(frame));
  }
  
@@ -2027,7 +2009,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    if (event.type == ConfigureNotify) {
      XConfigureEvent xce = event.xconfigure;
      if (xce.window == selected_window_) {
-@@ -256,7 +258,7 @@ bool WindowCapturerLinux::HandleXEvent(c
+@@ -251,7 +253,7 @@ bool WindowCapturerLinux::HandleXEvent(c
    return false;
  }
  
@@ -2036,7 +2018,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    int status;
    bool result = false;
    XTextProperty window_name;
-@@ -287,7 +289,7 @@ bool WindowCapturerLinux::GetWindowTitle
+@@ -282,7 +284,7 @@ bool WindowCapturerLinux::GetWindowTitle
  
  }  // namespace
  
@@ -2045,7 +2027,7 @@ diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/window_capturer_x
    // Get _NET_WM_PID property of the window.
    Atom process_atom = XInternAtom(display(), "_NET_WM_PID", True);
    XWindowProperty<uint32_t> process_id(display(), window, process_atom);
-@@ -296,11 +298,11 @@ int WindowCapturerLinux::GetWindowProces
+@@ -291,11 +293,11 @@ int WindowCapturerLinux::GetWindowProces
  }
  
  // static
