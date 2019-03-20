@@ -93,8 +93,9 @@
           "name": "firefox",
           "build-options" : {
             "env": {
-              "STRIP": "/bin/true"
-            }
+              "NOSTRIP": "/bin/true"
+            },
+           "no-debuginfo" : true
           },
           "buildsystem": "simple",
             "build-commands": [

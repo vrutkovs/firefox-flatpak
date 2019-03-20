@@ -79,6 +79,16 @@
           ]
       },
       {
+          "name": "nasm",
+          "sources": [
+            {
+                "type": "archive",
+                "url": "http://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.bz2",
+                "sha256": "63ec86477ad3f0f6292325fd89e1d93aea2e2fd490070863f17d48f7cd387011"
+            }
+          ]
+      },
+      {
         "name": "yasm",
         "config-opts": [],
         "sources": [
@@ -119,13 +129,14 @@
           "name": "firefox",
           "build-options" : {
             "env": {
-              "STRIP": "/bin/true"
-            }
+              "NOSTRIP": "/bin/true"
+            },
+           "no-debuginfo" : true
           },
           "buildsystem": "simple",
             "build-commands": [
                "env CARGO_HOME=.cargo cargo install cbindgen",
-               "env PATH=/run/build/firefox/.cargo/bin:$PATH ./mach build -j4",
+               "env PATH=/run/build/firefox/.cargo/bin:$PATH RUST_LOG=debug ./mach build -v -j4",
                "env prefix=/app make install"
             ],
         "make-install-args": ["prefix=/app"],
