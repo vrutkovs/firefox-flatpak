@@ -31,7 +31,9 @@
         /* Allow access to Download folder */
         "--filesystem=xdg-download:rw",
         /* Enable access to dri */
-        "--device=dri"
+        "--device=dri",
+        /* Native notifications */
+        "--talk-name=org.freedesktop.Notifications"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
