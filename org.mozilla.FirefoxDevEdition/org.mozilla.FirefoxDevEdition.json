@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxDevEdition",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.24",
+    "runtime-version": "3.28",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
@@ -48,11 +48,20 @@
     "modules": [
       {   "name": "nodejs",
           "make-install-args": ["prefix=/app"],
+          "post-install": [
+              "mv /app/bin/node /app/bin/real-node",
+              "install --mode=755 node-stdout-nonblocking-wrapper /app/bin/node"
+          ],
           "sources": [
               {
                   "type": "archive",
                   "url": "https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.gz",
                   "sha256" : "b4797843136edd9195c28221a1680ae52c29d867fc5fc1c99f7d6e2f2126a67b"
+              },
+              {
+                  "type": "script",
+                  "dest-filename": "node-stdout-nonblocking-wrapper",
+                  "commands": [ 'exec real-node "$@" 2>&1 | cat -' ]
               }
           ]
       },
@@ -64,6 +73,16 @@
                 "type": "archive",
                 "url": "http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz",
                 "sha256": "f0611136bee505811e9ca11ca7ac188ef5323a8e2ef19cffd3edb3cf08fd791e"
+            }
+          ]
+      },
+      {
+          "name": "nasm",
+          "sources": [
+            {
+                "type": "archive",
+                "url": "http://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.bz2",
+                "sha256": "63ec86477ad3f0f6292325fd89e1d93aea2e2fd490070863f17d48f7cd387011"
             }
           ]
       },

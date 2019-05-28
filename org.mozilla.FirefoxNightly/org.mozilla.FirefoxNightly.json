@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxNightly",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.26",
+    "runtime-version": "3.28",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
@@ -162,10 +162,6 @@
               {
                   "type": "patch",
                   "path": "mozlog-no-blessings-req.patch"
-              },
-              {
-                  "type": "patch",
-                  "path": "firefox-pipewire.patch"
               },
               {
                   "type": "file",
