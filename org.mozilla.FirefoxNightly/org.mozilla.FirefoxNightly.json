@@ -38,6 +38,8 @@
         "--system-talk-name=org.freedesktop.NetworkManager",
         /* Accessibility support */
         "--talk-name=org.a11y.Bus",
+        /* Native notifications */
+        "--talk-name=org.freedesktop.Notifications",
         /* For screenshot inhibiting */
         "--talk-name=org.gnome.SessionManager",
         "--talk-name=org.freedesktop.ScreenSaver",

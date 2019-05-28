@@ -31,7 +31,9 @@
         "--filesystem=~/.config/dconf:ro",
         "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
         /* Required for file reveal in file manager */
-        "--socket=session-bus"
+        "--socket=session-bus",
+        /* Native notifications */
+        "--talk-name=org.freedesktop.Notifications"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
