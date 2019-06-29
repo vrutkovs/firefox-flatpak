@@ -37,7 +37,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CURRENT_VERSION = '68.0b13'
+CURRENT_VERSION = '68.0b14'
 
 class FirefoxJsonGenerator():
     JSON_FILE_NAME = 'org.mozilla.Firefox.json'
