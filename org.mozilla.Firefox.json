@@ -16,6 +16,7 @@
     "--filesystem=~/.mozilla",
     "--filesystem=/tmp",
     "--env=MOZ_WEBRENDER=1",
+    "--env=MOZ_ENABLE_WAYLAND=1",
     "--talk-name=org.gnome.GConf",
     "--extra-data=firefox.tar.bz2:6b3153d79265a7cbe1296dc6ee5cf57727f8a944a6d0f10d419a37ede55037d6:66023449::http://archive.mozilla.org/pub/firefox/releases/69.0b16/linux-x86_64/en-US/firefox-69.0b16.tar.bz2",
     "--extra-data=en-US.xpi:716a2b04faaf4f85d98c9221550472e0fdbd15fa532bcd031cb5fe7c6e566caf:458005::http://archive.mozilla.org/pub/firefox/releases/69.0b16/linux-x86_64/xpi/en-US.xpi"
