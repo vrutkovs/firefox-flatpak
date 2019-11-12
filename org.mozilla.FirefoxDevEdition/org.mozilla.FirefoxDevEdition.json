@@ -3,9 +3,6 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.32",
     "sdk": "org.gnome.Sdk",
-    "sdk-extensions" : [
-        "org.freedesktop.Sdk.Extension.rust-stable"
-    ],
     "command": "firefox",
     /*"tags": [""],*/
     "desktop-file-name-suffix": " Developer Edition",
@@ -36,7 +33,6 @@
         "--talk-name=org.freedesktop.Notifications"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/rust-stable/bin",
         "cflags": "-O2 -g",
         "cxxflags": "-O2 -g",
         "env": {
@@ -47,6 +43,7 @@
                 "/share/pkgconfig", "/share/aclocal",
                 "/man", "/share/man", "/share/gtk-doc",
                 "*.la", "*.a"],
+    "cleanup-commands": [ "/app/lib/rustlib/uninstall.sh"],
     "modules": [
       {   "name": "nodejs",
           "make-install-args": ["prefix=/app"],
@@ -109,6 +106,44 @@
                     "sha256": "0ef61ca400d30e28217979bfa0e73a7406b19c32dd76150654ec5b2bdf47d837"
                 }
             ]
+      },
+      {
+            "name":"rust",
+            "build-options" : { "no-debuginfo": true, "strip":false }, /* Stripped rust does not work */
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://static.rust-lang.org/dist/rust-1.39.0-x86_64-unknown-linux-gnu.tar.gz",
+                    "sha256": "b10a73e5ba90034fe51f0f02cb78f297ed3880deb7d3738aa09dc5a4d9704a25"
+                },
+                {
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"],
+                    "dest-filename": "configure"
+                },
+                {
+                    "type": "script",
+                    "commands": ["all:",
+                                 "	echo 'Nothing to do'",
+                                 "install:", 
+                                 "	./install.sh --prefix=/app"
+                                ],
+                    "dest-filename": "Makefile"
+                },
+                {
+                    "type": "script",
+                    "commands": ["#!/bin/bash", "#empty configure", "exit 0"]
+                },
+                {
+                    "type": "shell",
+                    "commands": ["chmod +x configure"]
+                },
+                {
+                    "type": "patch",
+                    "path": "rust-uninstall.patch"
+                }
+            ]
+
       },
       {
           "name": "firefox",
