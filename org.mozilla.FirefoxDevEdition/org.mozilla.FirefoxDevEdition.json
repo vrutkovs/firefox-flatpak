@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxDevEdition",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.32",
+    "runtime-version": "3.28",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
@@ -149,7 +149,11 @@
           "name": "firefox",
           "build-options" : {
             "env": {
-              "NOSTRIP": "/bin/true"
+              "STRIP": "/bin/true",
+              "CC": "gcc",
+              "CXX":"g++",
+              "NM":"gcc-nm",
+              "RANLIB":"gcc-ranlib"
             },
            "no-debuginfo" : true
           },
