@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxDevEdition",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.28",
+    "runtime-version": "3.34",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
@@ -30,7 +30,9 @@
         /* Required for file reveal in file manager */
         "--socket=session-bus",
         /* Native notifications */
-        "--talk-name=org.freedesktop.Notifications"
+        "--talk-name=org.freedesktop.Notifications",
+        /* Enable kerberos support */
+        "--filesystem=/run/.heim_org.h5l.kcm-socket"
     ],
     "build-options" : {
         "cflags": "-O2 -g",
@@ -45,6 +47,9 @@
                 "*.la", "*.a"],
     "cleanup-commands": [ "/app/lib/rustlib/uninstall.sh"],
     "modules": [
+      "shared-modules/gtk2/gtk2.json",
+      "shared-modules/python2.7/python-2.7.json",
+      "shared-modules/dbus-glib/dbus-glib-0.110.json",
       {   "name": "nodejs",
           "make-install-args": ["prefix=/app"],
           "post-install": [
@@ -173,6 +178,10 @@
               {
                   "type": "patch",
                   "path": "firefox-makeinstall.patch"
+              },
+              {
+                  "type": "patch",
+                  "path": "disable-elfhack.patch"
               },
               {
                   "type": "patch",
