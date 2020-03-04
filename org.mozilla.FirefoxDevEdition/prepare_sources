@@ -1,5 +1,5 @@
 #!/bin/bash
 cargo install cargo-vendor
 cargo vendor
-git submodule add https://github.com/flathub/shared-modules.git
+git submodule update --init shared-modules
 
