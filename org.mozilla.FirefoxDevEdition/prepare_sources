@@ -1,5 +1,4 @@
 #!/bin/bash
 cargo install cargo-vendor
 cargo vendor
-git submodule update --init shared-modules
-
+git submodule update --init --remote shared-modules

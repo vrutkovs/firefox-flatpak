@@ -4,3 +4,6 @@
 [submodule "org.mozilla.FirefoxDevEdition/shared-modules"]
 	path = org.mozilla.FirefoxDevEdition/shared-modules
 	url = https://github.com/flathub/shared-modules.git
+[submodule "org.mozilla.FirefoxNightly/shared-modules"]
+	path = org.mozilla.FirefoxNightly/shared-modules
+	url = https://github.com/flathub/shared-modules.git
