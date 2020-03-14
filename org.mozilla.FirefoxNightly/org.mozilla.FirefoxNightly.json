@@ -1,11 +1,8 @@
 {
     "app-id": "org.mozilla.FirefoxNightly",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.28",
+    "runtime-version": "3.34",
     "sdk": "org.gnome.Sdk",
-    "sdk-extensions" : [
-        "org.freedesktop.Sdk.Extension.rust-stable"
-    ],
     "command": "firefox",
     /*"tags": [""],*/
     "desktop-file-name-suffix": " Nightly",
@@ -47,7 +44,6 @@
         "--own-name=org.mozilla.firefox.*"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/rust-stable/bin",
         "cflags": "-O2 -g",
         "cxxflags": "-O2 -g",
         "env": {
@@ -58,7 +54,11 @@
                 "/share/pkgconfig", "/share/aclocal",
                 "/man", "/share/man", "/share/gtk-doc",
                 "*.la", "*.a"],
+    "cleanup-commands": [ "/app/lib/rustlib/uninstall.sh"],
     "modules": [
+      "shared-modules/gtk2/gtk2.json",
+      "shared-modules/python2.7/python-2.7.json",
+      "shared-modules/dbus-glib/dbus-glib-0.110.json",
       {   "name": "nodejs",
           "make-install-args": ["prefix=/app"],
           "post-install": [
@@ -68,8 +68,8 @@
           "sources": [
               {
                   "type": "archive",
-                  "url": "https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.gz",
-                  "sha256" : "b4797843136edd9195c28221a1680ae52c29d867fc5fc1c99f7d6e2f2126a67b"
+                  "url": "https://nodejs.org/dist/v13.8.0/node-v13.8.0.tar.gz",
+                  "sha256" : "815b5e1b18114f35da89e4d98febeaba97555d51ef593bd5175db2b05f2e8be6"
               },
               {
                   "type": "script",
@@ -94,8 +94,8 @@
           "sources": [
             {
                 "type": "archive",
-                "url": "http://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.bz2",
-                "sha256": "63ec86477ad3f0f6292325fd89e1d93aea2e2fd490070863f17d48f7cd387011"
+                "url": "https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.bz2",
+                "sha256": "34fd26c70a277a9fdd54cb5ecf389badedaf48047b269d1008fbc819b24e80bc"
             }
           ]
       },
@@ -122,17 +122,54 @@
             ]
       },
       {
+          "name":"rust",
+          "build-options" : { "no-debuginfo": true, "strip":false }, /* Stripped rust does not work */
+          "sources": [
+              {
+                  "type": "archive",
+                  "url": "https://static.rust-lang.org/dist/rust-1.41.0-x86_64-unknown-linux-gnu.tar.gz",
+                  "sha256": "343ba8ef7397eab7b3bb2382e5e4cb08835a87bff5c8074382c0b6930a41948b"
+              },
+              {
+                  "type": "script",
+                  "commands": ["#!/bin/bash", "#empty configure", "exit 0"],
+                  "dest-filename": "configure"
+              },
+              {
+                  "type": "script",
+                  "commands": ["all:",
+                      "	echo 'Nothing to do'",
+                      "install:", 
+                      "	./install.sh --prefix=/app"
+                                ],
+                                "dest-filename": "Makefile"
+              },
+              {
+                  "type": "script",
+                  "commands": ["#!/bin/bash", "#empty configure", "exit 0"]
+              },
+              {
+                  "type": "shell",
+                  "commands": ["chmod +x configure"]
+              },
+              {
+                  "type": "patch",
+                  "path": "rust-uninstall.patch"
+              }
+          ]
+      },
+      {
         "name": "PipeWire",
         "buildsystem": "meson",
         "sources": [
             {
                 "type": "archive",
-                "url": "https://github.com/PipeWire/pipewire/archive/0.2.2.tar.gz",
-                "sha256": "b39773deb79badf951c136505c708d2177b3a4106ecb63e4c063584d5c26d5d7"
+                "url": "https://github.com/PipeWire/pipewire/archive/0.2.7.tar.gz",
+                "sha256": "bfaa0f6ae6c0791e2e0b59234d399753bf24f1b33dbf587682363a8463dd8df1"
             },
             {
                 "type": "patch",
-                "path": "pipewire-build.patch"
+                "path": "pipewire-install-socket.patch"
             }
         ]
       },

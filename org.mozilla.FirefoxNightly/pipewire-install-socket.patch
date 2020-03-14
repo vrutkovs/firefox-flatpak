@@ -1,0 +1,8 @@
+--- PipeWire/src/daemon/systemd/user/meson.build.install-socket	2019-09-26 15:58:39.000000000 +0200
++++ PipeWire/src/daemon/systemd/user/meson.build	2020-03-13 14:04:26.924561250 +0100
+@@ -1,4 +1,4 @@
+-systemd_user_services_dir = systemd.get_pkgconfig_variable('systemduserunitdir')
++systemd_user_services_dir = '/app' + systemd.get_pkgconfig_variable('systemduserunitdir')
+ 
+ install_data(sources : 'pipewire.socket', install_dir : systemd_user_services_dir)
+ 
