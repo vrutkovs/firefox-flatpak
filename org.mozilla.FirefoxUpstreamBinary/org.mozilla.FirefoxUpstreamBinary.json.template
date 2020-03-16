@@ -1,7 +1,7 @@
 {
     "app-id": "org.mozilla.FirefoxUpstreamBinary",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.26",
+    "runtime-version": "3.34",
     "sdk": "org.gnome.Sdk",
     "command": "firefox",
     /*"tags": [""],*/
@@ -29,6 +29,7 @@
         "--socket=session-bus"
     ],
     "modules": [
+      "shared-modules/dbus-glib/dbus-glib-0.110.json",
       {
           "name": "firefox",
           "no-autogen": true,

@@ -2,6 +2,8 @@
 set -x
 PACKAGE_NAME=org.mozilla.FirefoxUpstreamBinary
 
+git submodule update --init --remote shared-modules
+
 MANIFEST_FILE_TEMPLATE=$PACKAGE_NAME.json.template
 MANIFEST_FILE=$PACKAGE_NAME.json
 
