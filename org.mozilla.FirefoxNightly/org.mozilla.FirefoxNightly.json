@@ -203,6 +203,10 @@
                   "path": "mozlog-no-blessings-req.patch"
               },
               {
+                  "type": "patch",
+                  "path": "firefox-pipewire.patch"
+              },
+              {
                   "type": "file",
                   "path": "org.mozilla.Firefox.appdata.xml",
                   "dest": ""
