@@ -127,8 +127,8 @@
           "sources": [
               {
                   "type": "archive",
-                  "url": "https://static.rust-lang.org/dist/rust-1.41.0-x86_64-unknown-linux-gnu.tar.gz",
-                  "sha256": "343ba8ef7397eab7b3bb2382e5e4cb08835a87bff5c8074382c0b6930a41948b"
+                  "url": "https://static.rust-lang.org/dist/rust-1.42.0-x86_64-unknown-linux-gnu.tar.gz",
+                  "sha256": "7d1e07ad9c8a33d8d039def7c0a131c5917aa3ea0af3d0cc399c6faf7b789052"
               },
               {
                   "type": "script",
