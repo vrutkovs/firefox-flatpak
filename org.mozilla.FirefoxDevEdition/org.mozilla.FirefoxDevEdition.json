@@ -59,8 +59,8 @@
           "sources": [
               {
                   "type": "archive",
-                  "url": "https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.gz",
-                  "sha256" : "b4797843136edd9195c28221a1680ae52c29d867fc5fc1c99f7d6e2f2126a67b"
+                  "url": "https://nodejs.org/dist/v13.8.0/node-v13.8.0.tar.gz",
+                  "sha256" : "815b5e1b18114f35da89e4d98febeaba97555d51ef593bd5175db2b05f2e8be6"
               },
               {
                   "type": "script",
