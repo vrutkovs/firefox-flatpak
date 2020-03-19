@@ -65,7 +65,7 @@ index 1eb8ead26efa..316468eed1fc 100644
  };
  
 diff --git a/media/webrtc/trunk/webrtc/modules/desktop_capture/linux/base_capturer_pipewire.cc b/media/webrtc/trunk/webrtc/modules/desktop_capture/linux/base_capturer_pipewire.cc
-index 379341c833de..7a1ffa204ddf 100644
+index 379341c833de..d156be1c18a0 100644
 --- a/media/webrtc/trunk/webrtc/modules/desktop_capture/linux/base_capturer_pipewire.cc
 +++ b/media/webrtc/trunk/webrtc/modules/desktop_capture/linux/base_capturer_pipewire.cc
 @@ -18,6 +18,11 @@
@@ -80,12 +80,13 @@ index 379341c833de..7a1ffa204ddf 100644
  #include <memory>
  #include <utility>
  
-@@ -36,6 +41,26 @@ const char kSessionInterfaceName[] = "org.freedesktop.portal.Session";
+@@ -36,6 +41,27 @@ const char kSessionInterfaceName[] = "org.freedesktop.portal.Session";
  const char kRequestInterfaceName[] = "org.freedesktop.portal.Request";
  const char kScreenCastInterfaceName[] = "org.freedesktop.portal.ScreenCast";
  
 +
-+static void BaseCapturerPipeWire::SyncDmaBuf(int fd, uint64_t start_or_end) {
++// static
++void BaseCapturerPipeWire::SyncDmaBuf(int fd, uint64_t start_or_end) {
 +  struct dma_buf_sync sync = { 0 };
 +
 +  sync.flags = start_or_end | DMA_BUF_SYNC_READ;
@@ -107,7 +108,7 @@ index 379341c833de..7a1ffa204ddf 100644
  // static
  void BaseCapturerPipeWire::OnStateChanged(void* data,
                                            pw_remote_state old_state,
-@@ -112,7 +137,7 @@ void BaseCapturerPipeWire::OnStreamFormatChanged(void* data,
+@@ -112,7 +138,7 @@ void BaseCapturerPipeWire::OnStreamFormatChanged(void* data,
    auto builder = spa_pod_builder{buffer, sizeof(buffer)};
  
    // Setup buffers and meta header for new format.
@@ -116,7 +117,7 @@ index 379341c833de..7a1ffa204ddf 100644
    params[0] = reinterpret_cast<spa_pod*>(spa_pod_builder_object(
        &builder,
        // id to enumerate buffer requirements
-@@ -141,8 +166,14 @@ void BaseCapturerPipeWire::OnStreamFormatChanged(void* data,
+@@ -141,8 +167,14 @@ void BaseCapturerPipeWire::OnStreamFormatChanged(void* data,
        // Size: size of the metadata, specified as integer (i)
        ":", that->pw_core_type_->param_meta.size, "i",
        sizeof(struct spa_meta_header)));
@@ -133,23 +134,26 @@ index 379341c833de..7a1ffa204ddf 100644
  }
  
  // static
-@@ -150,15 +181,21 @@ void BaseCapturerPipeWire::OnStreamProcess(void* data) {
+@@ -150,15 +182,25 @@ void BaseCapturerPipeWire::OnStreamProcess(void* data) {
    BaseCapturerPipeWire* that = static_cast<BaseCapturerPipeWire*>(data);
    RTC_DCHECK(that);
  
 -  pw_buffer* buf = nullptr;
 +  struct pw_buffer *next_buffer;
 +  struct pw_buffer *buffer = nullptr;
- 
--  if (!(buf = pw_stream_dequeue_buffer(that->pw_stream_))) {
--    return;
++
 +  next_buffer = pw_stream_dequeue_buffer(that->pw_stream_);
 +  while (next_buffer) {
 +    buffer = next_buffer;
 +    next_buffer = pw_stream_dequeue_buffer(that->pw_stream_);
-+
+ 
+-  if (!(buf = pw_stream_dequeue_buffer(that->pw_stream_))) {
 +    if (next_buffer)
 +      pw_stream_queue_buffer (that->pw_stream_, buffer);
++  }
++
++  if (!buffer) {
+     return;
    }
  
 -  that->HandleBuffer(buf);
@@ -160,7 +164,7 @@ index 379341c833de..7a1ffa204ddf 100644
  }
  
  BaseCapturerPipeWire::BaseCapturerPipeWire(CaptureSourceType source_type)
-@@ -197,10 +234,6 @@ BaseCapturerPipeWire::~BaseCapturerPipeWire() {
+@@ -197,10 +239,6 @@ BaseCapturerPipeWire::~BaseCapturerPipeWire() {
      pw_loop_destroy(pw_loop_);
    }
  
@@ -171,7 +175,7 @@ index 379341c833de..7a1ffa204ddf 100644
    if (start_request_signal_id_) {
      g_dbus_connection_signal_unsubscribe(connection_, start_request_signal_id_);
    }
-@@ -332,8 +365,7 @@ void BaseCapturerPipeWire::CreateReceivingStream() {
+@@ -332,8 +370,7 @@ void BaseCapturerPipeWire::CreateReceivingStream() {
    pw_stream_add_listener(pw_stream_, &spa_stream_listener_, &pw_stream_events_,
                           this);
    pw_stream_flags flags = static_cast<pw_stream_flags>(
@@ -181,7 +185,7 @@ index 379341c833de..7a1ffa204ddf 100644
    if (pw_stream_connect(pw_stream_, PW_DIRECTION_INPUT, /*port_path=*/nullptr,
                          flags, params,
                          /*n_params=*/1) != 0) {
-@@ -344,15 +376,75 @@ void BaseCapturerPipeWire::CreateReceivingStream() {
+@@ -344,15 +381,77 @@ void BaseCapturerPipeWire::CreateReceivingStream() {
  }
  
  void BaseCapturerPipeWire::HandleBuffer(pw_buffer* buffer) {
@@ -196,21 +200,23 @@ index 379341c833de..7a1ffa204ddf 100644
 +    map = nullptr;
 +    src = nullptr;
 +  } else if (spaBuffer->datas[0].type == pw_core_type_->data.MemFd) {
-+    map = mmap(nullptr, spaBuffer->datas[0].maxsize + spaBuffer->datas[0].mapoffset,
-+               PROT_READ, MAP_PRIVATE, spaBuffer->datas[0].fd, 0);
++    map = static_cast<uint8_t*>(mmap(
++        nullptr, spaBuffer->datas[0].maxsize + spaBuffer->datas[0].mapoffset,
++        PROT_READ, MAP_PRIVATE, spaBuffer->datas[0].fd, 0));
 +    src = SPA_MEMBER(map, spaBuffer->datas[0].mapoffset, uint8_t);
 +  } else if (spaBuffer->datas[0].type == pw_core_type_->data.DmaBuf) {
 +    int fd;
 +    fd = spaBuffer->datas[0].fd;
 +
-+    map = mmap (nullptr, spaBuffer->datas[0].maxsize + spaBuffer->datas[0].mapoffset,
-+                PROT_READ, MAP_PRIVATE, fd, 0);
++    map = static_cast<uint8_t*>(mmap(
++        nullptr, spaBuffer->datas[0].maxsize + spaBuffer->datas[0].mapoffset,
++        PROT_READ, MAP_PRIVATE, fd, 0));
 +    SyncDmaBuf(fd, DMA_BUF_SYNC_START);
 +
-+    src = SPA_MEMBER (map, spaBuffer->datas[0].mapoffset, uint8_t);
++    src = SPA_MEMBER(map, spaBuffer->datas[0].mapoffset, uint8_t);
 +  } else if (spaBuffer->datas[0].type == pw_core_type_->data.MemPtr) {
 +    map = nullptr;
-+    src = spaBuffer->datas[0].data;
++    src = static_cast<uint8_t*>(spaBuffer->datas[0].data);
 +  } else {
 +    return;
 +  }
@@ -261,7 +267,7 @@ index 379341c833de..7a1ffa204ddf 100644
    if (srcStride != (desktop_size_.width() * kBytesPerPixel)) {
      RTC_LOG(LS_ERROR) << "Got buffer with stride different from screen stride: "
                        << srcStride
-@@ -361,21 +453,39 @@ void BaseCapturerPipeWire::HandleBuffer(pw_buffer* buffer) {
+@@ -361,21 +460,39 @@ void BaseCapturerPipeWire::HandleBuffer(pw_buffer* buffer) {
      return;
    }
  
@@ -314,7 +320,7 @@ index 379341c833de..7a1ffa204ddf 100644
    }
  }
  
-@@ -813,10 +923,12 @@ void BaseCapturerPipeWire::CaptureFrame() {
+@@ -813,10 +930,12 @@ void BaseCapturerPipeWire::CaptureFrame() {
      return;
    }
  
@@ -330,7 +336,7 @@ index 379341c833de..7a1ffa204ddf 100644
    if (!result) {
      callback_->OnCaptureResult(Result::ERROR_TEMPORARY, nullptr);
      return;
-@@ -837,4 +949,22 @@ bool BaseCapturerPipeWire::SelectSource(SourceId id) {
+@@ -837,4 +956,22 @@ bool BaseCapturerPipeWire::SelectSource(SourceId id) {
    return true;
  }
  
