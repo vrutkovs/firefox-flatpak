@@ -1,9 +1,9 @@
 # firefox-flatpak
-This is a set of patches, scripts and a manifest to build latest Firefox using Flatpak. It is using GNOME 3.22 as base runtime.
+This is a set of patches, scripts and a manifest to build latest Firefox using Flatpak. DevEdition and Nightly are using GNOME 3.34 as base runtime. The UpstreamBinary Flatpak uses the FreeDesktop Platform for GNOME and KDE.
 
 # Usage
 
-Run ```./setup_runtime.sh``` to download and install GNOME 3.20 SDK and GNOME 3.22 SDK for Flatpak.
+Run ```./setup_runtime.sh``` to download and install GNOME SDK and FreeDesktop Platform for Flatpak.
 
 Currently there are three builds available:
 * org.mozilla.FirefoxNightly - to build latest nightly
