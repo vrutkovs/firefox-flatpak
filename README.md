@@ -10,6 +10,15 @@ Currently there are three builds available:
 * org.mozilla.FirefoxNightlyWayland - to build nightly with wayland support
 * org.mozilla.FirefoxDevEdition - Firefox Developer Edition (branded aurora build)
 
+## Prerequisites
+
+Of course to build flatpaks the ```flatpak-builder``` package needs to be installed.
+
+Please see the accompanying README.md in the specific build directory for further build requirements, e.g.
+* org.mozilla.FirefoxNightly/README.md
+
+## Build
+
 To build specific build run:
 ```
 ./build.sh BUILD_NAME
