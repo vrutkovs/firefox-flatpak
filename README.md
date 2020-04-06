@@ -7,8 +7,8 @@ Run ```./setup_runtime.sh``` to download and install GNOME SDK and FreeDesktop P
 
 Currently there are three builds available:
 * org.mozilla.FirefoxNightly - to build latest nightly
-* org.mozilla.FirefoxNightlyWayland - to build nightly with wayland support
 * org.mozilla.FirefoxDevEdition - Firefox Developer Edition (branded aurora build)
+* org.mozilla.FirefoxUpstreamBinary - pack a Firefox uptream binary as flatpak
 
 ## Prerequisites
 
